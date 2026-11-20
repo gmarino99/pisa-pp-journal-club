@@ -26,16 +26,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Refresh vote counts from GitHub Discussions
+      - name: Refresh votes and interest posts from GitHub Discussions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 tools/fetch_votes.py
-          if ! git diff --quiet -- data/votes.json; then
+          if [ -n "$(git status --porcelain -- data/votes.json feeds/github.json)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/votes.json
-            git commit -m "Update vote counts"
+            git add data/votes.json feeds/github.json
+            git commit -m "Update votes and interests from GitHub"
             git pull --rebase -q origin main && git push -q origin HEAD:main || echo "Push of vote counts failed; the site still deploys with them."
           fi
 

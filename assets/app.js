@@ -1,13 +1,14 @@
-/* Pisa Particle Physics Journal Club — static site.
-   All content comes from data/*.json; this file only renders it. */
+/* Pisa Particle Physics Journal Club — main site.
+   All content comes from data/*.json; this file only renders it. Shares its look with jc.html (assets/jc.css). */
 (function () {
   "use strict";
 
   var ROUTES = ["next", "papers", "ideas", "schedule", "speakers", "about"];
   var TITLES = { next: "Next JC", papers: "Papers", ideas: "Ideas", schedule: "Schedule", speakers: "Speakers", about: "About" };
   var $main = document.getElementById("main");
-  var S = { site: null, sessions: [], papers: [], byId: {}, votes: { papers: {} } };
+  var S = { site: null, sessions: [], papers: [], byId: {}, votes: {} };
   var filters = { q: "", area: "", digest: "" };
+  var ideasTab = "ideas";
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -15,40 +16,41 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function todayISO() {
-    var d = new Date();
-    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
-  }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
-  function parseISO(iso) { var p = iso.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
-  function fmtDate(iso, opts) {
-    try { return parseISO(iso).toLocaleDateString("en-GB", opts || { weekday: "short", day: "numeric", month: "short", year: "numeric" }); }
-    catch (e) { return iso; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function todayISO() { return iso(new Date()); }
+  function parseISO(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function fmtDate(s, o) {
+    try { return parseISO(s).toLocaleDateString("en-GB", o || { weekday: "short", day: "numeric", month: "short", year: "numeric" }); }
+    catch (e) { return s; }
   }
   function sessTime(s) { return s.time || S.site.defaults.time; }
   function sessRoom(s) { return s.room || S.site.defaults.room; }
-  function arxivUrl(id) { return "https://arxiv.org/abs/" + encodeURIComponent(id); }
+  function startOf(s) { var d = parseISO(s.date), t = sessTime(s).split(":"); d.setHours(+t[0], +t[1], 0, 0); return d; }
+  function absUrl(id) { return "https://arxiv.org/abs/" + encodeURIComponent(id); }
+  function pdfUrl(id) { return "https://arxiv.org/pdf/" + encodeURIComponent(id); }
+  function votesOf(id) { var v = S.votes[id] || {}; return { up: v.up || 0, down: v.down || 0, net: (v.up || 0) - (v.down || 0) }; }
+  function paperOf(id) { return S.byId[id] || { id: id, title: "arXiv:" + id, authors: "", area: "arXiv" }; }
+  function hero(eyebrow, title, lede) {
+    return '<section class="hero small"><p class="eyebrow">' + esc(eyebrow) + "</p><h1>" + title + "</h1>" + (lede ? '<p class="lede">' + lede + "</p>" : "") + "</section>";
+  }
 
   /* ---------- theme ---------- */
-  var THEMES = ["auto", "light", "dark"];
-  var THEME_UI = { auto: ["◐", "Auto"], light: ["☀", "Light"], dark: ["☾", "Dark"] };
+  var THEMES = ["auto", "light", "dark"], ICON = { auto: "◐", light: "☀", dark: "☾" };
   function currentTheme() { return document.documentElement.dataset.theme || "auto"; }
   function applyTheme(t) {
-    if (t === "auto") delete document.documentElement.dataset.theme;
-    else document.documentElement.dataset.theme = t;
+    if (t === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
     try { if (t === "auto") localStorage.removeItem("jc-theme"); else localStorage.setItem("jc-theme", t); } catch (e) {}
-    document.getElementById("theme-icon").textContent = THEME_UI[t][0];
-    document.getElementById("theme-label").textContent = THEME_UI[t][1];
-    document.getElementById("theme-toggle").setAttribute("aria-label", "Colour theme: " + THEME_UI[t][1].toLowerCase() + ". Click to change.");
+    var b = document.getElementById("theme-toggle");
+    b.textContent = ICON[t];
+    b.setAttribute("aria-label", "Colour theme: " + t + ". Click to change.");
     syncGiscusTheme();
   }
   document.getElementById("theme-toggle").addEventListener("click", function () {
     applyTheme(THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length]);
   });
-  applyTheme(currentTheme());
-  try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncGiscusTheme); } catch (e) {}
 
-  /* ---------- giscus (GitHub Discussions: votes and ideas) ---------- */
+  /* ---------- giscus (GitHub Discussions: votes, ideas, interests) ---------- */
   function effectiveTheme() {
     var t = currentTheme();
     if (t !== "auto") return t;
@@ -58,11 +60,14 @@
     var f = document.querySelector("iframe.giscus-frame");
     if (f && f.contentWindow) f.contentWindow.postMessage({ giscus: { setConfig: { theme: effectiveTheme() } } }, "https://giscus.app");
   }
+  applyTheme(currentTheme());
+  try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncGiscusTheme); } catch (e) {}
+
   // giscus attaches to the first ".giscus" element, so only one widget is open at a time.
   function mountGiscus(container, opts) {
     var g = S.site && S.site.giscus;
-    if (!g || !g.repoId) { container.innerHTML = '<p class="warn">Voting and comments are not configured yet.</p>'; return; }
-    document.querySelectorAll(".giscus-slot").forEach(function (el) { el.innerHTML = ""; el.hidden = true; });
+    if (!g || !g.repoId) { container.innerHTML = '<p class="empty">Voting and comments are not configured yet.</p>'; return; }
+    document.querySelectorAll(".giscus-slot").forEach(function (el) { el.innerHTML = ""; if (el.dataset.collapsible) el.hidden = true; });
     document.querySelectorAll("[data-discuss][aria-expanded=true]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
     container.hidden = false;
     container.innerHTML = '<div class="giscus"></div>';
@@ -82,7 +87,7 @@
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-discuss]");
     if (!b) return;
-    var slot = document.getElementById("gs-" + b.dataset.discuss.replace(/[^\w]/g, "_") + "-" + b.dataset.ctx);
+    var slot = document.getElementById(b.getAttribute("aria-controls"));
     if (!slot) return;
     if (b.getAttribute("aria-expanded") === "true") { slot.innerHTML = ""; slot.hidden = true; b.setAttribute("aria-expanded", "false"); return; }
     var g = S.site.giscus || {};
@@ -91,30 +96,19 @@
   });
 
   /* ---------- calendar (.ics) ---------- */
-  function icsText(s) {
-    return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
-  }
+  function icsText(s) { return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
   function icsFor(s) {
-    var d = S.site.defaults;
-    var t = sessTime(s).split(":");
-    var start = parseISO(s.date); start.setHours(+t[0], +t[1], 0, 0);
+    var d = S.site.defaults, start = startOf(s);
     var end = new Date(start.getTime() + (s.durationMinutes || d.durationMinutes || 60) * 60000);
     function local(x) { return x.getFullYear() + pad(x.getMonth() + 1) + pad(x.getDate()) + "T" + pad(x.getHours()) + pad(x.getMinutes()) + "00"; }
     var stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
     var desc = s.speaker ? "Talk: " + s.speaker + (s.talkTitle ? " — " + s.talkTitle : "") : "Papers of the week and discussion";
-    var lines = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pisa PP Journal Club//EN", "CALSCALE:GREGORIAN",
-      "BEGIN:VEVENT",
-      "UID:" + s.date + "@pisa-pp-journal-club",
-      "DTSTAMP:" + stamp,
-      "DTSTART;TZID=" + d.timezone + ":" + local(start),
-      "DTEND;TZID=" + d.timezone + ":" + local(end),
-      "SUMMARY:" + icsText(S.site.title),
-      "LOCATION:" + icsText(sessRoom(s)),
-      "DESCRIPTION:" + icsText(desc + "\n" + location.href.split("#")[0]),
-      "END:VEVENT", "END:VCALENDAR"
-    ];
-    return lines.join("\r\n") + "\r\n";
+    return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pisa PP Journal Club//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
+      "UID:" + s.date + "@pisa-pp-journal-club", "DTSTAMP:" + stamp,
+      "DTSTART;TZID=" + d.timezone + ":" + local(start), "DTEND;TZID=" + d.timezone + ":" + local(end),
+      "SUMMARY:" + icsText(S.site.title), "LOCATION:" + icsText(sessRoom(s)),
+      "DESCRIPTION:" + icsText(desc + "\n" + location.href.split("#")[0] + "jc.html#" + s.date),
+      "END:VEVENT", "END:VCALENDAR"].join("\r\n") + "\r\n";
   }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-ics]");
@@ -128,102 +122,80 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   });
 
-  /* ---------- building blocks ---------- */
-  function votesOf(id) { var v = (S.votes.papers || {})[id] || {}; return { up: v.up || 0, down: v.down || 0, net: (v.up || 0) - (v.down || 0) }; }
+  /* ---------- paper card (same design as the session board) ---------- */
   var cardSeq = 0;
-  function paperCard(p, headingLevel, opts) {
+  function paperCard(p, i, opts) {
     opts = opts || {};
-    var h = "h" + (headingLevel || 3);
-    var v = votesOf(p.id);
-    var ctx = "c" + (++cardSeq);
-    var slotId = "gs-" + String(p.id).replace(/[^\w]/g, "_") + "-" + ctx;
-    return '<article class="card">'
-      + "<" + h + '><a href="' + arxivUrl(p.id) + '" rel="noopener">' + esc(p.title) + "</a></" + h + ">"
-      + '<div class="meta"><span class="badge">' + esc(p.area) + "</span>" + esc(p.authors)
-      + " · arXiv:" + esc(p.id) + (p.announced ? " · " + esc(fmtDate(p.announced, { day: "numeric", month: "short" })) : "") + "</div>"
+    var v = votesOf(p.id), slot = "gs-" + (++cardSeq);
+    var steps = p.explain && p.explain.length
+      ? (opts.openSteps
+        ? '<ol class="steps">' + p.explain.map(function (x) { return "<li><span>" + esc(x) + "</span></li>"; }).join("") + "</ol>"
+        : '<details class="explain"><summary>In ' + p.explain.length + " steps</summary><ol class=\"steps\">" + p.explain.map(function (x) { return "<li><span>" + esc(x) + "</span></li>"; }).join("") + "</ol></details>")
+      : "";
+    return '<li class="paper" data-area="' + esc(p.area) + '" style="--i:' + (i || 0) + '">'
+      + '<div class="paper-head">' + (opts.num ? '<span class="num" aria-hidden="true">' + pad(i + 1) + "</span>" : "<span></span>")
+      + '<span class="area"><span class="dot"></span>' + esc(p.area || "arXiv") + "</span></div>"
+      + '<h3><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a></h3>"
+      + (p.authors ? '<p class="authors">' + esc(p.authors) + "</p>" : "")
       + (p.gist ? '<p class="gist">' + esc(p.gist) + "</p>" : "")
-      + (p.interest && p.interest.length ? '<p class="aff"><b>May interest:</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
-      + (opts.noVote ? "" : '<div class="vote-row"><span class="tally" title="Reactions on GitHub, refreshed every few hours">'
-        + "👍 " + v.up + " · 👎 " + v.down + "</span>"
-        + '<button type="button" class="btn" data-discuss="' + esc(p.id) + '" data-ctx="' + ctx + '" aria-expanded="false" aria-controls="' + slotId + '">Vote &amp; discuss</button></div>'
-        + '<div class="giscus-slot" id="' + slotId + '" hidden></div>')
-      + "</article>";
+      + steps
+      + (p.interest && p.interest.length ? '<p class="aff"><b>May interest</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
+      + '<div class="paper-foot"><span class="id">arXiv:' + esc(p.id) + "</span>"
+      + '<span class="votes" title="Votes on GitHub, refreshed every few hours">👍 ' + v.up + " · 👎 " + v.down + "</span>"
+      + '<span class="links"><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">Abstract</a><a href="' + pdfUrl(p.id) + '" target="_blank" rel="noopener">PDF</a></span>'
+      + '<button type="button" class="btn-vote" data-discuss="' + esc(p.id) + '" aria-expanded="false" aria-controls="' + slot + '">Vote &amp; discuss</button></div>'
+      + '<div class="giscus-slot" id="' + slot + '" data-collapsible="1" hidden></div>'
+      + "</li>";
   }
-  function papersOf(s) {
-    return (s.papers || []).map(function (id) {
-      return S.byId[id] || { id: id, title: "arXiv:" + id, authors: "", area: "arXiv" };
-    });
+  function grid(list, opts) {
+    return '<ol class="papers">' + list.map(function (p, i) { return paperCard(p, i, opts); }).join("") + "</ol>";
   }
+
+  /* ---------- sessions ---------- */
+  function upcoming() { var t = todayISO(); return S.sessions.filter(function (s) { return s.date >= t; }); }
+  function past() { var t = todayISO(); return S.sessions.filter(function (s) { return s.date < t; }).reverse(); }
   function talkLine(s) {
     if (!s.speaker) return "No talk scheduled yet";
     return esc(s.speaker) + (s.talkTitle ? " — <i>" + esc(s.talkTitle) + "</i>" : "");
   }
-  function upcoming() {
-    var t = todayISO();
-    return S.sessions.filter(function (s) { return s.date >= t; });
+  function timeline(s) {
+    var agenda = S.site.agenda || [], n = (s.papers || []).length, t0 = startOf(s), acc = 0, bar = "", items = "";
+    agenda.forEach(function (a) {
+      var kind = /talk/i.test(a.title) ? "talk" : /paper/i.test(a.title) ? "papers" : "other";
+      var from = new Date(t0.getTime() + acc * 60000); acc += a.minutes || 0;
+      bar += '<span class="seg-' + kind + '" style="flex:' + (a.minutes || 1) + '"></span>';
+      var detail = kind === "talk" ? talkLine(s) : kind === "papers" ? (n ? n + " papers, about " + Math.max(2, Math.round((a.minutes || 25) / n)) + " min each" : "Selection published on Monday") : esc(a.detail || "");
+      items += '<div class="tl-item"><span class="t">' + pad(from.getHours()) + ":" + pad(from.getMinutes()) + " · " + (a.minutes || "") + "′</span><h3>" + esc(a.title) + "</h3><p>" + detail + "</p></div>";
+    });
+    return '<section class="timeline" aria-label="Programme"><div class="tl-bar" aria-hidden="true">' + bar + '</div><div class="tl-items">' + items + "</div></section>";
   }
-  function past() {
-    var t = todayISO();
-    return S.sessions.filter(function (s) { return s.date < t; }).reverse();
+  function countdown(s) {
+    var days = Math.round((parseISO(s.date) - parseISO(todayISO())) / 864e5);
+    return days <= 0 ? "Today" : days === 1 ? "Tomorrow" : "In " + days + " days";
   }
 
   /* ---------- views ---------- */
   function viewNext() {
     var s = upcoming()[0];
-    if (!s) return '<h2>Next session</h2><p class="empty">The next session has not been scheduled yet.</p>';
-    var agenda = (S.site.agenda || []).map(function (a) {
-      var title = a.title;
-      var extra = "";
-      if (/talk/i.test(a.title)) extra = ": " + talkLine(s);
-      if (/paper/i.test(a.title)) extra = " · " + (s.papers || []).length + " selected";
-      return "<li><b>" + esc(title) + "</b>" + (a.minutes ? " (~" + esc(a.minutes) + "′)" : "") + extra + "</li>";
-    }).join("");
-    var list = papersOf(s);
-    return '<h2 class="visually-hidden">Next session</h2>'
-      + '<p class="big">' + esc(fmtDate(s.date, { weekday: "long", day: "numeric", month: "long", year: "numeric" })) + "</p>"
-      + '<p class="meta">' + esc(sessTime(s)) + " · " + esc(sessRoom(s)) + "</p>"
-      + (s.pilot ? '<p class="warn">Pilot content: sample selection to test the page.</p>' : "")
-      + (s.notes && !s.pilot ? '<p class="note">' + esc(s.notes) + "</p>" : "")
-      + '<section class="card" aria-labelledby="prog-h"><h3 id="prog-h">Programme</h3><ol class="agenda">' + agenda + "</ol>"
-      + '<div class="actions"><button type="button" class="btn" data-ics="' + esc(s.date) + '">Add to calendar (.ics)</button>'
-      + '<a class="btn" href="jc.html#' + esc(s.date) + '">Open session board</a></div></section>'
-      + "<h2>Papers to discuss</h2>"
-      + (list.length ? list.map(function (p) { return paperCard(p, 3); }).join("") : '<p class="empty">Selection pending.</p>')
+    if (!s) return hero("Next session", "Not scheduled yet", "The next session will appear here as soon as it is planned.");
+    var list = (s.papers || []).map(paperOf);
+    return '<section class="hero"><p class="eyebrow">' + esc(countdown(s)) + " · next session" + (s.pilot ? " · pilot selection" : "") + "</p>"
+      + "<h1>" + esc(fmtDate(s.date, { weekday: "long", day: "numeric", month: "long" })) + "</h1>"
+      + '<p class="hero-meta"><b>' + esc(sessTime(s)) + "</b> · " + esc(sessRoom(s)) + " · " + list.length + " paper" + (list.length === 1 ? "" : "s") + "</p>"
+      + '<div class="hero-actions"><a class="primary" href="jc.html#' + esc(s.date) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Open session board</a>'
+      + '<button type="button" class="ghost" data-ics="' + esc(s.date) + '">Add to calendar</button></div></section>'
+      + timeline(s)
+      + '<div class="section-head"><h2>Papers to discuss</h2></div>'
+      + (list.length ? grid(list, { num: true, openSteps: false }) : '<p class="empty">The selection is published on the Monday before the session. Meanwhile, vote on the papers of the week.</p>')
       + mostVoted(s);
   }
   function mostVoted(s) {
-    var since = new Date(Date.now() - 8 * 864e5); var lim = since.getFullYear() + "-" + pad(since.getMonth() + 1) + "-" + pad(since.getDate());
-    var best = S.papers.filter(function (p) { return (p.digest || "") >= lim; })
+    var since = iso(new Date(Date.now() - 8 * 864e5));
+    var best = S.papers.filter(function (p) { return (p.digest || "") >= since && (s.papers || []).indexOf(p.id) < 0; })
       .map(function (p) { return { p: p, v: votesOf(p.id) }; })
       .filter(function (x) { return x.v.up > 0; })
       .sort(function (a, b) { return b.v.net - a.v.net || b.v.up - a.v.up; })[0];
-    if (!best) return "";
-    return "<h2>Most voted this week</h2>" + paperCard(best.p, 3);
-  }
-
-  function viewIdeas() {
-    return "<h2>Ideas of the week</h2>"
-      + "<p>Share a short idea, question or pointer for the group (about 150 words at most). Posting and reacting need a GitHub account: sign in inside the box below.</p>"
-      + '<div class="giscus-slot" id="ideas-slot"></div>';
-  }
-
-  function sessionCard(s, isPast) {
-    var list = papersOf(s);
-    return '<article class="card">'
-      + "<h3>" + esc(fmtDate(s.date)) + " " + (isPast ? '<span class="badge past">past</span>' : "") + (s.pilot ? '<span class="badge">pilot</span>' : "") + "</h3>"
-      + '<div class="meta">' + esc(sessTime(s)) + " · " + esc(sessRoom(s)) + "</div>"
-      + "<p class=\"gist\">" + talkLine(s) + "</p>"
-      + (s.notes ? '<p class="meta">' + esc(s.notes) + "</p>" : "")
-      + (list.length ? "<details><summary>" + list.length + " paper" + (list.length > 1 ? "s" : "") + "</summary><ul>"
-        + list.map(function (p) { return '<li><a href="' + arxivUrl(p.id) + '" rel="noopener">' + esc(p.title) + '</a> <span class="meta">' + esc(p.area) + "</span></li>"; }).join("")
-        + "</ul></details>" : "")
-      + (!isPast ? '<div class="actions"><button type="button" class="btn" data-ics="' + esc(s.date) + '">Add to calendar (.ics)</button></div>' : "")
-      + "</article>";
-  }
-  function viewSchedule() {
-    var up = upcoming(), pa = past();
-    return "<h2>Upcoming</h2>" + (up.length ? up.map(function (s) { return sessionCard(s, false); }).join("") : '<p class="empty">No upcoming sessions.</p>')
-      + "<h2>Past sessions</h2>" + (pa.length ? pa.map(function (s) { return sessionCard(s, true); }).join("") : '<p class="empty">No past sessions yet.</p>');
+    return best ? '<div class="section-head"><h2>Most voted this week</h2></div>' + grid([best.p]) : "";
   }
 
   function viewPapers() {
@@ -234,14 +206,13 @@
         return '<option value="' + esc(v) + '"' + (v === sel ? " selected" : "") + ">" + esc(fmt ? fmt(v) : v) + "</option>";
       }).join("");
     }
-    return "<h2>Paper digest</h2>"
-      + '<p class="meta">Recent arXiv papers collected for the journal club. Titles link to arXiv.</p>'
+    return hero("Daily digest", "Papers", "New arXiv papers picked every weekday morning, balanced across areas and tagged with the participants they may interest. Vote 👍 on the ones worth discussing: the Monday selection favours them.")
       + '<form class="filters" role="search" onsubmit="return false">'
-      + '<div><label for="f-q">Search title, authors or summary</label><input id="f-q" type="search" value="' + esc(filters.q) + '" autocomplete="off"></div>'
+      + '<div><label for="f-q">Search</label><input id="f-q" type="search" placeholder="Title, authors or topic" value="' + esc(filters.q) + '" autocomplete="off"></div>'
       + '<div><label for="f-area">Area</label><select id="f-area">' + opts(areas, filters.area, "All areas") + "</select></div>"
       + '<div><label for="f-digest">Digest</label><select id="f-digest">' + opts(digests, filters.digest, "All dates", function (d) { return fmtDate(d); }) + "</select></div>"
       + "</form>"
-      + '<p class="meta" id="paper-count" role="status" aria-live="polite"></p>'
+      + '<p class="status" id="paper-count" role="status" aria-live="polite"></p>'
       + '<div id="paper-list"></div>';
   }
   function renderPaperList() {
@@ -249,16 +220,15 @@
     var list = S.papers.filter(function (p) {
       if (filters.area && p.area !== filters.area) return false;
       if (filters.digest && p.digest !== filters.digest) return false;
-      if (q && (p.title + " " + p.authors + " " + p.gist + " " + p.id).toLowerCase().indexOf(q) < 0) return false;
+      if (q && (p.title + " " + p.authors + " " + p.gist + " " + p.id + " " + (p.interest || []).join(" ")).toLowerCase().indexOf(q) < 0) return false;
       return true;
     }).sort(function (a, b) { return (b.digest || "").localeCompare(a.digest || "") || a.area.localeCompare(b.area) || a.id.localeCompare(b.id); });
     document.getElementById("paper-count").textContent = list.length + " of " + S.papers.length + " papers";
-    var html = "", last = null;
-    list.forEach(function (p) {
-      if (p.digest !== last) { html += "<h3 class=\"meta\">Digest of " + esc(fmtDate(p.digest)) + "</h3>"; last = p.digest; }
-      html += paperCard(p, 4);
-    });
-    document.getElementById("paper-list").innerHTML = html || '<p class="empty">No papers match these filters.</p>';
+    var groups = {}, order = [];
+    list.forEach(function (p) { if (!groups[p.digest]) { groups[p.digest] = []; order.push(p.digest); } groups[p.digest].push(p); });
+    document.getElementById("paper-list").innerHTML = order.length ? order.map(function (d) {
+      return '<h2 class="group">' + esc(fmtDate(d, { weekday: "long", day: "numeric", month: "long" })) + ' <span class="count">' + groups[d].length + " papers</span></h2>" + grid(groups[d]);
+    }).join("") : '<p class="empty">No papers match these filters.</p>';
   }
   document.addEventListener("input", function (e) {
     if (e.target.id === "f-q") filters.q = e.target.value;
@@ -268,41 +238,86 @@
     renderPaperList();
   });
 
+  function viewIdeas() {
+    return hero("Between sessions", "Ideas", "Post short ideas, questions and pointers for the group, and tell the digest what you work on so it can tag papers for you. Both need a GitHub account: sign in inside the box.")
+      + '<div class="seg" role="group" aria-label="Board"><button type="button" data-ideas="ideas" aria-pressed="' + (ideasTab === "ideas") + '">Ideas of the week</button>'
+      + '<button type="button" data-ideas="interests" aria-pressed="' + (ideasTab === "interests") + '">Your research interests</button></div>'
+      + '<section class="panel">' + (ideasTab === "ideas"
+        ? "<h3>Ideas of the week</h3><p>About 150 words at most. Each comment is one post; react to the ones you like.</p>"
+        : "<h3>Your research interests</h3><p>Write your name and a few topics you work on or want to follow, for example: <i>Giulio Marino: thermal dark matter, 511 keV line, perovskite detectors</i>. The digest reads this every morning and updates your “May interest” tags; it also learns from your votes. Post again whenever your interests change.</p>")
+      + '<div class="giscus-slot" id="ideas-slot"></div></section>';
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-ideas]");
+    if (!b) return;
+    ideasTab = b.dataset.ideas; render(false);
+  });
+
+  function sessionItem(s, isPast) {
+    var d = parseISO(s.date), list = (s.papers || []).map(paperOf);
+    return '<li class="session' + (isPast ? " past" : "") + '"><div class="datebox"><span class="d">' + d.getDate() + '</span><span class="m">' + esc(d.toLocaleDateString("en-GB", { month: "short" })) + "</span></div><div>"
+      + "<h3>" + esc(fmtDate(s.date, { weekday: "long", day: "numeric", month: "long", year: "numeric" })) + (s.pilot ? '<span class="badge">pilot</span>' : "") + "</h3>"
+      + '<p class="meta">' + esc(sessTime(s)) + " · " + esc(sessRoom(s)) + "</p>"
+      + '<p class="talk">' + talkLine(s) + "</p>"
+      + (s.notes ? '<p class="meta">' + esc(s.notes) + "</p>" : "")
+      + (list.length ? "<details><summary>" + list.length + " paper" + (list.length > 1 ? "s" : "") + "</summary><ul>"
+        + list.map(function (p) { return '<li><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">' + esc(p.title) + '</a> <span class="id">' + esc(p.area) + "</span></li>"; }).join("") + "</ul></details>" : "")
+      + '<div class="row"><a class="ghost" href="jc.html#' + esc(s.date) + '">Session board</a>' + (!isPast ? '<button type="button" class="ghost" data-ics="' + esc(s.date) + '">Add to calendar</button>' : "") + "</div>"
+      + "</div></li>";
+  }
+  function viewSchedule() {
+    var up = upcoming(), pa = past();
+    return hero("Every " + S.site.defaults.weekday + " · " + S.site.defaults.time + " · " + S.site.defaults.room, "Schedule", "")
+      + '<div class="section-head"><h2>Upcoming</h2></div>'
+      + (up.length ? '<ol class="sessions">' + up.map(function (s) { return sessionItem(s, false); }).join("") + "</ol>" : '<p class="empty">No upcoming sessions.</p>')
+      + '<div class="section-head"><h2>Past sessions</h2></div>'
+      + (pa.length ? '<ol class="sessions">' + pa.map(function (s) { return sessionItem(s, true); }).join("") + "</ol>" : '<p class="empty">No past sessions yet.</p>');
+  }
+
   function viewSpeakers() {
-    var rows = S.sessions.filter(function (s) { return s.speaker; }).slice().reverse();
-    if (!rows.length) return '<h2>Speakers</h2><p class="empty">No talks recorded yet.</p>';
-    var t = todayISO();
-    return '<h2>Speakers</h2><div class="table-wrap"><table><caption class="visually-hidden">Talks by date</caption>'
-      + '<thead><tr><th scope="col">Date</th><th scope="col">Speaker</th><th scope="col">Talk</th></tr></thead><tbody>'
-      + rows.map(function (s) {
-        return "<tr><td>" + esc(fmtDate(s.date)) + (s.date >= t ? ' <span class="badge">upcoming</span>' : "") + "</td><td>" + esc(s.speaker) + "</td><td>" + esc(s.talkTitle || "—") + "</td></tr>";
-      }).join("") + "</tbody></table></div>";
+    var rows = S.sessions.filter(function (s) { return s.speaker; }).slice().reverse(), t = todayISO();
+    return hero("Drawn at the end of each session", "Speakers", "Each week one participant presents a new result or a work in progress, drawn one week in advance.")
+      + (rows.length ? '<div class="table-wrap"><table><caption class="visually-hidden">Talks by date</caption>'
+        + '<thead><tr><th scope="col">Date</th><th scope="col">Speaker</th><th scope="col">Talk</th></tr></thead><tbody>'
+        + rows.map(function (s) {
+            return '<tr><td class="date">' + esc(fmtDate(s.date)) + (s.date >= t ? '<span class="badge">next</span>' : "") + "</td><td>" + esc(s.speaker) + "</td><td>" + esc(s.talkTitle || "—") + "</td></tr>";
+          }).join("") + "</tbody></table></div>"
+        : '<p class="empty">No talks recorded yet.</p>');
   }
 
   function viewAbout() {
     var d = S.site.defaults;
-    return "<h2>About</h2>"
-      + (S.site.about || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("")
-      + '<section class="card"><h3>When and where</h3><p class="gist">Every ' + esc(d.weekday) + " at " + esc(d.time) + " · " + esc(d.room) + "</p></section>"
-      + (S.site.proposeUrl ? '<p><a class="btn" href="' + esc(S.site.proposeUrl) + '" rel="noopener">Suggest a paper</a></p>' : "");
+    return hero("About", esc(S.site.title), esc(S.site.tagline || ""))
+      + '<div class="facts">'
+      + '<div class="fact"><div class="k">When</div><div class="v">' + esc(d.weekday) + "s, " + esc(d.time) + '</div><p>About one hour.</p></div>'
+      + '<div class="fact"><div class="k">Where</div><div class="v">' + esc(d.room) + '</div><p>Department of Physics, Pisa.</p></div>'
+      + '<div class="fact"><div class="k">Format</div><div class="v">Talk · papers · ideas</div><p>' + (S.site.agenda || []).map(function (a) { return esc(a.minutes) + "′ " + esc(a.title.toLowerCase()); }).join(", ") + ".</p></div>"
+      + "</div>"
+      + '<div class="prose">' + (S.site.about || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") + "</div>"
+      + (S.site.proposeUrl ? '<p><a class="primary" href="' + esc(S.site.proposeUrl) + '" rel="noopener">Suggest a paper</a></p>' : "");
   }
 
   /* ---------- router ---------- */
   var VIEWS = { next: viewNext, papers: viewPapers, ideas: viewIdeas, schedule: viewSchedule, speakers: viewSpeakers, about: viewAbout };
-  function route() {
-    var r = (location.hash || "#next").slice(1);
-    return ROUTES.indexOf(r) >= 0 ? r : "next";
-  }
+  function route() { var r = (location.hash || "#next").slice(1); return ROUTES.indexOf(r) >= 0 ? r : "next"; }
   function render(moveFocus) {
     var r = route();
     document.querySelectorAll("#nav a").forEach(function (a) {
       if (a.getAttribute("href") === "#" + r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
+    var cur = document.querySelector('#nav a[aria-current="page"]');
+    if (cur && cur.scrollIntoView) try { cur.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {}
+    cardSeq = 0;
     $main.innerHTML = VIEWS[r]();
     if (r === "papers") renderPaperList();
-    if (r === "ideas") { var g = S.site.giscus || {}; mountGiscus(document.getElementById("ideas-slot"), { category: g.ideasCategory, categoryId: g.ideasCategoryId, term: g.ideasTerm || "Ideas board" }); }
+    if (r === "ideas") {
+      var g = S.site.giscus || {};
+      mountGiscus(document.getElementById("ideas-slot"), ideasTab === "ideas"
+        ? { category: g.ideasCategory, categoryId: g.ideasCategoryId, term: g.ideasTerm || "Ideas board" }
+        : { category: g.ideasCategory, categoryId: g.ideasCategoryId, term: g.interestsTerm || "Research interests" });
+    }
     document.title = (r === "next" ? "" : TITLES[r] + " · ") + S.site.title;
-    if (moveFocus) $main.focus({ preventScroll: false });
+    if (moveFocus) { $main.focus({ preventScroll: true }); window.scrollTo(0, 0); }
   }
   window.addEventListener("hashchange", function () { render(true); });
 
@@ -320,17 +335,14 @@
       S.sessions = res[1].slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
       S.papers = res[2];
       S.papers.forEach(function (p) { S.byId[p.id] = p; });
-      S.votes = res[3] && res[3].papers ? res[3] : { papers: {} };
-      var d = S.site.defaults;
+      S.votes = (res[3] && res[3].papers) || {};
       document.getElementById("site-title").textContent = S.site.title;
-      document.getElementById("site-sub").textContent = d.weekday + "s " + d.time + " · " + d.room;
-      var foot = document.getElementById("footer-text");
-      foot.innerHTML = (S.site.updated ? "Last updated " + esc(fmtDate(S.site.updated)) + ". " : "")
+      document.getElementById("footer-text").innerHTML = (S.site.updated ? "Last updated " + esc(fmtDate(S.site.updated)) + ". " : "")
         + (S.site.repoUrl ? '<a href="' + esc(S.site.repoUrl) + '" rel="noopener">Source and data on GitHub</a>.' : "");
       render(false);
     })
     .catch(function (err) {
-      $main.innerHTML = '<p class="warn">Could not load the programme data (' + esc(err.message) + ").</p>"
-        + (location.protocol === "file:" ? '<p class="meta">Opening the file directly does not work: run <code>python3 -m http.server</code> in the site folder and open http://localhost:8000.</p>' : "");
+      $main.innerHTML = '<p class="empty">Could not load the programme data (' + esc(err.message) + ").</p>"
+        + (location.protocol === "file:" ? '<p class="empty">Opening the file directly does not work: run <code>python3 -m http.server</code> in the site folder and open http://localhost:8000.</p>' : "");
     });
 })();

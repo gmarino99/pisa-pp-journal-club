@@ -1,0 +1,351 @@
+{
+  "note": "Research interests used for 'May interest' tags. Seeded from public INSPIRE profiles; 'declared' and 'learned' are updated by the digest routine from what participants post and vote. No emails.",
+  "members": [
+    {
+      "name": "Giulio Marino",
+      "surname": "Marino",
+      "inspire": 2771622,
+      "github": "",
+      "keywords": [
+        "thermal and composite dark matter",
+        "minimal dark matter indirect detection",
+        "flavour-violating dark matter (MEG-II, Mu3e)",
+        "memory-burdened primordial black holes",
+        "511 keV line and ALPs",
+        "direct detection with perovskites",
+        "Higgs/electroweak factories"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Alessandro Dondarini",
+      "surname": "Dondarini",
+      "inspire": 2667143,
+      "github": "",
+      "keywords": [
+        "minimal dark matter indirect detection",
+        "memory-burdened primordial black holes",
+        "511 keV line",
+        "axion dark matter",
+        "neutrino dipole portal at muon colliders",
+        "ultralight dark matter and pulsar timing",
+        "inflation in quadratic gravity"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Alessandro Strumia",
+      "surname": "Strumia",
+      "inspire": 987315,
+      "github": "",
+      "keywords": [
+        "warm inflation",
+        "bubble walls and gravitational waves",
+        "vacuum selection and dynamical symmetry breaking",
+        "lepton flavour textures",
+        "dark matter direct detection anomalies",
+        "minimal dark matter",
+        "QCD axion",
+        "cosmological collider",
+        "quadratic gravity"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Alessandro Vichi",
+      "surname": "Vichi",
+      "inspire": 1228971,
+      "github": "",
+      "keywords": [
+        "conformal bootstrap",
+        "S-matrix bootstrap",
+        "thermal CFT",
+        "large-N mesons and pions",
+        "positivity bounds",
+        "QFT in AdS"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Andrea Di Lecce",
+      "surname": "Di Lecce",
+      "inspire": 3215353,
+      "github": "",
+      "keywords": [
+        "composite dark matter",
+        "direct detection",
+        "lepton flavour dipoles",
+        "accidental symmetries"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Arman Korajac",
+      "surname": "Korajac",
+      "inspire": 2727363,
+      "github": "",
+      "keywords": [
+        "multiboson production at lepton colliders",
+        "rare and flavour-violating Higgs and Z decays",
+        "lepton-quark fusion",
+        "flavour universality and B/D anomalies"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Daniele Barducci",
+      "surname": "Barducci",
+      "inspire": 1272340,
+      "github": "",
+      "keywords": [
+        "muon collider",
+        "flavour-violating dark matter",
+        "electroweak dipole moments",
+        "long-lived particles",
+        "CP-violating Higgs couplings",
+        "FCC and CEPC physics"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Daniele Gaggero",
+      "surname": "Gaggero",
+      "inspire": 1053825,
+      "github": "",
+      "keywords": [
+        "cosmic rays",
+        "diffuse gamma rays and neutrinos",
+        "primordial black hole accretion and CMB bounds",
+        "dark matter spikes around black holes",
+        "21 cm cosmology"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Dario Buttazzo",
+      "surname": "Buttazzo",
+      "inspire": 1077579,
+      "github": "",
+      "keywords": [
+        "tau dipole moments",
+        "muon collider and FCC-ee",
+        "rare Higgs decays",
+        "electroweak and composite dark matter",
+        "kaon physics"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Fabio Bernardo",
+      "surname": "Bernardo",
+      "inspire": 2914610,
+      "github": "",
+      "keywords": [
+        "thermal field theory",
+        "higher-dimensional operators at finite temperature",
+        "bubble nucleation",
+        "phase transitions and gravitational waves"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Francesco Serra",
+      "surname": "Serra",
+      "inspire": 1879084,
+      "github": "",
+      "keywords": [
+        "EFT bootstrap and positivity",
+        "causality bounds",
+        "Lorentz symmetry breaking",
+        "black holes in EFT and quasinormal modes",
+        "hierarchical three-body problem",
+        "precision sensors"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Giovanni Marozzi",
+      "surname": "Marozzi",
+      "inspire": 1032299,
+      "github": "",
+      "keywords": [
+        "cosmological perturbation theory",
+        "backreaction",
+        "light-cone observables",
+        "redshift drift",
+        "ultra-slow-roll inflation",
+        "primordial black holes",
+        "weak lensing and H0"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Ipak Fadakar",
+      "surname": "Fadakar",
+      "inspire": 2879183,
+      "github": "",
+      "keywords": [
+        "large charge expansion",
+        "geometry of soft scalars",
+        "phase-transition bubbles",
+        "functional determinants"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Leonardo Juliano",
+      "surname": "Juliano",
+      "inspire": 2785306,
+      "github": "",
+      "keywords": [
+        "quadratic quasinormal modes",
+        "black hole perturbation theory",
+        "gravitational EFT positivity",
+        "melonic fixed points"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Mateusz Duch",
+      "surname": "Duch",
+      "inspire": 1657366,
+      "github": "",
+      "keywords": [
+        "dark matter self-interactions",
+        "vector dark matter",
+        "freeze-in",
+        "baryogenesis from CP breaking",
+        "spin entanglement at colliders",
+        "vacuum selection"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Michael Zantedeschi",
+      "surname": "Zantedeschi",
+      "inspire": 1859878,
+      "github": "",
+      "keywords": [
+        "memory-burdened primordial black holes",
+        "spinning primordial black holes",
+        "axion dark matter",
+        "Pati-Salam and SO(10) unification",
+        "cosmic defects and gravitational waves",
+        "ultralight gauge-field dark matter"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Nicole Tognetti",
+      "surname": "Tognetti",
+      "inspire": null,
+      "github": "",
+      "keywords": [],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Paolo Panci",
+      "surname": "Panci",
+      "inspire": 1077958,
+      "github": "",
+      "keywords": [
+        "electroweak and minimal dark matter",
+        "indirect detection",
+        "composite dark matter at LZ",
+        "perovskite detectors",
+        "muon collider",
+        "memory-burdened primordial black holes",
+        "axion dark matter"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Pierre Bechaz",
+      "surname": "Bechaz",
+      "inspire": 2952916,
+      "github": "",
+      "keywords": [
+        "redshift drift",
+        "light-cone cosmology",
+        "higher-order cosmological observables"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    }
+  ]
+}

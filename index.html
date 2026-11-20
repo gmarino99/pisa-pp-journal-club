@@ -2,48 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pisa Particle Physics Journal Club</title>
-<meta name="description" content="Weekly journal club on particle physics, cosmology and related fields in Pisa: next session, schedule, papers and speakers.">
+<meta name="description" content="Weekly journal club on particle physics, cosmology and related fields in Pisa: next session, daily paper digest, votes, ideas and speakers.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script>
-  // Apply the saved theme before first paint to avoid a flash.
   try { var t = localStorage.getItem("jc-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/jc.css">
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/app.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header">
-  <div class="wrap header-row">
-    <div>
-      <h1 id="site-title">Pisa Particle Physics Journal Club</h1>
-      <p class="sub" id="site-sub">Tuesdays 14:30 · Room 163</p>
-    </div>
-    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Colour theme: automatic">
-      <span aria-hidden="true" id="theme-icon">◐</span>
-      <span class="theme-label" id="theme-label">Auto</span>
-    </button>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="#next">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" /><circle cx="20" cy="20" r="12" /><circle cx="20" cy="20" r="6" />
+        <path d="M20 20 L36 9" /><path d="M20 20 Q 9 30 5 34" />
+      </svg>
+      <span id="site-title">Pisa Particle Physics Journal Club</span>
+    </a>
+    <button type="button" class="ghost" id="theme-toggle" aria-label="Colour theme">◐</button>
   </div>
   <nav class="wrap" aria-label="Sections">
-    <ul id="nav">
+    <ul id="nav" class="tabs">
       <li><a href="#next">Next JC</a></li>
       <li><a href="#papers">Papers</a></li>
       <li><a href="#ideas">Ideas</a></li>
       <li><a href="#schedule">Schedule</a></li>
       <li><a href="#speakers">Speakers</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="jc.html" class="nav-board">Session board ↗</a></li>
+      <li><a href="jc.html" class="tab-board">Session board ↗</a></li>
     </ul>
   </nav>
 </header>
 <main id="main" class="wrap" tabindex="-1">
   <p class="empty">Loading…</p>
-  <noscript><p class="warn">This site needs JavaScript to show the programme.</p></noscript>
+  <noscript><p class="empty">This site needs JavaScript to show the programme.</p></noscript>
 </main>
-<footer class="wrap site-footer">
+<footer class="wrap foot">
   <p id="footer-text"></p>
 </footer>
 </body>

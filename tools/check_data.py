@@ -25,6 +25,13 @@ def load(name):
 
 
 site = load("site.json")
+members = load("members.json")
+if isinstance(members, dict):
+    for i, m in enumerate(members.get("members", [])):
+        if not m.get("surname") or not isinstance(m.get("keywords", []), list):
+            errors.append(f"members.json item {i + 1}: needs 'surname' and a 'keywords' list")
+        if "@" in json.dumps(m):
+            errors.append(f"members.json item {i + 1}: looks like it contains an email address")
 sessions = load("sessions.json")
 papers = load("papers.json")
 

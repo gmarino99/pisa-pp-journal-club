@@ -16,6 +16,24 @@ All content lives in JSON files under `data/`. Scheduled jobs update them automa
 | Vote counts shown on the site | `data/votes.json` | GitHub Actions, every 3 hours |
 | Ideas of the week | GitHub Discussions (category Ideas), via giscus | participants |
 | Next speaker | `data/sessions.json` | the chair, by hand (see below) |
+| Participants' research interests | `data/members.json` | seeded from INSPIRE; the digest routine updates `declared` and `learned` |
+| Who voted what, and posts in "Research interests" | `feeds/github.json` | GitHub Actions, every 3 hours (public GitHub data) |
+
+### How the selection learns
+
+Each participant has an entry in `data/members.json` with INSPIRE-based `keywords`.
+Every morning the digest routine reads `feeds/github.json` and updates that entry:
+- `declared` holds what the person wrote in the **Ideas → Your research interests** board;
+- `learned.likes` and `learned.dislikes` hold the topics of the papers they voted 👍 or 👎.
+
+It links a GitHub account to a participant when the post includes the person's name.
+"May interest" tags and the daily and Monday selections use all three: the keywords, what people declared, and what they learned from votes.
+To add or remove a participant, edit `data/members.json` (never put email addresses there).
+
+### Paper explanations
+
+For the papers selected for a session, the Monday routine adds an `explain` list of four short steps (question, method, result, why it matters) to `data/papers.json`.
+The session board shows the steps on each card and on the presentation slides.
 
 The routines are managed at https://claude.ai/code/routines; from there you can pause or edit them.
 
@@ -118,8 +136,8 @@ The same check runs on GitHub, so a broken file never replaces the live site: th
 ## Privacy
 
 The repository and the site are public, and so are votes and comments on GitHub Discussions.
-Do not put email addresses, phone numbers, member lists or availability in the repository.
-Speaker names, talk titles and the "May interest" surnames are public by choice. Remove a name from the routine's member list if a participant prefers not to appear.
+Never put email addresses or phone numbers in the repository.
+Participants' names and research interests (`data/members.json`), speaker names, talk titles and the "May interest" surnames are public by choice. If a participant prefers not to appear, remove them from `data/members.json`.
 Files named `*.local.json` and the `private/` folder are git-ignored. You can use them for a local list, for example the members for the speaker draw.
 
 ## Preview locally

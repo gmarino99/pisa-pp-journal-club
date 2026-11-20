@@ -63,6 +63,7 @@
       + '<h3><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a></h3>"
       + (p.authors ? '<p class="authors">' + esc(p.authors) + "</p>" : "")
       + (p.gist ? '<p class="gist">' + esc(p.gist) + "</p>" : "")
+      + stepsHtml(p)
       + (p.interest && p.interest.length ? '<p class="aff"><b>May interest</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
       + '<div class="paper-foot"><span class="id">arXiv:' + esc(p.id) + "</span>"
       + '<span class="votes" title="Votes on GitHub">👍 ' + v.up + " · 👎 " + v.down + "</span>"
@@ -70,6 +71,11 @@
       + "</li>";
   }
 
+  function stepsHtml(p) {
+    if (!p.explain || !p.explain.length) return "";
+    return '<p class="steps-label">In ' + p.explain.length + ' steps</p><ol class="steps">'
+      + p.explain.map(function (x) { return "<li><span>" + esc(x) + "</span></li>"; }).join("") + "</ol>";
+  }
   function render() {
     var s = S.current;
     if (!s) {
@@ -169,7 +175,7 @@
   function show(i) {
     P.idx = Math.max(0, Math.min(P.slides.length - 1, i));
     var s = S.current, x = P.slides[P.idx], el = $("slide");
-    el.classList.remove("intro"); el.removeAttribute("data-area");
+    el.classList.remove("intro", "has-steps"); el.removeAttribute("data-area");
     void el.offsetWidth; // restart the entry animation
     if (x.intro) {
       el.classList.add("intro");
@@ -185,13 +191,16 @@
     } else {
       var v = votesOf(x.id);
       el.setAttribute("data-area", x.area);
-      el.innerHTML = '<span class="area"><span class="dot"></span>' + esc(areaLabel(x.area)) + "</span>"
+      var hasSteps = !!(x.explain && x.explain.length);
+      if (hasSteps) el.classList.add("has-steps");
+      el.innerHTML = '<div class="slide-main"><span class="area"><span class="dot"></span>' + esc(areaLabel(x.area)) + "</span>"
         + "<h2>" + esc(x.title) + "</h2>"
         + (x.authors ? '<p class="authors">' + esc(x.authors) + "</p>" : "")
-        + (x.gist ? '<p class="gist">' + esc(x.gist) + "</p>" : "")
+        + (hasSteps ? "" : (x.gist ? '<p class="gist">' + esc(x.gist) + "</p>" : ""))
         + (x.interest && x.interest.length ? '<p class="aff"><b>May interest</b> ' + x.interest.map(esc).join(", ") + "</p>" : "")
         + '<div class="meta-row"><span>arXiv:' + esc(x.id) + "</span><span>👍 " + v.up + " · 👎 " + v.down + "</span>"
-        + '<a href="' + absUrl(x.id) + '" target="_blank" rel="noopener">abstract ↗</a><a href="' + pdfUrl(x.id) + '" target="_blank" rel="noopener">pdf ↗</a></div>';
+        + '<a href="' + absUrl(x.id) + '" target="_blank" rel="noopener">abstract ↗</a><a href="' + pdfUrl(x.id) + '" target="_blank" rel="noopener">pdf ↗</a></div></div>'
+        + (hasSteps ? '<div class="slide-steps">' + stepsHtml(x) + "</div>" : "");
       $("stage-count").textContent = "Paper " + P.idx + " of " + (P.slides.length - 1);
     }
     $("dots").innerHTML = P.slides.map(function (_, k) {

@@ -7,7 +7,13 @@
     "announced": "2026-11-18",
     "digest": "2026-11-20",
     "gist": "ATLAS looks for a rare, isotropic particle pattern expected from QCD instantons and sees a 3.5 sigma excess: suggestive, not a discovery.",
-    "interest": []
+    "interest": [],
+    "explain": [
+      "Question: QCD instantons, tunnelling events between topologically distinct vacua, are predicted but have never been seen at a collider.",
+      "Signature: a low-mass instanton decays into many soft charged particles spread isotropically in its rest frame, unlike ordinary minimum-bias events.",
+      "Method: ATLAS uses 1.6 nb⁻¹ of very-low-pileup 13 TeV data, feeds track angular variables into a classifier, and models the background from data and reweighted Monte Carlo.",
+      "Result: an excess of isotropic low-mass events at 3.5σ. A first hint that needs independent confirmation and a careful look at background modelling."
+    ]
   },
   {
     "id": "2611.22723",
@@ -27,9 +33,7 @@
     "announced": "2026-11-19",
     "digest": "2026-11-20",
     "gist": "Checks whether the pulsar-timing gravitational-wave signal really requires new physics once black-hole-binary models and updated priors are used.",
-    "interest": [
-      "Pomper"
-    ]
+    "interest": []
   },
   {
     "id": "2611.23580",
@@ -40,8 +44,14 @@
     "digest": "2026-11-20",
     "gist": "Ultralight dark-matter halos may leave small, frequency-dependent distortions in lensed gravitational waves that future detectors could see.",
     "interest": [
-      "Aghaie",
-      "Pomper"
+      "Gaggero",
+      "Zantedeschi"
+    ],
+    "explain": [
+      "Setup: ultralight dark-matter halos are granular, because the wave-like field interferes with itself.",
+      "Effect: in the wave-optics regime these granules act as a diffraction grating for gravitational waves, adding frequency-dependent modulations to ordinary lensing.",
+      "Size: about 1% for moderately lensed signals, and above 10% near critical curves or for Type II images.",
+      "Payoff: for massive black-hole binaries seen by LISA, the effect is detectable around m ≈ 10⁻²¹ eV, giving either a smoking gun or new bounds on the boson mass."
     ]
   },
   {
@@ -54,6 +64,12 @@
     "gist": "Estimates how well the LHC and its high-luminosity upgrade could detect quantum steering in top-quark pairs.",
     "interest": [
       "Duch"
+    ],
+    "explain": [
+      "Context: top-quark pairs carry their spin correlations into the decay products, which already allowed the LHC to observe entanglement.",
+      "Concept: EPR steering is a stronger quantum correlation than entanglement but weaker than Bell nonlocality.",
+      "Method: the authors estimate the sensitivity with both the decay and the kinematic methods, in the semileptonic and dileptonic channels, at high boost and near threshold.",
+      "Result: with 139 fb⁻¹, steering in boosted tt̄ could be established at 7.7σ (semileptonic); an optimised cut near threshold gives about 7σ, and HL-LHC sharpens the precision."
     ]
   },
   {
@@ -65,7 +81,6 @@
     "digest": "2026-11-20",
     "gist": "Estimates the cheapest laboratory experiment able to probe a heavier QCD axion; a large toroidal detector comes out as the most cost-effective design.",
     "interest": [
-      "Titov",
       "Zantedeschi"
     ]
   },
@@ -78,8 +93,8 @@
     "digest": "2026-11-20",
     "gist": "Self-interacting ultralight dark matter can build dense halos around black holes, which caps how massive the clouds around spinning black holes can grow.",
     "interest": [
-      "Aghaie",
-      "Pomper"
+      "Zantedeschi",
+      "Duch"
     ]
   },
   {
@@ -91,9 +106,15 @@
     "digest": "2026-11-20",
     "gist": "Optical hydrogen emission from the Leo T galaxy is used to set strong new limits on light axion dark matter.",
     "interest": [
-      "Titov",
       "Zantedeschi",
-      "Aghaie"
+      "Dondarini",
+      "Marino"
+    ],
+    "explain": [
+      "Idea: axion dark matter decaying to photons or electrons can excite or ionise neutral hydrogen in galaxies.",
+      "Signature: the hydrogen then emits Hα light at a fixed atomic wavelength, whatever the axion mass is.",
+      "Data: Very Large Telescope observations of the gas-rich dwarf galaxy Leo T.",
+      "Result: leading limits on axion–photon and axion–electron couplings for eV–GeV masses, which also disfavour axion explanations of JWST's early supermassive black holes."
     ]
   },
   {
@@ -118,6 +139,12 @@
     "gist": "Extends a known metric on the space of quantum field theories beyond perturbation theory and argues it is non-negative, implying a strong form of the a-theorem.",
     "interest": [
       "Vichi"
+    ],
+    "explain": [
+      "Background: Jack and Osborn defined a metric on the space of 4d QFTs that, in perturbation theory, controls the flow of the a-anomaly.",
+      "Step: the authors build a non-perturbative version of this metric from the three-point function ⟨O 𝓔 O⟩, with 𝓔 the averaged null energy.",
+      "Key tool: decomposing under null rotations around the light ray turns positivity into a condition at each impact parameter, guaranteed by the averaged null energy condition.",
+      "Consequence: the ANEC implies the strong a-theorem, with an explicit function that decreases monotonically along the RG flow."
     ]
   },
   {
@@ -150,8 +177,6 @@
     "announced": "2026-11-20",
     "digest": "2026-11-20",
     "gist": "A nonzero graviton mass would change the angular pattern of the cosmic gravitational-wave background, offering a way to constrain it.",
-    "interest": [
-      "Pomper"
-    ]
+    "interest": []
   }
 ]
