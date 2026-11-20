@@ -3,9 +3,14 @@
     "date": "2026-11-24",
     "speaker": "",
     "talkTitle": "",
-    "papers": ["2611.23384", "2611.23370", "2611.23580", "2611.22092"],
-    "notes": "Pilot session: sample selection to test the page.",
-    "pilot": true
+    "papers": [
+      "2611.22092",
+      "2611.23368",
+      "2611.23385",
+      "2611.23370",
+      "2611.23580"
+    ],
+    "notes": ""
   },
   {
     "date": "2026-12-01",
