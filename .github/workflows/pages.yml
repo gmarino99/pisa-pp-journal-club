@@ -47,6 +47,8 @@ jobs:
         run: |
           mkdir _site
           cp -r index.html jc.html assets data _site/
+          # Cache-busting: each deploy gets new asset URLs, so browsers never mix old JS with new HTML.
+          sed -i -E "s/\?v=[0-9a-z]+\"/?v=${GITHUB_SHA::8}\"/g" _site/index.html _site/jc.html
 
       - uses: actions/configure-pages@v5
 
