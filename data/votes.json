@@ -1,12 +1,18 @@
 {
- "updated": "2026-11-20T16:39Z",
+ "updated": "2026-11-20T16:43Z",
  "papers": {
   "2611.22092": {
-   "up": 0,
+   "up": 1,
    "down": 0,
-   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/3",
-   "ncomments": 0,
-   "comments": []
+   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/2",
+   "ncomments": 1,
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "Prova"
+    }
+   ]
   },
   "2611.22723": {
    "up": 0,
@@ -37,11 +43,17 @@
    "comments": []
   },
   "2611.23371": {
-   "up": 0,
+   "up": 1,
    "down": 0,
-   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/5",
-   "ncomments": 0,
-   "comments": []
+   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/1",
+   "ncomments": 1,
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "prova"
+    }
+   ]
   },
   "2611.23374": {
    "up": 0,
@@ -51,11 +63,22 @@
    "comments": []
   },
   "2611.23384": {
-   "up": 0,
+   "up": 1,
    "down": 0,
-   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/9",
-   "ncomments": 0,
-   "comments": []
+   "url": "https://github.com/gmarino99/pisa-pp-journal-club/discussions/18",
+   "ncomments": 2,
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "I'd like to see it"
+    },
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "id like to read it\n"
+    }
+   ]
   },
   "2611.23385": {
    "up": 0,

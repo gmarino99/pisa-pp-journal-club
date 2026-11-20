@@ -94,7 +94,7 @@
     var g = S.site.giscus || {};
     var url = slot.dataset.url;
     mountGiscus(slot, { category: g.papersCategory, categoryId: g.papersCategoryId, term: "arXiv:" + b.dataset.discuss,
-      hint: "<b>To vote:</b> click the <b>☺︎</b> button in the reactions bar just below and choose 👍 or 👎. The first time, GitHub asks you to sign in. Comments are visible to everyone."
+      hint: "<b>To vote:</b> click the <b>☺︎</b> button in the reactions bar just below and choose 👍 or 👎. The first time, GitHub asks you to sign in. <b>Your vote shows up in the counts on this page within 3 hours.</b> Comments are visible to everyone."
         + (url ? ' <a href="' + esc(url) + '" target="_blank" rel="noopener">Or vote on GitHub ↗</a>' : "") });
     b.setAttribute("aria-expanded", "true");
   });
@@ -214,7 +214,7 @@
         return '<option value="' + esc(v) + '"' + (v === sel ? " selected" : "") + ">" + esc(fmt ? fmt(v) : v) + "</option>";
       }).join("");
     }
-    return hero("Daily digest", "Papers", "New arXiv papers picked every weekday morning, balanced across areas and tagged with the participants they may interest. Vote 👍 on the ones worth discussing: the Monday selection favours them.")
+    return hero("Daily digest", "Papers", "New arXiv papers picked every weekday morning, balanced across areas and tagged with the participants they may interest. Vote 👍 on the ones worth discussing: the Monday selection favours them. Vote counts on the site are refreshed every 3 hours.")
       + '<form class="filters" role="search" onsubmit="return false">'
       + '<div><label for="f-q">Search</label><input id="f-q" type="search" placeholder="Title, authors or topic" value="' + esc(filters.q) + '" autocomplete="off"></div>'
       + '<div><label for="f-area">Area</label><select id="f-area">' + opts(areas, filters.area, "All areas") + "</select></div>"

@@ -1,10 +1,18 @@
 {
- "updated": "2026-11-20T16:39Z",
+ "updated": "2026-11-20T16:43Z",
  "papers": {
   "2611.22092": {
-   "up": [],
+   "up": [
+    "gmarino99"
+   ],
    "down": [],
-   "comments": []
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "Prova"
+    }
+   ]
   },
   "2611.22723": {
    "up": [],
@@ -27,9 +35,17 @@
    "comments": []
   },
   "2611.23371": {
-   "up": [],
+   "up": [
+    "gmarino99"
+   ],
    "down": [],
-   "comments": []
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "prova"
+    }
+   ]
   },
   "2611.23374": {
    "up": [],
@@ -37,9 +53,22 @@
    "comments": []
   },
   "2611.23384": {
-   "up": [],
+   "up": [
+    "gmarino99"
+   ],
    "down": [],
-   "comments": []
+   "comments": [
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "I'd like to see it"
+    },
+    {
+     "login": "gmarino99",
+     "at": "2026-11-20",
+     "text": "id like to read it\n"
+    }
+   ]
   },
   "2611.23385": {
    "up": [],

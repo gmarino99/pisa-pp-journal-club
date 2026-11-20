@@ -75,13 +75,13 @@ def list_discussions(cat, pages=10):
 
 
 def strict_marker(term):
-    # giscus "strict" matching looks for the SHA-1 of the term in the discussion body.
-    return f"<!-- sha1: {hashlib.sha1(term.encode()).hexdigest()} -->"
+    # giscus lower-cases the term, then looks for its SHA-1 in the discussion body ("strict" matching).
+    return f"<!-- sha1: {hashlib.sha1(term.lower().encode()).hexdigest()} -->"
 
 
 def create(cat, title, body):
     try:
-        url = gql(CREATE, {"repo": g["repoId"], "cat": cat, "title": title, "body": body + "\n\n" + strict_marker(title)})["createDiscussion"]["discussion"]["url"]
+        url = gql(CREATE, {"repo": g["repoId"], "cat": cat, "title": title.lower(), "body": body + "\n\n" + strict_marker(title)})["createDiscussion"]["discussion"]["url"]
         print(f"created discussion {title}")
         return url
     except Exception as e:  # keep going: votes still work through giscus
@@ -94,7 +94,10 @@ def comments(c):
 
 
 # ---- papers ----
-existing = {d["title"].strip(): d for d in list_discussions(g["papersCategoryId"])}
+# Titles are compared in lower case (giscus writes "arxiv:<id>"); duplicates are merged.
+existing = {}
+for d in list_discussions(g["papersCategoryId"]):
+    existing.setdefault(d["title"].strip().lower(), []).append(d)
 recent = (date.today() - timedelta(days=21)).isoformat()
 wanted = [p for p in papers if (p.get("digest") or "") >= recent]
 scheduled = {pid for s in sessions if s.get("date", "") >= date.today().isoformat() for pid in s.get("papers", [])}
@@ -102,41 +105,43 @@ wanted += [p for p in papers if p["id"] in scheduled and p not in wanted]
 made = 0
 for p in wanted:
     term = "arXiv:" + p["id"]
-    if term in existing or made >= 40:
+    if term.lower() in existing or made >= 40:
         continue
     body = (f"**{p['title']}**\n\n{p.get('authors', '')} · `{p.get('area', '')}` · https://arxiv.org/abs/{p['id']}\n\n"
             f"{p.get('gist', '')}\n\nReact with 👍 if it is worth discussing at the journal club, 👎 if not. Comments are welcome.")
     url = create(g["papersCategoryId"], term, body)
     made += 1
     if url:
-        existing[term] = {"title": term, "url": url, "reactions": {"nodes": []}, "comments": {"totalCount": 0, "nodes": []}}
+        existing[term.lower()] = [{"title": term.lower(), "url": url, "reactions": {"nodes": []}, "comments": {"totalCount": 0, "nodes": []}}]
 
 totals, reactions = {}, {}
-for title, d in existing.items():
-    if not title.startswith("arXiv:"):
+for title, ds in existing.items():
+    if not title.startswith("arxiv:"):
         continue
-    pid = title[len("arXiv:"):]
-    up = sorted({r["user"]["login"] for r in d["reactions"]["nodes"] if r["content"] == "THUMBS_UP" and r.get("user")})
-    down = sorted({r["user"]["login"] for r in d["reactions"]["nodes"] if r["content"] == "THUMBS_DOWN" and r.get("user")})
-    cs = comments(d["comments"])
-    totals[pid] = {"up": len(up), "down": len(down), "url": d["url"], "ncomments": d["comments"]["totalCount"],
+    pid = title[len("arxiv:"):]
+    rs = [r for d in ds for r in d["reactions"]["nodes"]]
+    up = sorted({r["user"]["login"] for r in rs if r["content"] == "THUMBS_UP" and r.get("user")})
+    down = sorted({r["user"]["login"] for r in rs if r["content"] == "THUMBS_DOWN" and r.get("user")})
+    cs = sorted((c for d in ds for c in comments(d["comments"])), key=lambda c: c["at"])
+    main = max(ds, key=lambda d: len(d["reactions"]["nodes"]) + d["comments"]["totalCount"])
+    totals[pid] = {"up": len(up), "down": len(down), "url": main["url"], "ncomments": sum(d["comments"]["totalCount"] for d in ds),
                    "comments": [dict(c, text=c["text"][:280]) for c in cs[-3:]]}
     reactions[pid] = {"up": up, "down": down, "comments": cs}
 
 # ---- ideas board and research interests ----
 ideas, interests, ideas_url = [], [], ""
 if g.get("ideasCategoryId"):
-    boards = {d["title"].strip(): d for d in list_discussions(g["ideasCategoryId"], pages=2)}
+    boards = {d["title"].strip().lower(): d for d in list_discussions(g["ideasCategoryId"], pages=2)}
     for term, text in ((IDEAS_TERM, "Short ideas, questions and pointers for the journal club. One comment per idea."),
                        (INTERESTS_TERM, "Write your name and the topics you work on or want to follow. The daily digest reads this to tag papers for you.")):
-        if term not in boards:
+        if term.lower() not in boards:
             url = create(g["ideasCategoryId"], term, text)
             if url:
-                boards[term] = {"title": term, "url": url, "comments": {"totalCount": 0, "nodes": []}}
-    if IDEAS_TERM in boards:
-        ideas, ideas_url = comments(boards[IDEAS_TERM]["comments"]), boards[IDEAS_TERM]["url"]
-    if INTERESTS_TERM in boards:
-        interests = comments(boards[INTERESTS_TERM]["comments"])
+                boards[term.lower()] = {"title": term.lower(), "url": url, "comments": {"totalCount": 0, "nodes": []}}
+    if IDEAS_TERM.lower() in boards:
+        ideas, ideas_url = comments(boards[IDEAS_TERM.lower()]["comments"]), boards[IDEAS_TERM.lower()]["url"]
+    if INTERESTS_TERM.lower() in boards:
+        interests = comments(boards[INTERESTS_TERM.lower()]["comments"])
 
 
 def write_if_changed(path, payload):
