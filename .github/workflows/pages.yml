@@ -9,7 +9,7 @@ on:
 
 permissions:
   contents: write      # commit data/votes.json when counts change
-  discussions: read    # read 👍/👎 reactions on paper discussions
+  discussions: write   # read 👍/👎 reactions and create a discussion for each new paper
   pages: write
   id-token: write
 

@@ -30,6 +30,26 @@ details.explain > summary::before { content: "▸"; transition: transform .15s e
 details.explain[open] > summary::before { transform: rotate(90deg); }
 details.explain[open] > summary { margin-bottom: 10px; }
 
+.vote-bar { display: flex; flex-wrap: wrap; gap: 8px; }
+.vote-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: 500 0.92rem/1 var(--body); cursor: pointer; font-variant-numeric: tabular-nums; transition: border-color .15s ease, transform .15s ease; }
+.vote-btn b { font-weight: 600; }
+.vote-btn:hover { transform: translateY(-1px); }
+.vote-btn.up:hover, .vote-btn.up[aria-expanded="true"] { border-color: #2f9e5b; }
+.vote-btn.down:hover, .vote-btn.down[aria-expanded="true"] { border-color: #d0533c; }
+.vote-btn.talk { margin-left: auto; }
+.vote-btn.talk:hover, .vote-btn.talk[aria-expanded="true"] { border-color: var(--area); }
+.vote-hint { margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); color: var(--ink); font-size: 0.86rem; line-height: 1.5; }
+.vote-hint a { white-space: nowrap; }
+.cpreview { display: grid; gap: 4px; padding: 10px 12px; border-radius: 10px; background: var(--bg); font-size: 0.86rem; }
+.cpreview p { margin: 0; color: var(--mut); }
+.cpreview b { color: var(--ink); font-weight: 600; }
+.cpreview-n { font: 500 0.75rem/1.2 var(--mono); color: var(--mut); }
+.posts { display: grid; gap: 10px; margin: 16px 0 40px; }
+.post { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 18px; min-width: 0; }
+.post-meta { margin: 0 0 6px; font-size: 0.82rem; color: var(--mut); }
+.post-meta b { color: var(--ink); }
+.post-text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+
 /* Filters */
 .filters { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 22px 0 4px; }
 @media (min-width: 680px) { .filters { grid-template-columns: 2fr 1fr 1fr; } }

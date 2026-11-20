@@ -29,7 +29,8 @@
   function startOf(s) { var d = parseISO(s.date), t = sessTime(s).split(":"); d.setHours(+t[0], +t[1], 0, 0); return d; }
   function absUrl(id) { return "https://arxiv.org/abs/" + encodeURIComponent(id); }
   function pdfUrl(id) { return "https://arxiv.org/pdf/" + encodeURIComponent(id); }
-  function votesOf(id) { var v = S.votes[id] || {}; return { up: v.up || 0, down: v.down || 0, net: (v.up || 0) - (v.down || 0) }; }
+  function votesOf(id) { var v = S.votes[id] || {}; return { up: v.up || 0, down: v.down || 0, net: (v.up || 0) - (v.down || 0), url: v.url || "", n: v.ncomments || 0, comments: v.comments || [] }; }
+  function excerpt(t, n) { t = String(t || "").replace(/<!--[\s\S]*?-->/g, "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1) + "…" : t; }
   function paperOf(id) { return S.byId[id] || { id: id, title: "arXiv:" + id, authors: "", area: "arXiv" }; }
   function hero(eyebrow, title, lede) {
     return '<section class="hero small"><p class="eyebrow">' + esc(eyebrow) + "</p><h1>" + title + "</h1>" + (lede ? '<p class="lede">' + lede + "</p>" : "") + "</section>";
@@ -70,7 +71,7 @@
     document.querySelectorAll(".giscus-slot").forEach(function (el) { el.innerHTML = ""; if (el.dataset.collapsible) el.hidden = true; });
     document.querySelectorAll("[data-discuss][aria-expanded=true]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
     container.hidden = false;
-    container.innerHTML = '<div class="giscus"></div>';
+    container.innerHTML = (opts.hint ? '<p class="vote-hint">' + opts.hint + "</p>" : "") + '<div class="giscus"></div>';
     var sc = document.createElement("script");
     sc.src = "https://giscus.app/client.js";
     var attrs = {
@@ -91,7 +92,10 @@
     if (!slot) return;
     if (b.getAttribute("aria-expanded") === "true") { slot.innerHTML = ""; slot.hidden = true; b.setAttribute("aria-expanded", "false"); return; }
     var g = S.site.giscus || {};
-    mountGiscus(slot, { category: g.papersCategory, categoryId: g.papersCategoryId, term: "arXiv:" + b.dataset.discuss });
+    var url = slot.dataset.url;
+    mountGiscus(slot, { category: g.papersCategory, categoryId: g.papersCategoryId, term: "arXiv:" + b.dataset.discuss,
+      hint: "<b>To vote:</b> click the <b>☺︎</b> button in the reactions bar just below and choose 👍 or 👎. The first time, GitHub asks you to sign in. Comments are visible to everyone."
+        + (url ? ' <a href="' + esc(url) + '" target="_blank" rel="noopener">Or vote on GitHub ↗</a>' : "") });
     b.setAttribute("aria-expanded", "true");
   });
 
@@ -140,11 +144,15 @@
       + (p.gist ? '<p class="gist">' + esc(p.gist) + "</p>" : "")
       + steps
       + (p.interest && p.interest.length ? '<p class="aff"><b>May interest</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
+      + (v.n ? '<div class="cpreview"><span class="cpreview-n">💬 ' + v.n + " comment" + (v.n > 1 ? "s" : "") + "</span>"
+        + v.comments.slice(-2).map(function (c) { return '<p><b>@' + esc(c.login) + "</b> " + esc(excerpt(c.text, 160)) + "</p>"; }).join("") + "</div>" : "")
       + '<div class="paper-foot"><span class="id">arXiv:' + esc(p.id) + "</span>"
-      + '<span class="votes" title="Votes on GitHub, refreshed every few hours">👍 ' + v.up + " · 👎 " + v.down + "</span>"
-      + '<span class="links"><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">Abstract</a><a href="' + pdfUrl(p.id) + '" target="_blank" rel="noopener">PDF</a></span>'
-      + '<button type="button" class="btn-vote" data-discuss="' + esc(p.id) + '" aria-expanded="false" aria-controls="' + slot + '">Vote &amp; discuss</button></div>'
-      + '<div class="giscus-slot" id="' + slot + '" data-collapsible="1" hidden></div>'
+      + '<span class="links"><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">Abstract</a><a href="' + pdfUrl(p.id) + '" target="_blank" rel="noopener">PDF</a></span></div>'
+      + '<div class="vote-bar" role="group" aria-label="Vote on this paper">'
+      + '<button type="button" class="vote-btn up" data-discuss="' + esc(p.id) + '" aria-expanded="false" aria-controls="' + slot + '" title="Worth discussing">👍 <b>' + v.up + "</b></button>"
+      + '<button type="button" class="vote-btn down" data-discuss="' + esc(p.id) + '" aria-expanded="false" aria-controls="' + slot + '" title="Not for the JC">👎 <b>' + v.down + "</b></button>"
+      + '<button type="button" class="vote-btn talk" data-discuss="' + esc(p.id) + '" aria-expanded="false" aria-controls="' + slot + '">💬 ' + (v.n ? "Comments" : "Comment") + "</button></div>"
+      + '<div class="giscus-slot" id="' + slot + '" data-collapsible="1" data-url="' + esc(v.url) + '" hidden></div>'
       + "</li>";
   }
   function grid(list, opts) {
@@ -239,13 +247,21 @@
   });
 
   function viewIdeas() {
-    return hero("Between sessions", "Ideas", "Post short ideas, questions and pointers for the group, and tell the digest what you work on so it can tag papers for you. Both need a GitHub account: sign in inside the box.")
+    return hero("Between sessions", "Ideas", "Post short ideas, questions and pointers for the group, and tell the digest what you work on so it can tag papers for you. Everyone can read the posts; writing one needs a GitHub account (sign in inside the box).")
       + '<div class="seg" role="group" aria-label="Board"><button type="button" data-ideas="ideas" aria-pressed="' + (ideasTab === "ideas") + '">Ideas of the week</button>'
       + '<button type="button" data-ideas="interests" aria-pressed="' + (ideasTab === "interests") + '">Your research interests</button></div>'
       + '<section class="panel">' + (ideasTab === "ideas"
         ? "<h3>Ideas of the week</h3><p>About 150 words at most. Each comment is one post; react to the ones you like.</p>"
         : "<h3>Your research interests</h3><p>Write your name and a few topics you work on or want to follow, for example: <i>Giulio Marino: thermal dark matter, 511 keV line, perovskite detectors</i>. The digest reads this every morning and updates your “May interest” tags; it also learns from your votes. Post again whenever your interests change.</p>")
-      + '<div class="giscus-slot" id="ideas-slot"></div></section>';
+      + '<div class="giscus-slot" id="ideas-slot"></div></section>'
+      + (ideasTab === "ideas" ? ideaPosts() : "");
+  }
+  function ideaPosts() {
+    var list = (S.ideas && S.ideas.comments) || [];
+    if (!list.length) return "";
+    return '<div class="section-head"><h2>Recent ideas</h2></div><div class="posts">' + list.map(function (c) {
+      return '<article class="post"><p class="post-meta"><b>@' + esc(c.login) + "</b> · " + esc(fmtDate(c.at)) + '</p><p class="post-text">' + esc(excerpt(c.text, 900)) + "</p></article>";
+    }).join("") + "</div>";
   }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-ideas]");
@@ -336,6 +352,7 @@
       S.papers = res[2];
       S.papers.forEach(function (p) { S.byId[p.id] = p; });
       S.votes = (res[3] && res[3].papers) || {};
+      S.ideas = (res[3] && res[3].ideas) || null;
       document.getElementById("site-title").textContent = S.site.title;
       document.getElementById("footer-text").innerHTML = (S.site.updated ? "Last updated " + esc(fmtDate(S.site.updated)) + ". " : "")
         + (S.site.repoUrl ? '<a href="' + esc(S.site.repoUrl) + '" rel="noopener">Source and data on GitHub</a>.' : "");
