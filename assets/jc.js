@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  var S = { site: null, sessions: [], byId: {}, papers: [], votes: {}, current: null, filter: "" };
+  var S = { site: null, sessions: [], byId: {}, papers: [], votes: {}, decks: {}, current: null, filter: "" };
   var $ = function (id) { return document.getElementById(id); };
 
   /* ---------- helpers ---------- */
@@ -68,9 +68,15 @@
       + '<div class="paper-foot"><span class="id">arXiv:' + esc(p.id) + "</span>"
       + '<span class="votes" title="Votes on GitHub">👍 ' + v.up + " · 👎 " + v.down + "</span>"
       + '<span class="links"><a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">Abstract</a><a href="' + pdfUrl(p.id) + '" target="_blank" rel="noopener">PDF</a></span></div>'
+      + deckButton(p)
       + "</li>";
   }
 
+  function deckButton(p) {
+    var d = S.decks[p.id], k = ((S.current && S.current.papers) || []).indexOf(p.id) + 1;
+    if (!d || !d.slides || !k) return "";
+    return '<button type="button" class="primary deck-btn" data-open-deck="' + k + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Explain in ' + d.slides.length + " slides</button>";
+  }
   function stepsHtml(p) {
     if (!p.explain || !p.explain.length) return "";
     return '<p class="steps-label">In ' + p.explain.length + ' steps</p><ol class="steps">'
@@ -140,8 +146,16 @@
     S.filter = b.dataset.area; render();
   });
   $("session-select").addEventListener("change", function (e) { location.hash = e.target.value; });
-  window.addEventListener("hashchange", function () { pick(); render(); });
+  window.addEventListener("hashchange", function () { pick(); render(); loadDecks().then(render); });
 
+  function loadDecks() {
+    var ids = ((S.current && S.current.papers) || []).filter(function (id) { return !(id in S.decks); });
+    return Promise.all(ids.map(function (id) {
+      return fetch("data/decks/" + encodeURIComponent(id) + ".json", { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+        .then(function (d) { S.decks[id] = d; });
+    }));
+  }
   function pick() {
     var h = decodeURIComponent(location.hash.slice(1));
     S.current = S.sessions.find(function (s) { return s.date === h; }) || upcoming() || S.sessions[S.sessions.length - 1] || null;
@@ -155,18 +169,30 @@
     var n = Math.max(1, (S.current.papers || []).length);
     return Math.max(2, Math.round(((a && a.minutes) || 25) / n)) * 60;
   }
-  function openStage() {
+  function buildSlides() {
+    var s = S.current, out = [{ intro: true }];
+    (s.papers || []).forEach(function (id, pi) {
+      var p = paperOf(id), deck = S.decks[id];
+      out.push({ paper: p, pi: pi + 1, kind: "title" });
+      ((deck && deck.slides) || []).forEach(function (sl, k, arr) { out.push({ paper: p, pi: pi + 1, kind: "deck", slide: sl, k: k + 1, n: arr.length }); });
+    });
+    return out;
+  }
+  function openStage(paperIndex) {
     var s = S.current; if (!s) return;
-    P.slides = [{ intro: true }].concat((s.papers || []).map(paperOf));
-    P.idx = 0; P.secs = perPaperSecs();
+    P.slides = buildSlides();
+    P.secs = perPaperSecs(); P.paper = -1;
     $("stage").hidden = false;
     document.body.style.overflow = "hidden";
     try { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
-    show(0);
+    var start = 0;
+    if (paperIndex) P.slides.some(function (x, k) { if (x.pi === paperIndex) { start = k; return true; } return false; });
+    show(start);
     $("next").focus();
   }
   function closeStage() {
     stopTimer();
+    if (window.JCDeck) window.JCDeck.stop();
     $("stage").hidden = true;
     document.body.style.overflow = "";
     try { if (document.fullscreenElement) document.exitFullscreen().catch(function () {}); } catch (e) {}
@@ -175,8 +201,10 @@
   function show(i) {
     P.idx = Math.max(0, Math.min(P.slides.length - 1, i));
     var s = S.current, x = P.slides[P.idx], el = $("slide");
-    el.classList.remove("intro", "has-steps"); el.removeAttribute("data-area");
+    if (window.JCDeck) window.JCDeck.stop();
+    el.className = "slide"; el.removeAttribute("data-area");
     void el.offsetWidth; // restart the entry animation
+    var nPapers = (s.papers || []).length;
     if (x.intro) {
       el.classList.add("intro");
       el.innerHTML = '<p class="eyebrow">' + esc(S.site.title) + "</p>"
@@ -184,32 +212,39 @@
         + '<p class="authors">' + esc(timeOf(s)) + " · " + esc(roomOf(s)) + "</p>"
         + '<ol class="agenda">' + (S.site.agenda || []).map(function (a) {
             var d = /talk/i.test(a.title) ? (s.speaker ? s.speaker + (s.talkTitle ? " — " + s.talkTitle : "") : "no talk this week")
-              : /paper/i.test(a.title) ? (s.papers || []).length + " papers" : (a.detail || "");
+              : /paper/i.test(a.title) ? nPapers + " papers" : (a.detail || "");
             return "<li><span>" + esc(a.minutes) + "′</span>" + esc(a.title) + (d ? " · " + esc(d) : "") + "</li>";
           }).join("") + "</ol>";
       $("stage-count").textContent = "Overview";
+    } else if (x.kind === "deck") {
+      el.setAttribute("data-area", x.paper.area);
+      window.JCDeck.render(el, Object.assign({ kicker: x.paper.area + " · " + shortTitle(x.paper.title) }, x.slide), x.paper);
+      $("stage-count").textContent = "Paper " + x.pi + " of " + nPapers + " · slide " + x.k + "/" + x.n;
     } else {
-      var v = votesOf(x.id);
-      el.setAttribute("data-area", x.area);
-      var hasSteps = !!(x.explain && x.explain.length);
+      var p = x.paper, v = votesOf(p.id), deck = S.decks[p.id];
+      el.setAttribute("data-area", p.area);
+      var hasSteps = !!(p.explain && p.explain.length);
       if (hasSteps) el.classList.add("has-steps");
-      el.innerHTML = '<div class="slide-main"><span class="area"><span class="dot"></span>' + esc(areaLabel(x.area)) + "</span>"
-        + "<h2>" + esc(x.title) + "</h2>"
-        + (x.authors ? '<p class="authors">' + esc(x.authors) + "</p>" : "")
-        + (hasSteps ? "" : (x.gist ? '<p class="gist">' + esc(x.gist) + "</p>" : ""))
-        + (x.interest && x.interest.length ? '<p class="aff"><b>May interest</b> ' + x.interest.map(esc).join(", ") + "</p>" : "")
-        + '<div class="meta-row"><span>arXiv:' + esc(x.id) + "</span><span>👍 " + v.up + " · 👎 " + v.down + "</span>"
-        + '<a href="' + absUrl(x.id) + '" target="_blank" rel="noopener">abstract ↗</a><a href="' + pdfUrl(x.id) + '" target="_blank" rel="noopener">pdf ↗</a></div></div>'
-        + (hasSteps ? '<div class="slide-steps">' + stepsHtml(x) + "</div>" : "");
-      $("stage-count").textContent = "Paper " + P.idx + " of " + (P.slides.length - 1);
+      el.innerHTML = '<div class="slide-main"><span class="area"><span class="dot"></span>' + esc(areaLabel(p.area)) + "</span>"
+        + "<h2>" + esc(p.title) + "</h2>"
+        + (p.authors ? '<p class="authors">' + esc(p.authors) + "</p>" : "")
+        + (hasSteps ? "" : (p.gist ? '<p class="gist">' + esc(p.gist) + "</p>" : ""))
+        + (p.interest && p.interest.length ? '<p class="aff"><b>May interest</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
+        + '<div class="meta-row"><span>arXiv:' + esc(p.id) + "</span><span>👍 " + v.up + " · 👎 " + v.down + "</span>"
+        + '<a href="' + absUrl(p.id) + '" target="_blank" rel="noopener">abstract ↗</a><a href="' + pdfUrl(p.id) + '" target="_blank" rel="noopener">pdf ↗</a></div>'
+        + (deck && deck.slides ? '<p class="deck-count">' + deck.slides.length + " explanatory slides follow →</p>" : "") + "</div>"
+        + (hasSteps ? '<div class="slide-steps">' + stepsHtml(p) + "</div>" : "");
+      $("stage-count").textContent = "Paper " + x.pi + " of " + nPapers;
     }
-    $("dots").innerHTML = P.slides.map(function (_, k) {
-      return '<button type="button" data-k="' + k + '" aria-label="' + (k ? "Paper " + k : "Overview") + '"' + (k === P.idx ? ' aria-current="true"' : "") + "></button>";
+    var cur = x.intro ? 0 : x.pi;
+    $("dots").innerHTML = [0].concat((s.papers || []).map(function (_, k) { return k + 1; })).map(function (k) {
+      return '<button type="button" data-k="' + k + '" aria-label="' + (k ? "Paper " + k : "Overview") + '"' + (k === cur ? ' aria-current="true"' : "") + "></button>";
     }).join("");
     $("progress-bar").style.width = (P.slides.length > 1 ? (P.idx / (P.slides.length - 1)) * 100 : 100) + "%";
     $("timer").style.visibility = x.intro ? "hidden" : "visible";
-    resetTimer();
+    if (cur !== P.paper) { P.paper = cur; resetTimer(); }   // the timer runs per paper, across its slides
   }
+  function shortTitle(t) { t = String(t || ""); return t.length > 48 ? t.slice(0, 46) + "…" : t; }
 
   // timer
   var CIRC = 2 * Math.PI * 52;
@@ -229,12 +264,17 @@
   function resetTimer() { stopTimer(); P.left = P.secs; drawTimer(); }
   $("timer-arc").style.strokeDasharray = String(CIRC);
 
-  $("present-btn").addEventListener("click", openStage);
+  $("present-btn").addEventListener("click", function () { openStage(0); });
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-open-deck]"); if (b) openStage(+b.dataset.openDeck); });
   $("stage-close").addEventListener("click", closeStage);
   $("prev").addEventListener("click", function () { show(P.idx - 1); });
   $("next").addEventListener("click", function () { show(P.idx + 1); });
   $("timer-btn").addEventListener("click", function () { if (P.timerId) stopTimer(); else startTimer(); });
-  $("dots").addEventListener("click", function (e) { var b = e.target.closest("[data-k]"); if (b) show(+b.dataset.k); });
+  $("dots").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-k]"); if (!b) return;
+    var k = +b.dataset.k; if (!k) { show(0); return; }
+    P.slides.some(function (x, j) { if (x.pi === k) { show(j); return true; } return false; });
+  });
   document.addEventListener("keydown", function (e) {
     if ($("stage").hidden) return;
     if (e.key === "Escape") { e.preventDefault(); closeStage(); }
@@ -266,8 +306,11 @@
           + (s === up ? " · next" : startOf(s) < new Date() ? "" : " · upcoming") + "</option>";
       }).join("");
       pick(); render();
-      var pm = /[?&]present(?:=(\d+))?/.exec(location.search);
-      if (pm && S.current) { openStage(); if (pm[1]) show(+pm[1]); }
+      loadDecks().then(function () {
+        render();
+        var pm2 = /[?&]present(?:=(\d+))?/.exec(location.search);
+        if (pm2 && S.current) { openStage(0); if (pm2[1]) show(+pm2[1]); }
+      });
       setInterval(function () { if (S.current) $("hero-status").textContent = status(S.current) + (S.current.pilot ? " · pilot selection" : ""); }, 30000);
     })
     .catch(function (err) {

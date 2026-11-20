@@ -1,0 +1,470 @@
+{
+ "paper": "2611.23368",
+ "note": "Explanatory slides for the journal club. Figures marked 'schematic' are illustrations, not data from the paper.",
+ "slides": [
+  {
+   "title": "Top quarks as spin qubits",
+   "text": [
+    "Top quarks decay before they hadronise, so their spin passes to the decay products. The $t\\bar t$ spin state is a two-qubit density matrix:"
+   ],
+   "math": [
+    "\\rho=\\tfrac14\\Big(\\mathbb 1\\otimes\\mathbb 1+B^+_i\\,\\sigma_i\\otimes\\mathbb 1+B^-_i\\,\\mathbb 1\\otimes\\sigma_i+C_{ij}\\,\\sigma_i\\otimes\\sigma_j\\Big)"
+   ],
+   "figure": {
+    "type": "diagram",
+    "caption": "Each top acts as a spin-½ qubit; the charged leptons carry its spin information.",
+    "nodes": [
+     {
+      "id": "pp",
+      "label": "p p",
+      "x": 12,
+      "y": 50,
+      "step": 0
+     },
+     {
+      "id": "t",
+      "label": "t  (spin ↑)",
+      "x": 45,
+      "y": 25,
+      "step": 1,
+      "accent": true
+     },
+     {
+      "id": "tb",
+      "label": "t̄  (spin ↓)",
+      "x": 45,
+      "y": 75,
+      "step": 1,
+      "accent": true
+     },
+     {
+      "id": "l1",
+      "label": "ℓ⁺ ν b",
+      "x": 85,
+      "y": 25,
+      "step": 2
+     },
+     {
+      "id": "l2",
+      "label": "ℓ⁻ ν̄ b̄",
+      "x": 85,
+      "y": 75,
+      "step": 2
+     }
+    ],
+    "edges": [
+     {
+      "from": "pp",
+      "to": "t"
+     },
+     {
+      "from": "pp",
+      "to": "tb"
+     },
+     {
+      "from": "t",
+      "to": "l1",
+      "label": "κ ≈ 1"
+     },
+     {
+      "from": "tb",
+      "to": "l2",
+      "label": "κ ≈ 1"
+     },
+     {
+      "from": "t",
+      "to": "tb",
+      "dashed": true,
+      "label": "C_ij"
+     }
+    ]
+   }
+  },
+  {
+   "title": "Reading the spins from the decays",
+   "text": [
+    "Charged leptons are near-perfect spin analysers ($\\kappa_\\ell\\simeq1$). Fitting the double angular distribution measures $B^\\pm$ and the correlation matrix $C_{ij}$ (the ‘decay method’). The paper compares it with a ‘kinematic method’."
+   ],
+   "math": [
+    "\\frac{1}{\\sigma}\\frac{d\\sigma}{d\\cos\\theta_{a,i}\\,d\\cos\\theta_{b,j}}=\\frac14\\Big(1+\\kappa_a B^+_i c_{a,i}+\\kappa_b B^-_j c_{b,j}+\\kappa_a\\kappa_b\\,C_{ij}\\,c_{a,i}\\,c_{b,j}\\Big)"
+   ]
+  },
+  {
+   "title": "A hierarchy of quantum correlations",
+   "text": [
+    "EPR steering: measurements on one top ‘steer’ the state of the other in a way no local-hidden-state model reproduces. Every steerable state is entangled, and every Bell-nonlocal state is steerable. Werner states show the three thresholds:"
+   ],
+   "math": [
+    "\\rho_W=p\\,|\\psi^-\\rangle\\langle\\psi^-|+(1-p)\\,\\tfrac{\\mathbb 1}{4}",
+    "\\text{entangled: }p>\\tfrac13\\qquad\\text{steerable: }p>\\tfrac12",
+    "\\text{Bell-nonlocal (CHSH): }p>\\tfrac1{\\sqrt2}"
+   ],
+   "figure": {
+    "type": "hierarchy",
+    "caption": "As the Werner parameter $p$ grows, the state becomes entangled, then steerable, then Bell-nonlocal.",
+    "schematic": false,
+    "sets": [
+     {
+      "label": "Entangled",
+      "note": ""
+     },
+     {
+      "label": "Steerable",
+      "note": ""
+     },
+     {
+      "label": "Bell nonlocal",
+      "note": ""
+     }
+    ],
+    "axis": {
+     "label": "Werner parameter p",
+     "range": [
+      0,
+      1
+     ],
+     "marks": [
+      {
+       "at": 0.3333,
+       "label": "1/3"
+      },
+      {
+       "at": 0.5,
+       "label": "1/2"
+      },
+      {
+       "at": 0.7071,
+       "label": "1/√2"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "title": "Where in phase space?",
+   "bullets": [
+    "Near threshold the $t\\bar t$ pair is mostly a spin singlet: strong correlations",
+    "Boosted region: mostly spin triplet",
+    "Inclusive selections used for entanglement and discord sit at the steerability boundary",
+    "An optimised cut, $M_{t\\bar t}\\lesssim360$–$400$ GeV, isolates a steerable singlet-dominated state"
+   ],
+   "figure": {
+    "type": "curves",
+    "caption": "Qualitative strength of spin correlations versus invariant mass: large at threshold (singlet-like) and at high mass (triplet-like).",
+    "xrange": [
+     340,
+     1000
+    ],
+    "yrange": [
+     0,
+     1
+    ],
+    "xlabel": "M_tt̄ [GeV]",
+    "ylabel": "correlation strength",
+    "curves": [
+     {
+      "points": [
+       [
+        350,
+        0.619
+       ],
+       [
+        360,
+        0.458
+       ],
+       [
+        370,
+        0.35
+       ],
+       [
+        380,
+        0.278
+       ],
+       [
+        390,
+        0.23
+       ],
+       [
+        400,
+        0.198
+       ],
+       [
+        410,
+        0.177
+       ],
+       [
+        420,
+        0.163
+       ],
+       [
+        430,
+        0.155
+       ],
+       [
+        440,
+        0.149
+       ],
+       [
+        450,
+        0.146
+       ],
+       [
+        460,
+        0.145
+       ],
+       [
+        470,
+        0.144
+       ],
+       [
+        480,
+        0.145
+       ],
+       [
+        490,
+        0.146
+       ],
+       [
+        500,
+        0.147
+       ],
+       [
+        510,
+        0.149
+       ],
+       [
+        520,
+        0.151
+       ],
+       [
+        530,
+        0.153
+       ],
+       [
+        540,
+        0.155
+       ],
+       [
+        550,
+        0.158
+       ],
+       [
+        560,
+        0.161
+       ],
+       [
+        570,
+        0.164
+       ],
+       [
+        580,
+        0.168
+       ],
+       [
+        590,
+        0.171
+       ],
+       [
+        600,
+        0.175
+       ],
+       [
+        610,
+        0.18
+       ],
+       [
+        620,
+        0.184
+       ],
+       [
+        630,
+        0.189
+       ],
+       [
+        640,
+        0.194
+       ],
+       [
+        650,
+        0.199
+       ],
+       [
+        660,
+        0.205
+       ],
+       [
+        670,
+        0.211
+       ],
+       [
+        680,
+        0.218
+       ],
+       [
+        690,
+        0.224
+       ],
+       [
+        700,
+        0.231
+       ],
+       [
+        710,
+        0.239
+       ],
+       [
+        720,
+        0.246
+       ],
+       [
+        730,
+        0.254
+       ],
+       [
+        740,
+        0.263
+       ],
+       [
+        750,
+        0.271
+       ],
+       [
+        760,
+        0.28
+       ],
+       [
+        770,
+        0.29
+       ],
+       [
+        780,
+        0.299
+       ],
+       [
+        790,
+        0.309
+       ],
+       [
+        800,
+        0.319
+       ],
+       [
+        810,
+        0.329
+       ],
+       [
+        820,
+        0.339
+       ],
+       [
+        830,
+        0.349
+       ],
+       [
+        840,
+        0.36
+       ],
+       [
+        850,
+        0.37
+       ],
+       [
+        860,
+        0.38
+       ],
+       [
+        870,
+        0.391
+       ],
+       [
+        880,
+        0.401
+       ],
+       [
+        890,
+        0.411
+       ],
+       [
+        900,
+        0.421
+       ],
+       [
+        910,
+        0.431
+       ],
+       [
+        920,
+        0.441
+       ],
+       [
+        930,
+        0.45
+       ],
+       [
+        940,
+        0.46
+       ],
+       [
+        950,
+        0.469
+       ],
+       [
+        960,
+        0.477
+       ],
+       [
+        970,
+        0.486
+       ],
+       [
+        980,
+        0.494
+       ],
+       [
+        990,
+        0.501
+       ],
+       [
+        1000,
+        0.509
+       ]
+      ],
+      "label": "|correlations|",
+      "labelAt": 5
+     }
+    ],
+    "markers": [
+     {
+      "x": 370,
+      "y": 0.85,
+      "label": "singlet-like"
+     },
+     {
+      "x": 950,
+      "y": 0.69,
+      "label": "triplet-like"
+     }
+    ]
+   }
+  },
+  {
+   "title": "Projected sensitivity",
+   "math": [
+    "\\text{LHC }139\\,\\text{fb}^{-1}\\text{, boosted, decay method: }7.7\\sigma\\;(\\ell+\\text{jets}),\\;1.8\\sigma\\;(\\ell\\ell)",
+    "\\text{threshold, optimised cut: }\\sim7\\sigma\\;(\\ell+\\text{jets}),\\;3.4\\sigma\\;(\\ell\\ell)"
+   ],
+   "bullets": [
+    "Steerability integral measured to 1.5% (5.2%) with the decay method; 0.05% with the kinematic method",
+    "HL-LHC: decay-method precision improves to 0.3% (1.1%)"
+   ]
+  },
+  {
+   "title": "For the discussion",
+   "bullets": [
+    "At a collider nobody chooses the measurement settings: what does ‘steering’ certify? (the paper discusses fictitious states)",
+    "How model-dependent is reconstructing $\\rho$ from kinematics?",
+    "Complementarity with the entanglement measurements by ATLAS and CMS"
+   ]
+  }
+ ]
+}

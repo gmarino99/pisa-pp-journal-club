@@ -1,0 +1,496 @@
+{
+ "paper": "2611.23385",
+ "note": "Explanatory slides for the journal club. Figures marked 'schematic' are illustrations, not data from the paper.",
+ "slides": [
+  {
+   "title": "How axions decay",
+   "text": [
+    "An axion-like particle couples to photons and electrons. For eV–GeV masses it is long-lived, yet a tiny fraction decays inside every galaxy."
+   ],
+   "math": [
+    "\\mathcal L\\supset-\\tfrac14\\,g_{a\\gamma\\gamma}\\,a\\,F_{\\mu\\nu}\\tilde F^{\\mu\\nu}-i\\,g_{aee}\\,a\\,\\bar e\\gamma_5 e",
+    "\\Gamma_{a\\to\\gamma\\gamma}=\\frac{g_{a\\gamma\\gamma}^2\\,m_a^3}{64\\pi},\\qquad\\Gamma_{a\\to e^+e^-}=\\frac{g_{aee}^2\\,m_a}{8\\pi}\\sqrt{1-\\frac{4m_e^2}{m_a^2}}"
+   ]
+  },
+  {
+   "title": "From axion to Hα",
+   "text": [
+    "Decay products with enough energy excite or ionise neutral hydrogen. Recombination and the following cascade emit Balmer-α light."
+   ],
+   "math": [
+    "E_{\\rm H\\alpha}=13.6\\,\\text{eV}\\Big(\\tfrac1{2^2}-\\tfrac1{3^2}\\Big)=1.89\\,\\text{eV}\\;\\Rightarrow\\;\\lambda=656.3\\,\\text{nm}"
+   ],
+   "figure": {
+    "type": "diagram",
+    "caption": "Energy flows from dark matter into a fixed atomic line.",
+    "nodes": [
+     {
+      "id": "a",
+      "label": "axion DM",
+      "x": 14,
+      "y": 30,
+      "step": 0,
+      "accent": true
+     },
+     {
+      "id": "p",
+      "label": "γ  or  e⁺e⁻",
+      "x": 45,
+      "y": 30,
+      "step": 1
+     },
+     {
+      "id": "h",
+      "label": "H ionised /\nexcited",
+      "x": 80,
+      "y": 30,
+      "step": 2
+     },
+     {
+      "id": "r",
+      "label": "recombination\ncascade",
+      "x": 80,
+      "y": 78,
+      "step": 3
+     },
+     {
+      "id": "ha",
+      "label": "Hα  656.3 nm",
+      "x": 40,
+      "y": 78,
+      "step": 4,
+      "accent": true
+     }
+    ],
+    "edges": [
+     {
+      "from": "a",
+      "to": "p",
+      "label": "decay"
+     },
+     {
+      "from": "p",
+      "to": "h",
+      "label": "≥ 13.6 eV"
+     },
+     {
+      "from": "h",
+      "to": "r"
+     },
+     {
+      "from": "r",
+      "to": "ha",
+      "label": "n = 3 → 2"
+     }
+    ]
+   }
+  },
+  {
+   "title": "A line that does not move",
+   "text": [
+    "A photon from $a\\to\\gamma\\gamma$ has $E_\\gamma=m_a/2$: its wavelength moves with the mass. The Hα line is set by atomic physics, so a single narrow-band measurement covers a wide range of axion masses, including masses below hydrogen’s ionisation threshold."
+   ],
+   "math": [
+    "\\lambda_{a\\to\\gamma\\gamma}=\\frac{2hc}{m_a}\\qquad\\text{vs}\\qquad\\lambda_{\\rm H\\alpha}=656.3\\,\\text{nm (fixed)}"
+   ],
+   "figure": {
+    "type": "spectrum",
+    "caption": "The direct-decay line sweeps across the spectrum as $m_a$ changes; Hα stays put.",
+    "schematic": false,
+    "xrange": [
+     300,
+     900
+    ],
+    "xlabel": "wavelength [nm]",
+    "fixed": {
+     "x": 656.3,
+     "label": "Hα 656.3 nm"
+    },
+    "moving": {
+     "from": 330,
+     "to": 870,
+     "label": "a → γγ line"
+    }
+   }
+  },
+  {
+   "title": "Leo T as a detector",
+   "bullets": [
+    "Faint dwarf galaxy: dark-matter dominated and rich in neutral hydrogen",
+    "Very Large Telescope spectroscopy limits any extra Hα emission",
+    "Expected signal: decay rate × dark-matter column × fraction of energy ending in Hα"
+   ],
+   "math": [
+    "\\Phi_{\\rm H\\alpha}\\;\\propto\\;\\frac{\\Gamma_a}{m_a}\\int\\!\\rho_{\\rm DM}\\,d\\ell\\;\\times\\;\\eta_{\\rm H\\alpha}\\qquad\\text{(schematic scaling)}"
+   ]
+  },
+  {
+   "title": "New constraints",
+   "bullets": [
+    "New parameter space for both $g_{a\\gamma\\gamma}$ and $g_{aee}$ at eV–GeV masses",
+    "Constrains axion explanations of JWST’s early supermassive black holes"
+   ],
+   "figure": {
+    "type": "curves",
+    "caption": "Shape of a new exclusion region relative to existing bounds; see the paper for the actual limits.",
+    "xlog": true,
+    "ylog": true,
+    "xrange": [
+     1,
+     1000000000.0
+    ],
+    "yrange": [
+     1e-17,
+     1e-08
+    ],
+    "xlabel": "m_a [eV]",
+    "ylabel": "g_aγγ [GeV⁻¹]",
+    "curves": [
+     {
+      "points": [
+       [
+        1.0,
+        1e-10
+       ],
+       [
+        1.701,
+        1e-10
+       ],
+       [
+        2.894,
+        1e-10
+       ],
+       [
+        4.924,
+        1e-10
+       ],
+       [
+        8.377,
+        1e-10
+       ],
+       [
+        14.25,
+        1e-10
+       ],
+       [
+        24.24,
+        1e-10
+       ],
+       [
+        41.25,
+        1e-10
+       ],
+       [
+        70.17,
+        1e-10
+       ],
+       [
+        119.4,
+        1e-10
+       ],
+       [
+        203.1,
+        1e-10
+       ],
+       [
+        345.5,
+        1e-10
+       ],
+       [
+        587.8,
+        1e-10
+       ],
+       [
+        1000.0,
+        1e-10
+       ],
+       [
+        1701.0,
+        5.574e-11
+       ],
+       [
+        2894.0,
+        3.107e-11
+       ],
+       [
+        4924.0,
+        1.732e-11
+       ],
+       [
+        8377.0,
+        9.652e-12
+       ],
+       [
+        14250.0,
+        5.38e-12
+       ],
+       [
+        24240.0,
+        2.999e-12
+       ],
+       [
+        41250.0,
+        1.671e-12
+       ],
+       [
+        70170.0,
+        9.316e-13
+       ],
+       [
+        119400.0,
+        5.193e-13
+       ],
+       [
+        203100.0,
+        2.894e-13
+       ],
+       [
+        345500.0,
+        1.613e-13
+       ],
+       [
+        587800.0,
+        8.992e-14
+       ],
+       [
+        1000000.0,
+        5.012e-14
+       ],
+       [
+        1701000.0,
+        2.794e-14
+       ],
+       [
+        2894000.0,
+        1.557e-14
+       ],
+       [
+        4924000.0,
+        8.679e-15
+       ],
+       [
+        8377000.0,
+        4.837e-15
+       ],
+       [
+        14250000.0,
+        2.696e-15
+       ],
+       [
+        24240000.0,
+        1.503e-15
+       ],
+       [
+        41250000.0,
+        8.377e-16
+       ],
+       [
+        70170000.0,
+        4.669e-16
+       ],
+       [
+        119400000.0,
+        2.602e-16
+       ],
+       [
+        203100000.0,
+        1.451e-16
+       ],
+       [
+        345500000.0,
+        8.085e-17
+       ],
+       [
+        587800000.0,
+        4.507e-17
+       ],
+       [
+        1000000000.0,
+        2.512e-17
+       ]
+      ],
+      "label": "earlier bounds",
+      "fill": "above",
+      "dashed": true,
+      "labelAt": 30
+     },
+     {
+      "points": [
+       [
+        1.0,
+        3e-12
+       ],
+       [
+        1.701,
+        2.24e-12
+       ],
+       [
+        2.894,
+        1.672e-12
+       ],
+       [
+        4.924,
+        1.248e-12
+       ],
+       [
+        8.377,
+        9.32e-13
+       ],
+       [
+        14.25,
+        6.958e-13
+       ],
+       [
+        24.24,
+        5.195e-13
+       ],
+       [
+        41.25,
+        3.878e-13
+       ],
+       [
+        70.17,
+        2.896e-13
+       ],
+       [
+        119.4,
+        2.162e-13
+       ],
+       [
+        203.1,
+        1.614e-13
+       ],
+       [
+        345.5,
+        1.205e-13
+       ],
+       [
+        587.8,
+        8.996e-14
+       ],
+       [
+        1000.0,
+        6.716e-14
+       ],
+       [
+        1701.0,
+        5.014e-14
+       ],
+       [
+        2894.0,
+        3.743e-14
+       ],
+       [
+        4924.0,
+        2.795e-14
+       ],
+       [
+        8377.0,
+        2.087e-14
+       ],
+       [
+        14250.0,
+        1.558e-14
+       ],
+       [
+        24240.0,
+        1.163e-14
+       ],
+       [
+        41250.0,
+        8.683e-15
+       ],
+       [
+        70170.0,
+        6.482e-15
+       ],
+       [
+        119400.0,
+        4.84e-15
+       ],
+       [
+        203100.0,
+        3.613e-15
+       ],
+       [
+        345500.0,
+        2.698e-15
+       ],
+       [
+        587800.0,
+        2.014e-15
+       ],
+       [
+        1000000.0,
+        1.504e-15
+       ],
+       [
+        1701000.0,
+        1.123e-15
+       ],
+       [
+        2894000.0,
+        8.381e-16
+       ],
+       [
+        4924000.0,
+        6.257e-16
+       ],
+       [
+        8377000.0,
+        4.671e-16
+       ],
+       [
+        14250000.0,
+        3.487e-16
+       ],
+       [
+        24240000.0,
+        2.604e-16
+       ],
+       [
+        41250000.0,
+        1.944e-16
+       ],
+       [
+        70170000.0,
+        1.451e-16
+       ],
+       [
+        119400000.0,
+        1.083e-16
+       ],
+       [
+        203100000.0,
+        8.089e-17
+       ],
+       [
+        345500000.0,
+        6.039e-17
+       ],
+       [
+        587800000.0,
+        4.509e-17
+       ],
+       [
+        1000000000.0,
+        3.366e-17
+       ]
+      ],
+      "label": "optical Hα (this work)",
+      "fill": "above",
+      "labelAt": 8
+     }
+    ]
+   }
+  },
+  {
+   "title": "For the discussion",
+   "bullets": [
+    "How robust are the gas ionisation model and the Hα yield in Leo T?",
+    "Can other dwarfs or integral-field data push further?",
+    "Is the JWST heavy-seed interpretation really in tension?"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,295 @@
+{
+ "paper": "2611.22092",
+ "note": "Explanatory slides for the journal club. Figures marked 'schematic' are illustrations, not data from the paper.",
+ "slides": [
+  {
+   "title": "Instantons: tunnelling between QCD vacua",
+   "text": [
+    "The QCD vacuum has infinitely many degenerate classical minima, labelled by the Chern–Simons number $N_{CS}$. Instantons are Euclidean solutions that tunnel between neighbouring minima, changing the topological charge $Q$."
+   ],
+   "math": [
+    "Q=\\frac{g^2}{32\\pi^2}\\int d^4x\\; G^a_{\\mu\\nu}\\tilde G^{a\\,\\mu\\nu}=\\Delta N_{CS}\\in\\mathbb Z",
+    "S_{\\rm inst}=\\frac{8\\pi^2}{g^2}\\,|Q|\\quad\\Rightarrow\\quad \\text{rate}\\;\\propto\\; e^{-8\\pi^2/g^2}"
+   ],
+   "figure": {
+    "type": "potential",
+    "caption": "Periodic vacuum structure: the system oscillates in one vacuum, then tunnels under the barrier to the next ($\\Delta N_{CS}=1$)."
+   }
+  },
+  {
+   "title": "Chirality violation: the ’t Hooft vertex",
+   "text": [
+    "Through the axial anomaly, an instanton changes the chirality of every light quark flavour at once."
+   ],
+   "math": [
+    "\\partial_\\mu J_5^\\mu=\\frac{n_f\\,g^2}{16\\pi^2}\\,G\\tilde G\\quad\\Rightarrow\\quad \\Delta Q_5=2\\,n_f\\,Q",
+    "g\\,g\\;\\to\\;\\sum_{f=u,d,s}\\big(q_f\\,\\bar q_f\\big)\\;+\\;n_g\\,g"
+   ],
+   "bullets": [
+    "One quark–antiquark pair of each light flavour, plus gluons, produced together",
+    "Predicted rates are large at low instanton mass but carry large theoretical uncertainties"
+   ],
+   "figure": {
+    "type": "diagram",
+    "caption": "Instanton-induced process: two incoming gluons, a multi-particle final state with all light flavours.",
+    "nodes": [
+     {
+      "id": "g1",
+      "label": "g",
+      "x": 12,
+      "y": 30,
+      "step": 0
+     },
+     {
+      "id": "g2",
+      "label": "g",
+      "x": 12,
+      "y": 72,
+      "step": 0
+     },
+     {
+      "id": "I",
+      "label": "instanton\nQ = 1",
+      "x": 45,
+      "y": 51,
+      "step": 1,
+      "accent": true
+     },
+     {
+      "id": "u",
+      "label": "u ū",
+      "x": 82,
+      "y": 14,
+      "step": 2
+     },
+     {
+      "id": "d",
+      "label": "d d̄",
+      "x": 82,
+      "y": 38,
+      "step": 2
+     },
+     {
+      "id": "s",
+      "label": "s s̄",
+      "x": 82,
+      "y": 62,
+      "step": 2
+     },
+     {
+      "id": "gl",
+      "label": "n_g gluons",
+      "x": 82,
+      "y": 87,
+      "step": 2
+     }
+    ],
+    "edges": [
+     {
+      "from": "g1",
+      "to": "I"
+     },
+     {
+      "from": "g2",
+      "to": "I"
+     },
+     {
+      "from": "I",
+      "to": "u"
+     },
+     {
+      "from": "I",
+      "to": "d"
+     },
+     {
+      "from": "I",
+      "to": "s"
+     },
+     {
+      "from": "I",
+      "to": "gl"
+     }
+    ]
+   }
+  },
+  {
+   "title": "The signature: isotropy",
+   "text": [
+    "Ordinary QCD events are collimated and back-to-back. An instanton decays ‘democratically’ into many soft particles, spherically in its rest frame. Event-shape variables capture the difference."
+   ],
+   "math": [
+    "S^{\\alpha\\beta}=\\frac{\\sum_i p_i^\\alpha p_i^\\beta}{\\sum_i|\\vec p_i|^2},\\qquad S=\\tfrac32(\\lambda_2+\\lambda_3)",
+    "S\\to 1\\;\\text{(isotropic)}\\qquad S\\to 0\\;\\text{(pencil-like)}"
+   ],
+   "figure": {
+    "type": "events",
+    "caption": "Transverse view: collimated QCD activity (left) versus an isotropic instanton-like event (right).",
+    "panels": [
+     {
+      "label": "QCD: back-to-back",
+      "mode": "jets"
+     },
+     {
+      "label": "Instanton-like: isotropic",
+      "mode": "isotropic"
+     }
+    ]
+   }
+  },
+  {
+   "title": "The ATLAS search",
+   "bullets": [
+    "1.6 nb⁻¹ of 13 TeV pp collisions at very low instantaneous luminosity (almost no pile-up)",
+    "Reconstructed charged tracks → angular variables → classifier",
+    "Minimum-bias background predicted with a data-driven technique and reweighted Monte Carlo",
+    "Profile-likelihood fit in a two-dimensional classifier variable"
+   ],
+   "figure": {
+    "type": "diagram",
+    "caption": "Analysis chain, from tracks to the fit.",
+    "nodes": [
+     {
+      "id": "a",
+      "label": "low-pileup\n13 TeV data",
+      "x": 18,
+      "y": 22,
+      "step": 0
+     },
+     {
+      "id": "b",
+      "label": "charged\ntracks",
+      "x": 50,
+      "y": 22,
+      "step": 1
+     },
+     {
+      "id": "c",
+      "label": "angular\nvariables",
+      "x": 82,
+      "y": 22,
+      "step": 2
+     },
+     {
+      "id": "d",
+      "label": "2D classifier",
+      "x": 82,
+      "y": 72,
+      "step": 3,
+      "accent": true
+     },
+     {
+      "id": "e",
+      "label": "background:\ndata-driven + MC",
+      "x": 40,
+      "y": 72,
+      "step": 3
+     },
+     {
+      "id": "f",
+      "label": "profile\nlikelihood fit",
+      "x": 62,
+      "y": 95,
+      "step": 4,
+      "accent": true
+     }
+    ],
+    "edges": [
+     {
+      "from": "a",
+      "to": "b"
+     },
+     {
+      "from": "b",
+      "to": "c"
+     },
+     {
+      "from": "c",
+      "to": "d"
+     },
+     {
+      "from": "e",
+      "to": "f",
+      "dashed": true
+     },
+     {
+      "from": "d",
+      "to": "f"
+     }
+    ],
+    "height": 300
+   }
+  },
+  {
+   "title": "Result: a 3.5σ excess",
+   "text": [
+    "The fit finds more low-mass isotropic events than the background model predicts."
+   ],
+   "math": [
+    "q_0=-2\\ln\\frac{L(0,\\hat{\\hat\\theta})}{L(\\hat\\mu,\\hat\\theta)},\\qquad Z=\\sqrt{q_0}\\;\\approx\\;3.5"
+   ],
+   "bullets": [
+    "Observed significance 3.5σ: suggestive, not a discovery",
+    "Needs confirmation and scrutiny of the background modelling"
+   ],
+   "figure": {
+    "type": "histogram",
+    "caption": "How an excess on top of a falling background looks in a classifier-score distribution.",
+    "background": [
+     300,
+     520,
+     610,
+     560,
+     460,
+     350,
+     250,
+     170,
+     110,
+     70,
+     42,
+     25
+    ],
+    "signal": [
+     0,
+     10,
+     30,
+     48,
+     45,
+     30,
+     15,
+     6,
+     2,
+     0,
+     0,
+     0
+    ],
+    "data": [
+     300,
+     535,
+     639,
+     603,
+     507,
+     384,
+     261,
+     173,
+     117,
+     72,
+     37,
+     25
+    ],
+    "xlabel": "classifier bin (more isotropic →)",
+    "ylabel": "events",
+    "bgLabel": "minimum bias",
+    "sigLabel": "instanton-like"
+   }
+  },
+  {
+   "title": "For the discussion",
+   "bullets": [
+    "Is minimum bias modelled well enough at low multiplicity and low mass?",
+    "Cross-checks: strangeness content, other experiments, other energies",
+    "Theory: instanton size distribution and normalisation of the rate",
+    "What would a 5σ confirmation require?"
+   ]
+  }
+ ]
+}

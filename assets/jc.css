@@ -183,3 +183,63 @@ kbd { font: 500 0.75rem/1 var(--mono); padding: 3px 6px; border: 1px solid var(-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Paper decks (assets/deck.js) ---------- */
+.slide.deck { width: min(1180px, 100%); }
+@media (min-width: 900px) {
+  .slide.deck.has-fig { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); column-gap: clamp(24px, 3.5vw, 56px); align-items: center; }
+}
+.deck-main { display: grid; gap: clamp(10px, 1.6vh, 18px); align-content: start; min-width: 0; }
+.deck-main h2 { font-size: clamp(1.4rem, 2.9vw, 2.4rem); }
+.deck-text { margin: 0; font-size: clamp(0.98rem, 1.55vw, 1.22rem); line-height: 1.5; max-width: 60ch; color: var(--stage-ink); animation: fadeUp .5s ease both; }
+.deck-math { overflow-x: auto; overflow-y: hidden; padding: 6px 0; font-size: clamp(1rem, 1.7vw, 1.3rem); color: var(--stage-ink); animation: fadeUp .6s ease both; }
+.deck-math .katex-display { margin: 0; text-align: left; }
+.deck-bullets { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: clamp(0.95rem, 1.45vw, 1.15rem); }
+.deck-bullets li { animation: fadeUp .5s ease both; }
+.deck-fig { margin: 0; padding: 12px; border: 1px solid var(--stage-line); border-radius: 16px; background: rgba(255,255,255,.025); min-width: 0; display: grid; gap: 8px; }
+.deck-fig figcaption { font-size: 0.85rem; color: var(--stage-mut); line-height: 1.45; }
+.deck-fig .schem { display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--stage-line); font: 500 0.68rem/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+.fig-svg, .fig-canvas { width: 100%; height: auto; max-height: 54vh; display: block; }
+.fig-canvas { border-radius: 10px; background: rgba(0,0,0,.25); }
+.fig-svg text { font-family: var(--body); }
+.fig-tick { fill: var(--stage-mut); font: 500 11px var(--mono); }
+.fig-label { fill: var(--stage-mut); font-size: 12px; }
+.fig-axes line, .fig-axisline { stroke: var(--stage-mut); stroke-width: 1; }
+.fig-curve { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; animation: draw 1.6s ease both; }
+.fig-curve.dashed { stroke-dasharray: .018 .014; animation: fadeIn .8s ease both; }
+.c0 { stroke: var(--area); fill: var(--area); } .c1 { stroke: #e9eef5; fill: #e9eef5; } .c2 { stroke: #5fd1c1; fill: #5fd1c1; } .c3 { stroke: #f283b6; fill: #f283b6; }
+.fig-curve.c0, .fig-curve.c1, .fig-curve.c2, .fig-curve.c3 { fill: none; }
+.fig-fill { stroke: none; opacity: .16; animation: fadeIn16 1s ease both; }
+.fig-clabel { fill: var(--stage-ink); stroke: none; font: 600 12px var(--body); animation: fadeIn .6s ease both; }
+.fig-clabel.c1 { fill: #e9eef5; } .fig-clabel.c2 { fill: #5fd1c1; } .fig-clabel.c3 { fill: #f283b6; } .fig-clabel.c0 { fill: var(--area); }
+.fig-marker { fill: #fff; stroke: var(--area); stroke-width: 2; animation: pop .5s ease both; transform-box: fill-box; transform-origin: center; }
+.fig-bar { transform-box: fill-box; transform-origin: bottom; animation: grow .7s ease both; }
+.fig-bar.bg { fill: rgba(160,172,190,.45); } .fig-bar.sig { fill: var(--area); }
+.fig-bar.static { animation: none; }
+.fig-node rect { fill: rgba(255,255,255,.05); stroke: var(--stage-line); stroke-width: 1.5; }
+.fig-node.accent rect { stroke: var(--area); fill: rgba(255,255,255,.08); }
+.fig-node text { fill: var(--stage-ink); font: 600 13px var(--body); }
+.fig-node { animation: fadeUp .55s ease both; }
+.fig-edge { stroke: var(--stage-mut); stroke-width: 1.8; fill: none; stroke-dasharray: 1; animation: draw .8s ease both; }
+.fig-edge.dashed { stroke-dasharray: .03 .025; animation: fadeIn .6s ease both; }
+.fig-edge.static { animation: none; }
+.fig-arrowhead { fill: var(--stage-mut); }
+.fig-elabel { fill: var(--stage-mut); font: 500 11px var(--mono); animation: fadeIn .6s ease both; }
+.fig-set { fill: color-mix(in srgb, var(--area) 7%, transparent); stroke: var(--stage-line); stroke-width: 1.5; animation: fadeIn .7s ease both; transition: fill .3s ease, stroke .3s ease; }
+.fig-set.lit { fill: color-mix(in srgb, var(--area) 20%, transparent); stroke: var(--area); }
+.fig-setlabel { fill: var(--stage-ink); font: 600 13px var(--body); animation: fadeIn .6s ease both; }
+.fig-markline { stroke: var(--area); stroke-width: 2; }
+.fig-sweep { fill: var(--area); stroke: #fff; stroke-width: 2; }
+.fig-fixed { fill: var(--stage-bg); stroke: var(--area); stroke-width: 3; }
+.fig-line-fixed { stroke: #ff6a5a; stroke-width: 4; animation: glow 1.8s ease-in-out infinite; }
+.fig-line-moving { stroke: #fff; stroke-width: 2; stroke-dasharray: 4 4; }
+.static { animation: none !important; }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn16 { from { opacity: 0; } to { opacity: .16; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+.deck-count { font: 500 0.78rem/1 var(--mono); color: var(--stage-mut); }
+.paper .deck-btn { display: inline-flex; align-items: center; gap: 6px; }

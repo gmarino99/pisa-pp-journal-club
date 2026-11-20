@@ -159,3 +159,40 @@ python3 -m http.server 8000
 git remote add origin https://github.com/<user>/<repository>.git
 git push -u origin main
 ```
+
+## Paper slides (`data/decks/<arXiv id>.json`)
+
+For each paper selected for a session, the Monday routine writes a short deck: 5–7 slides that explain the paper with formulas and animated figures.
+In the session board, **Present** shows each paper's title slide followed by its deck. Each card also gets an "Explain in N slides" button.
+
+```json
+{
+  "paper": "2611.23370",
+  "slides": [
+    {
+      "title": "The a-theorem",
+      "text": ["Paragraphs with inline math such as $a_{\\rm UV} > a_{\\rm IR}$."],
+      "math": ["\\langle T^\\mu{}_\\mu\\rangle = c\\,W^2 - a\\,E_4"],
+      "bullets": ["Optional bullet points"],
+      "figure": { "type": "flow", "caption": "What the figure shows" }
+    }
+  ]
+}
+```
+
+`math` entries are display formulas in LaTeX (rendered with KaTeX); in JSON every backslash is written twice.
+Figures are schematic unless `"schematic": false`. Available figure types and their fields:
+
+| type | fields |
+|---|---|
+| `diagram` | `nodes` [{id, label (\n for new line), x, y in 0–100, step, accent}], `edges` [{from, to, label, dashed}] |
+| `curves` | `xrange`, `yrange`, `xlog`, `ylog`, `xlabel`, `ylabel`, `curves` [{points [[x,y]…], label, labelAt, labelY, dashed, fill: "above"/"below"}], `markers` [{x, y, label}] |
+| `histogram` | `background` [counts], `signal` [counts], `data` [counts], `xlabel`, `ylabel`, `bgLabel`, `sigLabel` |
+| `events` | `panels` [{label, mode: "jets"/"isotropic"}] |
+| `hierarchy` | `sets` [{label}] from outer to inner, `axis` {label, range, marks [{at, label}]} |
+| `waves` | `mode`: "granules" or "diffraction", `label` |
+| `potential` | `barrierLabel`, `tunnelLabel` |
+| `flow` | `uvLabel`, `irLabel`, `note` |
+| `spectrum` | `xrange`, `xlabel`, `fixed` {x, label}, `moving` {from, to, label} |
+
+The board runs fine without a deck: the paper simply has no extra slides.

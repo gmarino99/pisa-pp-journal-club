@@ -78,6 +78,20 @@ if isinstance(sessions, list):
 elif sessions is not None:
     errors.append("sessions.json: must be a list [ ... ]")
 
+FIGS = {"diagram", "curves", "histogram", "events", "hierarchy", "waves", "potential", "flow", "spectrum"}
+for f in sorted((ROOT / "decks").glob("*.json")) if (ROOT / "decks").exists() else []:
+    try:
+        deck = json.loads(f.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        errors.append(f"decks/{f.name}: invalid JSON at line {e.lineno}: {e.msg}")
+        continue
+    for i, sl in enumerate(deck.get("slides", [])):
+        if not sl.get("title"):
+            errors.append(f"decks/{f.name} slide {i + 1}: missing 'title'")
+        fig = sl.get("figure")
+        if fig and fig.get("type") not in FIGS:
+            errors.append(f"decks/{f.name} slide {i + 1}: unknown figure type {fig.get('type')!r}")
+
 if errors:
     print("Data check failed:\n  - " + "\n  - ".join(errors))
     sys.exit(1)

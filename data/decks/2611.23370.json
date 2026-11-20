@@ -1,0 +1,115 @@
+{
+ "paper": "2611.23370",
+ "note": "Explanatory slides for the journal club. Figures marked 'schematic' are illustrations, not data from the paper.",
+ "slides": [
+  {
+   "title": "The a-theorem",
+   "text": [
+    "In four dimensions the coefficient $a$ of the Euler density in the trace anomaly counts degrees of freedom. Komargodski and Schwimmer proved that it decreases between UV and IR fixed points."
+   ],
+   "math": [
+    "\\langle T^\\mu{}_\\mu\\rangle=c\\,W^2-a\\,E_4+\\dots",
+    "a_{\\rm UV}>a_{\\rm IR}"
+   ],
+   "figure": {
+    "type": "flow",
+    "caption": "Renormalisation-group flows from a UV to an IR conformal field theory.",
+    "note": "weak theorem: only a_UV > a_IR at the endpoints"
+   }
+  },
+  {
+   "title": "Local RG and the Jack–Osborn metric",
+   "text": [
+    "Making couplings spacetime-dependent, Jack and Osborn found a function $\\tilde a$ that interpolates between $a_{\\rm UV}$ and $a_{\\rm IR}$, and a metric $\\chi_{IJ}$ on the space of couplings:"
+   ],
+   "math": [
+    "8\\,\\partial_I\\tilde a=\\chi_{IJ}\\,\\beta^J+(\\partial_I w_J-\\partial_J w_I)\\,\\beta^J",
+    "\\beta^I\\partial_I\\tilde a=\\tfrac18\\,\\chi_{IJ}\\,\\beta^I\\beta^J"
+   ],
+   "bullets": [
+    "If $\\chi_{IJ}$ is positive, $\\tilde a$ is monotonic along the flow: the strong a-theorem",
+    "In perturbation theory $\\chi_{IJ}>0$; beyond it, positivity was open"
+   ]
+  },
+  {
+   "title": "The averaged null energy condition",
+   "text": [
+    "Integrated along a complete light ray, the energy density measured by any observer is non-negative in every unitary QFT."
+   ],
+   "math": [
+    "\\mathcal E(\\vec x_\\perp)=\\int_{-\\infty}^{\\infty}du\\;T_{uu}(u,v=0,\\vec x_\\perp)\\;\\ge\\;0"
+   ],
+   "figure": {
+    "type": "diagram",
+    "caption": "The light-ray operator $\\mathcal E$ acts like a calorimeter placed along a null line.",
+    "nodes": [
+     {
+      "id": "o1",
+      "label": "O_I",
+      "x": 15,
+      "y": 50,
+      "step": 0
+     },
+     {
+      "id": "e",
+      "label": "𝓔 (x⊥)\nlight-ray detector",
+      "x": 50,
+      "y": 50,
+      "step": 1,
+      "accent": true
+     },
+     {
+      "id": "o2",
+      "label": "O_J",
+      "x": 85,
+      "y": 50,
+      "step": 2
+     }
+    ],
+    "edges": [
+     {
+      "from": "o1",
+      "to": "e",
+      "label": "create"
+     },
+     {
+      "from": "e",
+      "to": "o2",
+      "label": "measure"
+     }
+    ]
+   }
+  },
+  {
+   "title": "A non-perturbative metric",
+   "text": [
+    "The authors build $\\chi_{IJ}$ from the three-point function of two relevant operators with the averaged null energy, and decompose it under null rotations that fix the light ray."
+   ],
+   "math": [
+    "\\chi_{IJ}\\;\\leftrightarrow\\;\\langle\\mathcal O_I\\,\\mathcal E\\,\\mathcal O_J\\rangle\\qquad\\text{(schematic)}",
+    "\\text{null-rotation decomposition}\\;\\Rightarrow\\;\\text{positivity at each impact parameter }\\vec x_\\perp"
+   ]
+  },
+  {
+   "title": "Consequence: the strong a-theorem",
+   "bullets": [
+    "ANEC ⇒ $\\chi_{IJ}\\ge0$ non-perturbatively",
+    "⇒ $\\tilde a$ decreases monotonically along the whole flow, not only between endpoints",
+    "An explicit monotonic function along the flow"
+   ],
+   "figure": {
+    "type": "flow",
+    "caption": "Strong version: the interpolating function decreases at every step of every flow.",
+    "note": "strong theorem: ã decreases monotonically along the flow"
+   }
+  },
+  {
+   "title": "For the discussion",
+   "bullets": [
+    "Relation to the dilaton-scattering proof of Komargodski–Schwimmer",
+    "Generalisations: six dimensions, defects, boundaries",
+    "Is the monotonic function scheme-independent?"
+   ]
+  }
+ ]
+}
