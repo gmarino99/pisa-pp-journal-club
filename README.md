@@ -8,7 +8,8 @@ All content lives in JSON files under `data/`. Scheduled jobs update them automa
 
 | What | Where | Updated by |
 |---|---|---|
-| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 08:00 Rome |
+| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays ~06:15 Rome |
+| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 08:00 Rome, reading `feeds/arxiv.json` |
 | Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 09:30 Rome |
 | Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 09:30 Rome |
 | Votes 👍/👎 on papers | GitHub Discussions (category Announcements), via giscus | participants, signed in with GitHub |
@@ -27,6 +28,7 @@ data/sessions.json    one entry per journal-club session
 data/papers.json      paper digest (arXiv papers)
 data/votes.json       vote totals copied from GitHub Discussions (do not edit)
 tools/fetch_votes.py  reads the 👍/👎 reactions (run by the workflow)
+tools/fetch_arxiv.py  downloads the day's new arXiv papers into feeds/arxiv.json (not published on the site)
 tools/check_data.py   checks the JSON files (also run before every deploy)
 .github/workflows/pages.yml   deploys to GitHub Pages on every push to main
 ```
