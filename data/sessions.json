@@ -1,8 +1,8 @@
 [
   {
     "date": "2026-11-24",
-    "speaker": "",
-    "talkTitle": "",
+    "speaker": "Giulio Marino",
+    "talkTitle": "Learning from one-point correlators: new observables at LEP",
     "papers": [
       "2611.22092",
       "2611.23368",
@@ -10,7 +10,7 @@
       "2611.23370",
       "2611.23580"
     ],
-    "notes": ""
+    "notes": "Talk on energy and charge correlators."
   },
   {
     "date": "2026-12-01",
