@@ -1,0 +1,119 @@
+[
+  {
+    "id": "2611.22092",
+    "title": "Search for the low-mass isotropic signature of QCD instantons in pp collisions at 13 TeV with the ATLAS detector",
+    "authors": "ATLAS Collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-18",
+    "digest": "2026-11-20",
+    "gist": "ATLAS looks for a rare, isotropic particle pattern expected from QCD instantons and sees a 3.5 sigma excess: suggestive, not a discovery."
+  },
+  {
+    "id": "2611.22723",
+    "title": "AI-Assisted Analysis of CMS Open Data: prompt J/psi cross-section measurements in pp and peripheral PbPb collisions",
+    "authors": "Z. Cui, Z. Wang, G. Bauer et al.",
+    "area": "hep-ex",
+    "announced": "2026-11-18",
+    "digest": "2026-11-20",
+    "gist": "An AI coding agent, with physicists reviewing each step, reanalyses public CMS data on J/psi production and gets results broadly consistent with the published ones."
+  },
+  {
+    "id": "2611.23371",
+    "title": "Seeing through the fog: astrophysical priors and the evidence for new physics in pulsar timing arrays",
+    "authors": "T. Bringmann, C. Gordon, C. Tasillo",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Checks whether the pulsar-timing gravitational-wave signal really requires new physics once black-hole-binary models and updated priors are used."
+  },
+  {
+    "id": "2611.23580",
+    "title": "Fuzzy Dark Matter as a diffractive barrier: wave-optics signatures of ultralight fields on lensed gravitational waves",
+    "authors": "M. Tamta, H. G. Choi, D. Blas et al.",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Ultralight dark-matter halos may leave small, frequency-dependent distortions in lensed gravitational waves that future detectors could see."
+  },
+  {
+    "id": "2611.23368",
+    "title": "Steerability in top quark decays at the LHC",
+    "authors": "T. Han, N. McGinnis, S. Salamat et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Estimates how well the LHC and its high-luminosity upgrade could detect quantum steering in top-quark pairs."
+  },
+  {
+    "id": "2611.23374",
+    "title": "Cost-optimized detectors for the GUT-scale QCD axion",
+    "authors": "J. N. Benabou, J. W. Foster, B. R. Safdi",
+    "area": "hep-ph",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Estimates the cheapest laboratory experiment able to probe a heavier QCD axion; a large toroidal detector comes out as the most cost-effective design."
+  },
+  {
+    "id": "2611.23384",
+    "title": "Capturing ultralight dark matter around black holes",
+    "authors": "S. Bottaro, V. Firsov, G. Perez et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Self-interacting ultralight dark matter can build dense halos around black holes, which caps how massive the clouds around spinning black holes can grow."
+  },
+  {
+    "id": "2611.23385",
+    "title": "Leading axion sensitivity with interstellar medium optical line emission",
+    "authors": "R. K. Leane, G. Sundaresan",
+    "area": "hep-ph",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Optical hydrogen emission from the Leo T galaxy is used to set strong new limits on light axion dark matter."
+  },
+  {
+    "id": "2611.23237",
+    "title": "Commuting integrals of motion for free bosonic CFTs revisited",
+    "authors": "E. Vitchev",
+    "area": "hep-th",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Revisits conserved charges in free bosonic conformal field theories and checks them with exact arithmetic."
+  },
+  {
+    "id": "2611.23370",
+    "title": "A Positive Metric on Four-Dimensional QFTs",
+    "authors": "T. Hartman, G. Mathys, A. Stergiou",
+    "area": "hep-th",
+    "announced": "2026-11-19",
+    "digest": "2026-11-20",
+    "gist": "Extends a known metric on the space of quantum field theories beyond perturbation theory and argues it is non-negative, implying a strong form of the a-theorem."
+  },
+  {
+    "id": "2611.24949",
+    "title": "Direct inference of cosmological mass growth via timing of black hole - pulsar binaries",
+    "authors": "K. S. Croker, G. B. Bowling, C. Cain et al.",
+    "area": "astro-ph.HE",
+    "announced": "2026-11-20",
+    "digest": "2026-11-20",
+    "gist": "Uses pulsar timing in a globular cluster to test whether black holes grow together with the expanding universe."
+  },
+  {
+    "id": "2611.24944",
+    "title": "Spinning particle dynamics around a non-singular Schwarzschild black hole in conformal gravity",
+    "authors": "Karshiboev, Turimov, Usanov et al.",
+    "area": "gr-qc",
+    "announced": "2026-11-20",
+    "digest": "2026-11-20",
+    "gist": "Studies how spinning test particles move around a smoothed-out black hole from conformal gravity and whether it differs from standard Schwarzschild."
+  },
+  {
+    "id": "2611.24950",
+    "title": "Probing the Graviton Mass through the Stochastic Gravitational-Wave Background Last-Scattering Surface",
+    "authors": "H. Zhang, Z. Qiu, S. Wang et al.",
+    "area": "gr-qc",
+    "announced": "2026-11-20",
+    "digest": "2026-11-20",
+    "gist": "A nonzero graviton mass would change the angular pattern of the cosmic gravitational-wave background, offering a way to constrain it."
+  }
+]

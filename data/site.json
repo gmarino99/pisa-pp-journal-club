@@ -1,0 +1,23 @@
+{
+  "title": "Pisa Particle Physics Journal Club",
+  "tagline": "A weekly informal meeting to discuss new papers in particle physics, cosmology and related fields.",
+  "defaults": {
+    "weekday": "Tuesday",
+    "time": "14:30",
+    "durationMinutes": 60,
+    "room": "Room 163",
+    "timezone": "Europe/Rome"
+  },
+  "agenda": [
+    { "title": "Talk", "minutes": 25, "detail": "One participant presents a paper or a topic." },
+    { "title": "Papers of the week", "minutes": 25, "detail": "Quick discussion of the selected arXiv papers." },
+    { "title": "Ideas and announcements", "minutes": 10, "detail": "Open questions, pointers, next speaker." }
+  ],
+  "about": [
+    "The journal club is open to students, postdocs and staff interested in high-energy physics, astroparticle physics and cosmology.",
+    "Each week a short list of recent arXiv papers is selected for discussion. Anyone can suggest a paper or volunteer for a talk by contacting the organisers in person or at the end of a session."
+  ],
+  "proposeUrl": "",
+  "repoUrl": "",
+  "updated": "2026-11-20"
+}

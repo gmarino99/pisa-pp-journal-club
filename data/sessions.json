@@ -1,0 +1,17 @@
+[
+  {
+    "date": "2026-11-24",
+    "speaker": "",
+    "talkTitle": "",
+    "papers": ["2611.23384", "2611.23370", "2611.23580", "2611.22092"],
+    "notes": "Pilot session: sample selection to test the page.",
+    "pilot": true
+  },
+  {
+    "date": "2026-12-01",
+    "speaker": "",
+    "talkTitle": "",
+    "papers": [],
+    "notes": ""
+  }
+]
