@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JC Session Board · Pisa</title>
+<meta name="description" content="The papers selected for the Pisa Particle Physics Journal Club, with a presentation mode for the session.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>
+  try { var t = localStorage.getItem("jc-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/jc.css">
+<script src="assets/jc.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#board">Skip to the papers</a>
+
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="./" aria-label="Back to the journal club site">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" /><circle cx="20" cy="20" r="12" /><circle cx="20" cy="20" r="6" />
+        <path d="M20 20 L36 9" /><path d="M20 20 Q 9 30 5 34" />
+      </svg>
+      <span>Pisa PP Journal Club</span>
+    </a>
+    <div class="top-actions">
+      <label class="visually-hidden" for="session-select">Session</label>
+      <select id="session-select"></select>
+      <button type="button" class="ghost" id="theme-toggle" aria-label="Colour theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="board" class="wrap" tabindex="-1">
+  <section class="hero" aria-labelledby="hero-date">
+    <p class="eyebrow" id="hero-status">Loading…</p>
+    <h1 id="hero-date">Journal Club</h1>
+    <p class="hero-meta" id="hero-meta"></p>
+    <div class="hero-actions">
+      <button type="button" class="primary" id="present-btn" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Present
+      </button>
+      <a class="ghost" href="./#papers">Vote on new papers</a>
+    </div>
+  </section>
+
+  <section class="timeline" aria-label="Programme" id="timeline"></section>
+
+  <section aria-labelledby="papers-h">
+    <div class="section-head">
+      <h2 id="papers-h">Papers to discuss</h2>
+      <div class="chips" id="area-chips" role="group" aria-label="Filter by area"></div>
+    </div>
+    <ol class="papers" id="papers"></ol>
+  </section>
+
+  <section id="top-voted-wrap" hidden aria-labelledby="top-h">
+    <h2 id="top-h">Most voted this week</h2>
+    <div id="top-voted"></div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Keyboard in presentation: <kbd>←</kbd> <kbd>→</kbd> move · <kbd>Space</kbd> start or pause the timer · <kbd>R</kbd> reset · <kbd>Esc</kbd> close.</p>
+</footer>
+
+<div class="stage" id="stage" role="dialog" aria-modal="true" aria-label="Presentation" hidden>
+  <div class="stage-top">
+    <span class="stage-count" id="stage-count"></span>
+    <div class="timer" id="timer" role="timer" aria-live="off">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="timer-track" cx="60" cy="60" r="52" />
+        <circle class="timer-arc" id="timer-arc" cx="60" cy="60" r="52" />
+      </svg>
+      <button type="button" class="timer-btn" id="timer-btn" aria-label="Start timer"><span id="timer-text">5:00</span></button>
+    </div>
+    <button type="button" class="ghost stage-close" id="stage-close" aria-label="Close presentation">✕</button>
+  </div>
+  <article class="slide" id="slide" aria-live="polite"></article>
+  <div class="stage-nav">
+    <button type="button" class="ghost" id="prev" aria-label="Previous paper">←</button>
+    <div class="dots" id="dots"></div>
+    <button type="button" class="ghost" id="next" aria-label="Next paper">→</button>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+</div>
+</body>
+</html>

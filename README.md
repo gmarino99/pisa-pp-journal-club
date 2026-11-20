@@ -21,6 +21,7 @@ The routines are managed at https://claude.ai/code/routines; from there you can 
 
 ```
 index.html            page shell
+jc.html               session board: the selected papers, with a full-screen presentation mode (jc.html?present)
 assets/style.css      layout, light/dark theme
 assets/app.js         reads data/*.json and renders the sections
 data/site.json        title, default day/time/room, agenda, About text

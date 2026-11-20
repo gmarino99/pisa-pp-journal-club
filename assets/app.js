@@ -185,7 +185,8 @@
       + (s.pilot ? '<p class="warn">Pilot content: sample selection to test the page.</p>' : "")
       + (s.notes && !s.pilot ? '<p class="note">' + esc(s.notes) + "</p>" : "")
       + '<section class="card" aria-labelledby="prog-h"><h3 id="prog-h">Programme</h3><ol class="agenda">' + agenda + "</ol>"
-      + '<div class="actions"><button type="button" class="btn" data-ics="' + esc(s.date) + '">Add to calendar (.ics)</button></div></section>'
+      + '<div class="actions"><button type="button" class="btn" data-ics="' + esc(s.date) + '">Add to calendar (.ics)</button>'
+      + '<a class="btn" href="jc.html#' + esc(s.date) + '">Open session board</a></div></section>'
       + "<h2>Papers to discuss</h2>"
       + (list.length ? list.map(function (p) { return paperCard(p, 3); }).join("") : '<p class="empty">Selection pending.</p>')
       + mostVoted(s);

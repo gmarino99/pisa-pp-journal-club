@@ -46,7 +46,7 @@ jobs:
         # Publish only what the browser needs (no tools/, README, workflow).
         run: |
           mkdir _site
-          cp -r index.html assets data _site/
+          cp -r index.html jc.html assets data _site/
 
       - uses: actions/configure-pages@v5
 
