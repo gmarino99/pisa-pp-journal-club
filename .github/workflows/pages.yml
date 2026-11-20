@@ -3,10 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "17 */3 * * *"   # refresh vote counts every 3 hours
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write      # commit data/votes.json when counts change
+  discussions: read    # read 👍/👎 reactions on paper discussions
   pages: write
   id-token: write
 
@@ -22,6 +25,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Refresh vote counts from GitHub Discussions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 tools/fetch_votes.py
+          if ! git diff --quiet -- data/votes.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/votes.json
+            git commit -m "Update vote counts"
+            git pull --rebase -q origin main && git push -q origin HEAD:main || echo "Push of vote counts failed; the site still deploys with them."
+          fi
 
       - name: Check data files
         run: python3 tools/check_data.py

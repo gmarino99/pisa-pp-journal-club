@@ -68,6 +68,11 @@ h3, h4 { font-size: 1rem; margin: 0 0 4px; line-height: 1.35; }
 .badge { display: inline-block; font-size: .75rem; padding: 1px 8px; border-radius: 99px; background: var(--accbg); color: var(--acc); margin-right: 6px; font-weight: 600; }
 .badge.past { background: transparent; border: 1px solid var(--line); color: var(--mut); }
 .gist { margin: 6px 0 0; }
+.aff { margin: 6px 0 0; font-size: .875rem; }
+.vote-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px; }
+.tally { color: var(--mut); font-size: .875rem; font-variant-numeric: tabular-nums; }
+.giscus-slot { margin-top: 12px; min-width: 0; }
+.giscus-slot[hidden] { display: none; }
 .big { font-size: 1.35rem; font-weight: 700; margin: 12px 0 2px; }
 .note { background: var(--accbg); color: var(--acc); border-radius: 8px; padding: 8px 12px; font-size: .9rem; margin: 10px 0; }
 .warn { background: var(--warn-bg); color: var(--warn-fg); border-radius: 8px; padding: 8px 12px; font-size: .9rem; margin: 10px 0; }

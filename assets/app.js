@@ -3,10 +3,10 @@
 (function () {
   "use strict";
 
-  var ROUTES = ["next", "schedule", "papers", "speakers", "about"];
-  var TITLES = { next: "Next JC", schedule: "Schedule", papers: "Papers", speakers: "Speakers", about: "About" };
+  var ROUTES = ["next", "papers", "ideas", "schedule", "speakers", "about"];
+  var TITLES = { next: "Next JC", papers: "Papers", ideas: "Ideas", schedule: "Schedule", speakers: "Speakers", about: "About" };
   var $main = document.getElementById("main");
-  var S = { site: null, sessions: [], papers: [], byId: {} };
+  var S = { site: null, sessions: [], papers: [], byId: {}, votes: { papers: {} } };
   var filters = { q: "", area: "", digest: "" };
 
   /* ---------- helpers ---------- */
@@ -40,11 +40,55 @@
     document.getElementById("theme-icon").textContent = THEME_UI[t][0];
     document.getElementById("theme-label").textContent = THEME_UI[t][1];
     document.getElementById("theme-toggle").setAttribute("aria-label", "Colour theme: " + THEME_UI[t][1].toLowerCase() + ". Click to change.");
+    syncGiscusTheme();
   }
   document.getElementById("theme-toggle").addEventListener("click", function () {
     applyTheme(THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length]);
   });
   applyTheme(currentTheme());
+  try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncGiscusTheme); } catch (e) {}
+
+  /* ---------- giscus (GitHub Discussions: votes and ideas) ---------- */
+  function effectiveTheme() {
+    var t = currentTheme();
+    if (t !== "auto") return t;
+    try { return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) { return "light"; }
+  }
+  function syncGiscusTheme() {
+    var f = document.querySelector("iframe.giscus-frame");
+    if (f && f.contentWindow) f.contentWindow.postMessage({ giscus: { setConfig: { theme: effectiveTheme() } } }, "https://giscus.app");
+  }
+  // giscus attaches to the first ".giscus" element, so only one widget is open at a time.
+  function mountGiscus(container, opts) {
+    var g = S.site && S.site.giscus;
+    if (!g || !g.repoId) { container.innerHTML = '<p class="warn">Voting and comments are not configured yet.</p>'; return; }
+    document.querySelectorAll(".giscus-slot").forEach(function (el) { el.innerHTML = ""; el.hidden = true; });
+    document.querySelectorAll("[data-discuss][aria-expanded=true]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+    container.hidden = false;
+    container.innerHTML = '<div class="giscus"></div>';
+    var sc = document.createElement("script");
+    sc.src = "https://giscus.app/client.js";
+    var attrs = {
+      "data-repo": g.repo, "data-repo-id": g.repoId,
+      "data-category": opts.category, "data-category-id": opts.categoryId,
+      "data-mapping": "specific", "data-term": opts.term, "data-strict": "1",
+      "data-reactions-enabled": "1", "data-emit-metadata": "0", "data-input-position": "top",
+      "data-theme": effectiveTheme(), "data-lang": "en", "data-loading": "lazy"
+    };
+    Object.keys(attrs).forEach(function (k) { sc.setAttribute(k, attrs[k]); });
+    sc.crossOrigin = "anonymous"; sc.async = true;
+    container.appendChild(sc);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-discuss]");
+    if (!b) return;
+    var slot = document.getElementById("gs-" + b.dataset.discuss.replace(/[^\w]/g, "_") + "-" + b.dataset.ctx);
+    if (!slot) return;
+    if (b.getAttribute("aria-expanded") === "true") { slot.innerHTML = ""; slot.hidden = true; b.setAttribute("aria-expanded", "false"); return; }
+    var g = S.site.giscus || {};
+    mountGiscus(slot, { category: g.papersCategory, categoryId: g.papersCategoryId, term: "arXiv:" + b.dataset.discuss });
+    b.setAttribute("aria-expanded", "true");
+  });
 
   /* ---------- calendar (.ics) ---------- */
   function icsText(s) {
@@ -85,13 +129,24 @@
   });
 
   /* ---------- building blocks ---------- */
-  function paperCard(p, headingLevel) {
+  function votesOf(id) { var v = (S.votes.papers || {})[id] || {}; return { up: v.up || 0, down: v.down || 0, net: (v.up || 0) - (v.down || 0) }; }
+  var cardSeq = 0;
+  function paperCard(p, headingLevel, opts) {
+    opts = opts || {};
     var h = "h" + (headingLevel || 3);
+    var v = votesOf(p.id);
+    var ctx = "c" + (++cardSeq);
+    var slotId = "gs-" + String(p.id).replace(/[^\w]/g, "_") + "-" + ctx;
     return '<article class="card">'
       + "<" + h + '><a href="' + arxivUrl(p.id) + '" rel="noopener">' + esc(p.title) + "</a></" + h + ">"
       + '<div class="meta"><span class="badge">' + esc(p.area) + "</span>" + esc(p.authors)
       + " · arXiv:" + esc(p.id) + (p.announced ? " · " + esc(fmtDate(p.announced, { day: "numeric", month: "short" })) : "") + "</div>"
       + (p.gist ? '<p class="gist">' + esc(p.gist) + "</p>" : "")
+      + (p.interest && p.interest.length ? '<p class="aff"><b>May interest:</b> ' + p.interest.map(esc).join(", ") + "</p>" : "")
+      + (opts.noVote ? "" : '<div class="vote-row"><span class="tally" title="Reactions on GitHub, refreshed every few hours">'
+        + "👍 " + v.up + " · 👎 " + v.down + "</span>"
+        + '<button type="button" class="btn" data-discuss="' + esc(p.id) + '" data-ctx="' + ctx + '" aria-expanded="false" aria-controls="' + slotId + '">Vote &amp; discuss</button></div>'
+        + '<div class="giscus-slot" id="' + slotId + '" hidden></div>')
       + "</article>";
   }
   function papersOf(s) {
@@ -132,7 +187,23 @@
       + '<section class="card" aria-labelledby="prog-h"><h3 id="prog-h">Programme</h3><ol class="agenda">' + agenda + "</ol>"
       + '<div class="actions"><button type="button" class="btn" data-ics="' + esc(s.date) + '">Add to calendar (.ics)</button></div></section>'
       + "<h2>Papers to discuss</h2>"
-      + (list.length ? list.map(function (p) { return paperCard(p, 3); }).join("") : '<p class="empty">Selection pending.</p>');
+      + (list.length ? list.map(function (p) { return paperCard(p, 3); }).join("") : '<p class="empty">Selection pending.</p>')
+      + mostVoted(s);
+  }
+  function mostVoted(s) {
+    var since = new Date(Date.now() - 8 * 864e5); var lim = since.getFullYear() + "-" + pad(since.getMonth() + 1) + "-" + pad(since.getDate());
+    var best = S.papers.filter(function (p) { return (p.digest || "") >= lim; })
+      .map(function (p) { return { p: p, v: votesOf(p.id) }; })
+      .filter(function (x) { return x.v.up > 0; })
+      .sort(function (a, b) { return b.v.net - a.v.net || b.v.up - a.v.up; })[0];
+    if (!best) return "";
+    return "<h2>Most voted this week</h2>" + paperCard(best.p, 3);
+  }
+
+  function viewIdeas() {
+    return "<h2>Ideas of the week</h2>"
+      + "<p>Share a short idea, question or pointer for the group (about 150 words at most). Posting and reacting need a GitHub account: sign in inside the box below.</p>"
+      + '<div class="giscus-slot" id="ideas-slot"></div>';
   }
 
   function sessionCard(s, isPast) {
@@ -216,7 +287,7 @@
   }
 
   /* ---------- router ---------- */
-  var VIEWS = { next: viewNext, schedule: viewSchedule, papers: viewPapers, speakers: viewSpeakers, about: viewAbout };
+  var VIEWS = { next: viewNext, papers: viewPapers, ideas: viewIdeas, schedule: viewSchedule, speakers: viewSpeakers, about: viewAbout };
   function route() {
     var r = (location.hash || "#next").slice(1);
     return ROUTES.indexOf(r) >= 0 ? r : "next";
@@ -228,6 +299,7 @@
     });
     $main.innerHTML = VIEWS[r]();
     if (r === "papers") renderPaperList();
+    if (r === "ideas") { var g = S.site.giscus || {}; mountGiscus(document.getElementById("ideas-slot"), { category: g.ideasCategory, categoryId: g.ideasCategoryId, term: g.ideasTerm || "Ideas board" }); }
     document.title = (r === "next" ? "" : TITLES[r] + " · ") + S.site.title;
     if (moveFocus) $main.focus({ preventScroll: false });
   }
@@ -240,12 +312,14 @@
       return r.json();
     });
   }
-  Promise.all([getJSON("data/site.json"), getJSON("data/sessions.json"), getJSON("data/papers.json")])
+  Promise.all([getJSON("data/site.json"), getJSON("data/sessions.json"), getJSON("data/papers.json"),
+               getJSON("data/votes.json").catch(function () { return { papers: {} }; })])
     .then(function (res) {
       S.site = res[0];
       S.sessions = res[1].slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
       S.papers = res[2];
       S.papers.forEach(function (p) { S.byId[p.id] = p; });
+      S.votes = res[3] && res[3].papers ? res[3] : { papers: {} };
       var d = S.site.defaults;
       document.getElementById("site-title").textContent = S.site.title;
       document.getElementById("site-sub").textContent = d.weekday + "s " + d.time + " · " + d.room;

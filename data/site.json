@@ -9,15 +9,36 @@
     "timezone": "Europe/Rome"
   },
   "agenda": [
-    { "title": "Talk", "minutes": 25, "detail": "One participant presents a paper or a topic." },
-    { "title": "Papers of the week", "minutes": 25, "detail": "Quick discussion of the selected arXiv papers." },
-    { "title": "Ideas and announcements", "minutes": 10, "detail": "Open questions, pointers, next speaker." }
+    {
+      "title": "Talk",
+      "minutes": 25,
+      "detail": "One participant presents a paper or a topic."
+    },
+    {
+      "title": "Papers of the week",
+      "minutes": 25,
+      "detail": "Quick discussion of the selected arXiv papers."
+    },
+    {
+      "title": "Ideas and announcements",
+      "minutes": 10,
+      "detail": "Open questions, pointers, next speaker."
+    }
   ],
   "about": [
     "The journal club is open to students, postdocs and staff interested in high-energy physics, astroparticle physics and cosmology.",
-    "Each week a short list of recent arXiv papers is selected for discussion. Anyone can suggest a paper or volunteer for a talk by contacting the organisers in person or at the end of a session."
+    "Each weekday a short digest of new arXiv papers is posted here; vote on the ones worth discussing. Every Monday a balanced selection, favouring the most voted, becomes the programme for Tuesday. Speakers are drawn at the end of each session for the following week."
   ],
   "proposeUrl": "",
   "repoUrl": "https://github.com/gmarino99/pisa-pp-journal-club",
-  "updated": "2026-11-20"
+  "updated": "2026-11-20",
+  "giscus": {
+    "repo": "gmarino99/pisa-pp-journal-club",
+    "repoId": "R_kgDOV1s_1g",
+    "papersCategory": "Announcements",
+    "papersCategoryId": "DIC_kwDOV1s_1s4DLl2b",
+    "ideasCategory": "Ideas",
+    "ideasCategoryId": "DIC_kwDOV1s_1s4DLl2e",
+    "ideasTerm": "Ideas board"
+  }
 }

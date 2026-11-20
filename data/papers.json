@@ -6,7 +6,8 @@
     "area": "hep-ex",
     "announced": "2026-11-18",
     "digest": "2026-11-20",
-    "gist": "ATLAS looks for a rare, isotropic particle pattern expected from QCD instantons and sees a 3.5 sigma excess: suggestive, not a discovery."
+    "gist": "ATLAS looks for a rare, isotropic particle pattern expected from QCD instantons and sees a 3.5 sigma excess: suggestive, not a discovery.",
+    "interest": []
   },
   {
     "id": "2611.22723",
@@ -15,7 +16,8 @@
     "area": "hep-ex",
     "announced": "2026-11-18",
     "digest": "2026-11-20",
-    "gist": "An AI coding agent, with physicists reviewing each step, reanalyses public CMS data on J/psi production and gets results broadly consistent with the published ones."
+    "gist": "An AI coding agent, with physicists reviewing each step, reanalyses public CMS data on J/psi production and gets results broadly consistent with the published ones.",
+    "interest": []
   },
   {
     "id": "2611.23371",
@@ -24,7 +26,10 @@
     "area": "astro-ph.CO",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Checks whether the pulsar-timing gravitational-wave signal really requires new physics once black-hole-binary models and updated priors are used."
+    "gist": "Checks whether the pulsar-timing gravitational-wave signal really requires new physics once black-hole-binary models and updated priors are used.",
+    "interest": [
+      "Pomper"
+    ]
   },
   {
     "id": "2611.23580",
@@ -33,7 +38,11 @@
     "area": "astro-ph.CO",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Ultralight dark-matter halos may leave small, frequency-dependent distortions in lensed gravitational waves that future detectors could see."
+    "gist": "Ultralight dark-matter halos may leave small, frequency-dependent distortions in lensed gravitational waves that future detectors could see.",
+    "interest": [
+      "Aghaie",
+      "Pomper"
+    ]
   },
   {
     "id": "2611.23368",
@@ -42,7 +51,10 @@
     "area": "hep-ph",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Estimates how well the LHC and its high-luminosity upgrade could detect quantum steering in top-quark pairs."
+    "gist": "Estimates how well the LHC and its high-luminosity upgrade could detect quantum steering in top-quark pairs.",
+    "interest": [
+      "Duch"
+    ]
   },
   {
     "id": "2611.23374",
@@ -51,7 +63,11 @@
     "area": "hep-ph",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Estimates the cheapest laboratory experiment able to probe a heavier QCD axion; a large toroidal detector comes out as the most cost-effective design."
+    "gist": "Estimates the cheapest laboratory experiment able to probe a heavier QCD axion; a large toroidal detector comes out as the most cost-effective design.",
+    "interest": [
+      "Titov",
+      "Zantedeschi"
+    ]
   },
   {
     "id": "2611.23384",
@@ -60,7 +76,11 @@
     "area": "hep-ph",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Self-interacting ultralight dark matter can build dense halos around black holes, which caps how massive the clouds around spinning black holes can grow."
+    "gist": "Self-interacting ultralight dark matter can build dense halos around black holes, which caps how massive the clouds around spinning black holes can grow.",
+    "interest": [
+      "Aghaie",
+      "Pomper"
+    ]
   },
   {
     "id": "2611.23385",
@@ -69,7 +89,12 @@
     "area": "hep-ph",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Optical hydrogen emission from the Leo T galaxy is used to set strong new limits on light axion dark matter."
+    "gist": "Optical hydrogen emission from the Leo T galaxy is used to set strong new limits on light axion dark matter.",
+    "interest": [
+      "Titov",
+      "Zantedeschi",
+      "Aghaie"
+    ]
   },
   {
     "id": "2611.23237",
@@ -78,7 +103,10 @@
     "area": "hep-th",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Revisits conserved charges in free bosonic conformal field theories and checks them with exact arithmetic."
+    "gist": "Revisits conserved charges in free bosonic conformal field theories and checks them with exact arithmetic.",
+    "interest": [
+      "Vichi"
+    ]
   },
   {
     "id": "2611.23370",
@@ -87,7 +115,10 @@
     "area": "hep-th",
     "announced": "2026-11-19",
     "digest": "2026-11-20",
-    "gist": "Extends a known metric on the space of quantum field theories beyond perturbation theory and argues it is non-negative, implying a strong form of the a-theorem."
+    "gist": "Extends a known metric on the space of quantum field theories beyond perturbation theory and argues it is non-negative, implying a strong form of the a-theorem.",
+    "interest": [
+      "Vichi"
+    ]
   },
   {
     "id": "2611.24949",
@@ -96,7 +127,10 @@
     "area": "astro-ph.HE",
     "announced": "2026-11-20",
     "digest": "2026-11-20",
-    "gist": "Uses pulsar timing in a globular cluster to test whether black holes grow together with the expanding universe."
+    "gist": "Uses pulsar timing in a globular cluster to test whether black holes grow together with the expanding universe.",
+    "interest": [
+      "Marozzi"
+    ]
   },
   {
     "id": "2611.24944",
@@ -105,7 +139,8 @@
     "area": "gr-qc",
     "announced": "2026-11-20",
     "digest": "2026-11-20",
-    "gist": "Studies how spinning test particles move around a smoothed-out black hole from conformal gravity and whether it differs from standard Schwarzschild."
+    "gist": "Studies how spinning test particles move around a smoothed-out black hole from conformal gravity and whether it differs from standard Schwarzschild.",
+    "interest": []
   },
   {
     "id": "2611.24950",
@@ -114,6 +149,9 @@
     "area": "gr-qc",
     "announced": "2026-11-20",
     "digest": "2026-11-20",
-    "gist": "A nonzero graviton mass would change the angular pattern of the cosmic gravitational-wave background, offering a way to constrain it."
+    "gist": "A nonzero graviton mass would change the angular pattern of the cosmic gravitational-wave background, offering a way to constrain it.",
+    "interest": [
+      "Pomper"
+    ]
   }
 ]

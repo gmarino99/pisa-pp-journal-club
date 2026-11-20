@@ -2,7 +2,21 @@
 
 Static website for the journal club, published with GitHub Pages.
 There is no build step and there are no dependencies: plain HTML, CSS and JavaScript.
-All content lives in three JSON files under `data/`, which you edit by hand.
+All content lives in JSON files under `data/`. Scheduled jobs update them automatically, and you can also edit them by hand.
+
+## How it works
+
+| What | Where | Updated by |
+|---|---|---|
+| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 08:00 Rome |
+| Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 09:30 Rome |
+| Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 09:30 Rome |
+| Votes 👍/👎 on papers | GitHub Discussions (category Announcements), via giscus | participants, signed in with GitHub |
+| Vote counts shown on the site | `data/votes.json` | GitHub Actions, every 3 hours |
+| Ideas of the week | GitHub Discussions (category Ideas), via giscus | participants |
+| Next speaker | `data/sessions.json` | the chair, by hand (see below) |
+
+The routines are managed at https://claude.ai/code/routines; from there you can pause or edit them.
 
 ```
 index.html            page shell
@@ -11,6 +25,8 @@ assets/app.js         reads data/*.json and renders the sections
 data/site.json        title, default day/time/room, agenda, About text
 data/sessions.json    one entry per journal-club session
 data/papers.json      paper digest (arXiv papers)
+data/votes.json       vote totals copied from GitHub Discussions (do not edit)
+tools/fetch_votes.py  reads the 👍/👎 reactions (run by the workflow)
 tools/check_data.py   checks the JSON files (also run before every deploy)
 .github/workflows/pages.yml   deploys to GitHub Pages on every push to main
 ```
@@ -60,6 +76,25 @@ Past sessions move to "Past sessions" automatically, so there is nothing to arch
 
 `digest` is the date of the digest the paper belongs to (it is used for grouping and for the date filter).
 `announced` is the arXiv announcement date and is optional.
+`interest` is an optional list of participants' surnames shown as "May interest".
+
+### Record the next speaker (after the draw)
+
+At the end of each session, draw the speaker for the following week however you like, then add the name to that session in `data/sessions.json`:
+
+```json
+{ "date": "2026-12-01", "speaker": "A. Rossi", "talkTitle": "", "papers": [], "notes": "" }
+```
+
+The Monday routine keeps `speaker` and `talkTitle` and only fills in `papers`. Add the talk title later, when the speaker sends it.
+
+### Voting and ideas
+
+Each paper card has a **Vote & discuss** button. It opens the paper's discussion on GitHub through giscus.
+Participants sign in with GitHub and react with 👍 (worth discussing) or 👎 (not for the JC). They can also leave comments.
+The first reaction creates the discussion automatically.
+The Ideas page works the same way, with a single "Ideas board" discussion. Each comment there is one post.
+The counts on the site are refreshed every 3 hours. Votes cast on Monday morning count for that week's selection.
 
 ### General settings: `data/site.json`
 
@@ -79,8 +114,9 @@ The same check runs on GitHub, so a broken file never replaces the live site: th
 
 ## Privacy
 
-The repository is public. Do not put email addresses, phone numbers, member lists or availability in it.
-Speaker names and talk titles are meant to be public. Anything else about people belongs elsewhere.
+The repository and the site are public, and so are votes and comments on GitHub Discussions.
+Do not put email addresses, phone numbers, member lists or availability in the repository.
+Speaker names, talk titles and the "May interest" surnames are public by choice. Remove a name from the routine's member list if a participant prefers not to appear.
 Files named `*.local.json` and the `private/` folder are git-ignored. You can use them for a local list, for example the members for the speaker draw.
 
 ## Preview locally

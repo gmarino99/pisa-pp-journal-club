@@ -46,6 +46,8 @@ if isinstance(papers, list):
         for key in ("digest", "announced"):
             if p.get(key) and not DATE.match(p[key]):
                 errors.append(f"{where}: '{key}' must be YYYY-MM-DD, got {p[key]!r}")
+        if "interest" in p and not (isinstance(p["interest"], list) and all(isinstance(x, str) for x in p["interest"])):
+            errors.append(f"{where}: 'interest' must be a list of names")
         if p.get("id") in ids:
             errors.append(f"{where}: duplicate id")
         ids.add(p.get("id"))
