@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pisa Particle Physics Journal Club</title>
+<meta name="description" content="Weekly journal club on particle physics, cosmology and related fields in Pisa: next session, schedule, papers and speakers.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>
+  // Apply the saved theme before first paint to avoid a flash.
+  try { var t = localStorage.getItem("jc-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-row">
+    <div>
+      <h1 id="site-title">Pisa Particle Physics Journal Club</h1>
+      <p class="sub" id="site-sub">Tuesdays 14:30 · Room 163</p>
+    </div>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Colour theme: automatic">
+      <span aria-hidden="true" id="theme-icon">◐</span>
+      <span class="theme-label" id="theme-label">Auto</span>
+    </button>
+  </div>
+  <nav class="wrap" aria-label="Sections">
+    <ul id="nav">
+      <li><a href="#next">Next JC</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#papers">Papers</a></li>
+      <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main" class="wrap" tabindex="-1">
+  <p class="empty">Loading…</p>
+  <noscript><p class="warn">This site needs JavaScript to show the programme.</p></noscript>
+</main>
+<footer class="wrap site-footer">
+  <p id="footer-text"></p>
+</footer>
+</body>
+</html>

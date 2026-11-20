@@ -1,0 +1,5 @@
+.DS_Store
+_site/
+# Private files that must never be published (e.g. a local member list for the speaker draw)
+*.local.json
+private/
