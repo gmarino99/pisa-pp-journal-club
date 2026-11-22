@@ -1,9 +1,13 @@
 name: Fetch arXiv feed
 
-# Saves the day's new arXiv papers to feeds/arxiv.json before the 08:00 digest routine reads them.
+# Saves the day's new arXiv papers to feeds/arxiv.json at 06:10 Rome time, before the 06:50 digest routine reads them.
 on:
   schedule:
-    - cron: "15 5 * * 1-5"   # 06:15 Rome in winter, 07:15 in summer
+    # 06:10 Rome time. GitHub cron is UTC: 05:10 UTC in winter (CET), 04:10 UTC in summer (CEST).
+    # Both are scheduled; the first step keeps only the one that is 06:10 in Rome today
+    # (it checks which schedule fired, so GitHub's start-up delays do not matter).
+    - cron: "10 4 * * 1-5"
+    - cron: "10 5 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -15,10 +19,22 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
+      - name: Keep only the 06:10 Rome schedule
+        id: gate
+        env:
+          FIRED: ${{ github.event.schedule }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "$(TZ=Europe/Rome date +%z)" = "+0200" ]; then WANT="10 4 * * 1-5"; else WANT="10 5 * * 1-5"; fi
+            if [ "$FIRED" != "$WANT" ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Not the 06:10 Rome schedule today, skipping."; fi
+          fi
+
       - name: Download new announcements
+        if: steps.gate.outputs.skip != 'true'
         run: python3 tools/fetch_arxiv.py
 
       - name: Commit the feed
+        if: steps.gate.outputs.skip != 'true'
         run: |
           if [ -n "$(git status --porcelain -- feeds)" ]; then
             git config user.name "github-actions[bot]"

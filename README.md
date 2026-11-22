@@ -8,10 +8,10 @@ All content lives in JSON files under `data/`. Scheduled jobs update them automa
 
 | What | Where | Updated by |
 |---|---|---|
-| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays ~06:15 Rome |
-| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 08:00 Rome, reading `feeds/arxiv.json` |
-| Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 09:30 Rome |
-| Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 09:30 Rome |
+| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays 06:10 Rome |
+| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 06:50 Rome, reading `feeds/arxiv.json` |
+| Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 07:20 Rome |
+| Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 07:20 Rome |
 | Votes 👍/👎 on papers | GitHub Discussions (category Announcements), via giscus | participants, signed in with GitHub |
 | Vote counts shown on the site | `data/votes.json` | GitHub Actions, every 3 hours |
 | Ideas of the week | GitHub Discussions (category Ideas), via giscus | participants |
