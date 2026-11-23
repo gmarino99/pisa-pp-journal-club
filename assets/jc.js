@@ -3,7 +3,8 @@
 (function () {
   "use strict";
 
-  var S = { site: null, sessions: [], byId: {}, papers: [], votes: {}, decks: {}, current: null, filter: "" };
+  var S = { site: null, sessions: [], byId: {}, papers: [], votes: {}, decks: {}, members: [], current: null, filter: "" };
+  var A = window.JCAgenda;
   var $ = function (id) { return document.getElementById(id); };
 
   /* ---------- helpers ---------- */
@@ -99,21 +100,22 @@
     document.title = "JC " + fmt(s.date, { day: "numeric", month: "short" }) + " · Session Board";
 
     // timeline
-    var agenda = S.site.agenda || [];
-    var total = agenda.reduce(function (a, x) { return a + (x.minutes || 0); }, 0) || 1;
     var t0 = startOf(s);
     var bar = "", items = "", acc = 0;
-    agenda.forEach(function (a) {
-      var kind = /talk/i.test(a.title) ? "talk" : /paper/i.test(a.title) ? "papers" : "other";
+    A.programme(S.site, s).forEach(function (a) {
+      var kind = a.kind === "draw" ? "other" : a.kind;
       var from = new Date(t0.getTime() + acc * 60000); acc += a.minutes || 0;
       bar += '<span class="seg-' + kind + '" style="flex:' + (a.minutes || 1) + '"></span>';
-      var detail = kind === "talk" ? (s.speaker ? esc(s.speaker) + (s.talkTitle ? " — <i>" + esc(s.talkTitle) + "</i>" : "") : "No talk this week")
-        : kind === "papers" ? list.length + " papers, about " + Math.max(2, Math.round((a.minutes || 25) / Math.max(1, list.length))) + " min each"
+      var detail = a.kind === "talk" ? (a.talk ? "<b>" + esc(a.talk.speaker) + "</b>" + (a.talk.title ? " — <i>" + esc(a.talk.title) + "</i>" : "") + (a.talkMinutes ? "<br>" + a.talkMinutes + "′ + questions" : "") : "No talk this week")
+        : a.kind === "papers" ? list.length + " papers, about " + Math.max(2, Math.round((a.minutes || 15) / Math.max(1, list.length))) + " min each"
         : esc(a.detail || "");
       items += '<div class="tl-item"><span class="t">' + pad(from.getHours()) + ":" + pad(from.getMinutes()) + " · " + (a.minutes || "") + "′</span>"
         + "<h3>" + esc(a.title) + "</h3><p>" + detail + "</p></div>";
     });
     $("timeline").innerHTML = '<div class="tl-bar" aria-hidden="true">' + bar + '</div><div class="tl-items">' + items + "</div>";
+    var showDraw = s.date >= iso(new Date()) && S.members.length > 0;
+    $("draw").hidden = !showDraw;
+    if (showDraw) drawPanel($("draw"), false);
 
     // area chips
     var areas = Array.from(new Set(list.map(function (p) { return p.area; })));
@@ -162,6 +164,44 @@
     if (S.current) $("session-select").value = S.current.date;
   }
 
+  /* ---------- draw of next week's speaker ---------- */
+  // Fair draw among the participants who are not already scheduled and have presented least.
+  // The result is shown, not saved: the chair records it in data/sessions.json.
+  function nextSession(s) { return S.sessions.find(function (x) { return x.date > s.date; }); }
+  function drawPanel(el, onStage) {
+    var s = S.current, d = A.drawPool(S.sessions, S.members, s.date), nx = nextSession(s);
+    var when = nx ? fmt(nx.date, { weekday: "long", day: "numeric", month: "long" }) : "next week";
+    var times = d.min === 0 ? "have not presented yet" : "have presented " + d.min + " time" + (d.min > 1 ? "s" : "");
+    el.innerHTML = '<h2 id="' + (onStage ? "draw-h-stage" : "draw-h") + '">Next week\'s speaker</h2>'
+      + "<p>A short presentation on " + esc(when) + ". The name is drawn among the " + d.pool.length + " participants who " + times
+      + " and are not already scheduled (see the count on the Speakers page).</p>"
+      + '<div class="draw-row"><button type="button" class="primary" data-draw>Draw a name</button>'
+      + '<span class="draw-name" aria-live="polite"></span></div>'
+      + '<div class="draw-pool">' + d.pool.map(function (r) { return "<span>" + esc(r.name) + "</span>"; }).join("") + "</div>";
+    el._pool = d.pool;
+  }
+  var rolling = null;
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-draw]"); if (!b) return;
+    var box = b.closest(".draw"), pool = box._pool || [], out = box.querySelector(".draw-name"), chips = box.querySelectorAll(".draw-pool span");
+    if (!pool.length || rolling) return;
+    var win = A.drawOne(pool), k = 0, n = 0, steps = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 22;
+    b.disabled = true; out.className = "draw-name rolling";
+    function done() {
+      rolling = null;
+      chips.forEach(function (c, j) { c.classList.toggle("on", pool[j] === win); });
+      out.className = "draw-name picked"; out.textContent = win.name;
+      b.disabled = false; b.textContent = "Draw again";
+    }
+    if (!steps) { done(); return; }
+    (function tick() {
+      k = (k + 1) % pool.length; n += 1;
+      chips.forEach(function (c, j) { c.classList.toggle("on", j === k); });
+      out.textContent = pool[k].name;
+      rolling = n < steps ? setTimeout(tick, 40 + n * n / 3) : (done(), null);
+    })();
+  });
+
   /* ---------- presentation ---------- */
   var P = { idx: 0, slides: [], secs: 300, left: 300, timerId: null };
   function perPaperSecs() {
@@ -170,23 +210,25 @@
     return Math.max(2, Math.round(((a && a.minutes) || 25) / n)) * 60;
   }
   function buildSlides() {
-    var s = S.current, out = [{ intro: true }];
+    var s = S.current, out = [{ intro: true, key: "o" }];
+    A.talksOf(s).forEach(function (t, ti) { out.push({ kind: "talk", talk: t, ti: ti + 1, key: "t" + (ti + 1) }); });
     (s.papers || []).forEach(function (id, pi) {
       var p = paperOf(id), deck = S.decks[id];
-      out.push({ paper: p, pi: pi + 1, kind: "title" });
-      ((deck && deck.slides) || []).forEach(function (sl, k, arr) { out.push({ paper: p, pi: pi + 1, kind: "deck", slide: sl, k: k + 1, n: arr.length }); });
+      out.push({ paper: p, pi: pi + 1, kind: "title", key: "p" + (pi + 1) });
+      ((deck && deck.slides) || []).forEach(function (sl, k, arr) { out.push({ paper: p, pi: pi + 1, kind: "deck", slide: sl, k: k + 1, n: arr.length, key: "p" + (pi + 1) }); });
     });
+    if (S.members.length) out.push({ kind: "draw", key: "d" });
     return out;
   }
   function openStage(paperIndex) {
     var s = S.current; if (!s) return;
     P.slides = buildSlides();
-    P.secs = perPaperSecs(); P.paper = -1;
+    P.paper = "";
     $("stage").hidden = false;
     document.body.style.overflow = "hidden";
     try { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
     var start = 0;
-    if (paperIndex) P.slides.some(function (x, k) { if (x.pi === paperIndex) { start = k; return true; } return false; });
+    if (paperIndex) P.slides.some(function (x, k) { if (x.kind === "title" && x.pi === paperIndex) { start = k; return true; } return false; });
     show(start);
     $("next").focus();
   }
@@ -203,6 +245,7 @@
     var s = S.current, x = P.slides[P.idx], el = $("slide");
     if (window.JCDeck) window.JCDeck.stop();
     el.className = "slide"; el.removeAttribute("data-area");
+    var nTalks = A.talksOf(s).length;
     void el.offsetWidth; // restart the entry animation
     var nPapers = (s.papers || []).length;
     if (x.intro) {
@@ -210,12 +253,23 @@
       el.innerHTML = '<p class="eyebrow">' + esc(S.site.title) + "</p>"
         + "<h2>" + esc(fmt(s.date, { weekday: "long", day: "numeric", month: "long" })) + "</h2>"
         + '<p class="authors">' + esc(timeOf(s)) + " · " + esc(roomOf(s)) + "</p>"
-        + '<ol class="agenda">' + (S.site.agenda || []).map(function (a) {
-            var d = /talk/i.test(a.title) ? (s.speaker ? s.speaker + (s.talkTitle ? " — " + s.talkTitle : "") : "no talk this week")
-              : /paper/i.test(a.title) ? nPapers + " papers" : (a.detail || "");
+        + '<ol class="agenda">' + A.programme(S.site, s).map(function (a) {
+            var d = a.kind === "talk" ? (a.talk ? a.talk.speaker + (a.talk.title ? " — " + a.talk.title : "") : "no talk this week")
+              : a.kind === "papers" ? nPapers + " papers" : a.kind === "draw" ? "next week's speaker" : (a.detail || "");
             return "<li><span>" + esc(a.minutes) + "′</span>" + esc(a.title) + (d ? " · " + esc(d) : "") + "</li>";
           }).join("") + "</ol>";
       $("stage-count").textContent = "Overview";
+    } else if (x.kind === "talk") {
+      el.classList.add("intro");
+      el.innerHTML = '<p class="eyebrow">Talk ' + x.ti + (nTalks > 1 ? " of " + nTalks : "") + (x.talk.minutes ? " · " + x.talk.minutes + " min" : "") + "</p>"
+        + "<h2>" + esc(x.talk.title || "Talk") + "</h2>"
+        + '<p class="authors">' + esc(x.talk.speaker) + "</p>";
+      $("stage-count").textContent = "Talk " + x.ti + " of " + nTalks;
+    } else if (x.kind === "draw") {
+      el.classList.add("drawslide");
+      el.innerHTML = '<div class="draw"></div>';
+      drawPanel(el.firstChild, true);
+      $("stage-count").textContent = "Draw";
     } else if (x.kind === "deck") {
       el.setAttribute("data-area", x.paper.area);
       window.JCDeck.render(el, Object.assign({ kicker: x.paper.area + " · " + shortTitle(x.paper.title) }, x.slide), x.paper);
@@ -236,13 +290,20 @@
         + (hasSteps ? '<div class="slide-steps">' + stepsHtml(p) + "</div>" : "");
       $("stage-count").textContent = "Paper " + x.pi + " of " + nPapers;
     }
-    var cur = x.intro ? 0 : x.pi;
-    $("dots").innerHTML = [0].concat((s.papers || []).map(function (_, k) { return k + 1; })).map(function (k) {
-      return '<button type="button" data-k="' + k + '" aria-label="' + (k ? "Paper " + k : "Overview") + '"' + (k === cur ? ' aria-current="true"' : "") + "></button>";
+    var keys = [];
+    P.slides.forEach(function (y) { if (keys.indexOf(y.key) < 0) keys.push(y.key); });
+    $("dots").innerHTML = keys.map(function (k) {
+      var lab = k === "o" ? "Overview" : k === "d" ? "Draw" : (k[0] === "t" ? "Talk " : "Paper ") + k.slice(1);
+      return '<button type="button" data-k="' + k + '" aria-label="' + lab + '"' + (k === x.key ? ' aria-current="true"' : "") + "></button>";
     }).join("");
     $("progress-bar").style.width = (P.slides.length > 1 ? (P.idx / (P.slides.length - 1)) * 100 : 100) + "%";
-    $("timer").style.visibility = x.intro ? "hidden" : "visible";
-    if (cur !== P.paper) { P.paper = cur; resetTimer(); }   // the timer runs per paper, across its slides
+    var timed = x.kind === "talk" ? !!x.talk.minutes : x.kind === "title" || x.kind === "deck";
+    $("timer").style.visibility = timed ? "visible" : "hidden";
+    if (x.key !== P.paper) {   // the timer runs per talk or per paper, across all its slides
+      P.paper = x.key;
+      P.secs = x.kind === "talk" ? (x.talk.minutes || 15) * 60 : perPaperSecs();
+      resetTimer();
+    }
   }
   function shortTitle(t) { t = String(t || ""); return t.length > 48 ? t.slice(0, 46) + "…" : t; }
 
@@ -272,8 +333,8 @@
   $("timer-btn").addEventListener("click", function () { if (P.timerId) stopTimer(); else startTimer(); });
   $("dots").addEventListener("click", function (e) {
     var b = e.target.closest("[data-k]"); if (!b) return;
-    var k = +b.dataset.k; if (!k) { show(0); return; }
-    P.slides.some(function (x, j) { if (x.pi === k) { show(j); return true; } return false; });
+    var k = b.dataset.k;
+    P.slides.some(function (x, j) { if (x.key === k) { show(j); return true; } return false; });
   });
   document.addEventListener("keydown", function (e) {
     if ($("stage").hidden) return;
@@ -294,8 +355,10 @@
   /* ---------- load ---------- */
   function getJSON(p) { return fetch(p, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(p + ": HTTP " + r.status); return r.json(); }); }
   Promise.all([getJSON("data/site.json"), getJSON("data/sessions.json"), getJSON("data/papers.json"),
-               getJSON("data/votes.json").catch(function () { return { papers: {} }; })])
+               getJSON("data/votes.json").catch(function () { return { papers: {} }; }),
+               getJSON("data/members.json").catch(function () { return { members: [] }; })])
     .then(function (r) {
+      S.members = (r[4] && r[4].members) || [];
       S.site = r[0];
       S.sessions = r[1].slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
       S.papers = r[2]; S.papers.forEach(function (p) { S.byId[p.id] = p; });

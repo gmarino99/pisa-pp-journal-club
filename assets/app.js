@@ -6,7 +6,8 @@
   var ROUTES = ["next", "papers", "ideas", "schedule", "speakers", "about"];
   var TITLES = { next: "Next JC", papers: "Papers", ideas: "Ideas", schedule: "Schedule", speakers: "Speakers", about: "About" };
   var $main = document.getElementById("main");
-  var S = { site: null, sessions: [], papers: [], byId: {}, votes: {} };
+  var S = { site: null, sessions: [], papers: [], byId: {}, votes: {}, members: [] };
+  var A = window.JCAgenda;
   var filters = { q: "", area: "", digest: "" };
   var ideasTab = "ideas";
 
@@ -106,7 +107,8 @@
     var end = new Date(start.getTime() + (s.durationMinutes || d.durationMinutes || 60) * 60000);
     function local(x) { return x.getFullYear() + pad(x.getMonth() + 1) + pad(x.getDate()) + "T" + pad(x.getHours()) + pad(x.getMinutes()) + "00"; }
     var stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
-    var desc = s.speaker ? "Talk: " + s.speaker + (s.talkTitle ? " — " + s.talkTitle : "") : "Papers of the week and discussion";
+    var ts = A.talksOf(s);
+    var desc = ts.length ? ts.map(function (t) { return "Talk: " + t.speaker + (t.title ? " — " + t.title : ""); }).join("\n") : "Papers of the week and discussion";
     return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Pisa PP Journal Club//EN", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
       "UID:" + s.date + "@pisa-pp-journal-club", "DTSTAMP:" + stamp,
       "DTSTART;TZID=" + d.timezone + ":" + local(start), "DTEND;TZID=" + d.timezone + ":" + local(end),
@@ -163,16 +165,19 @@
   function upcoming() { var t = todayISO(); return S.sessions.filter(function (s) { return s.date >= t; }); }
   function past() { var t = todayISO(); return S.sessions.filter(function (s) { return s.date < t; }).reverse(); }
   function talkLine(s) {
-    if (!s.speaker) return "No talk scheduled yet";
-    return esc(s.speaker) + (s.talkTitle ? " — <i>" + esc(s.talkTitle) + "</i>" : "");
+    var ts = A.talksOf(s);
+    if (!ts.length) return "No talk scheduled yet";
+    return ts.map(function (t) { return esc(t.speaker) + (t.title ? " — <i>" + esc(t.title) + "</i>" : "") + (t.minutes ? " · " + t.minutes + "′" : ""); }).join("<br>");
   }
   function timeline(s) {
-    var agenda = S.site.agenda || [], n = (s.papers || []).length, t0 = startOf(s), acc = 0, bar = "", items = "";
-    agenda.forEach(function (a) {
-      var kind = /talk/i.test(a.title) ? "talk" : /paper/i.test(a.title) ? "papers" : "other";
+    var n = (s.papers || []).length, t0 = startOf(s), acc = 0, bar = "", items = "";
+    A.programme(S.site, s).forEach(function (a) {
+      var kind = a.kind === "draw" ? "other" : a.kind;
       var from = new Date(t0.getTime() + acc * 60000); acc += a.minutes || 0;
       bar += '<span class="seg-' + kind + '" style="flex:' + (a.minutes || 1) + '"></span>';
-      var detail = kind === "talk" ? talkLine(s) : kind === "papers" ? (n ? n + " papers, about " + Math.max(2, Math.round((a.minutes || 25) / n)) + " min each" : "Selection published on Monday") : esc(a.detail || "");
+      var detail = a.kind === "talk" ? (a.talk ? "<b>" + esc(a.talk.speaker) + "</b>" + (a.talk.title ? " — <i>" + esc(a.talk.title) + "</i>" : "") + (a.talkMinutes ? "<br>" + a.talkMinutes + "′ + questions" : "") : "No talk scheduled yet")
+        : a.kind === "papers" ? (n ? n + " papers, about " + Math.max(2, Math.round((a.minutes || 15) / n)) + " min each" : "Selection published on Monday")
+        : esc(a.detail || "");
       items += '<div class="tl-item"><span class="t">' + pad(from.getHours()) + ":" + pad(from.getMinutes()) + " · " + (a.minutes || "") + "′</span><h3>" + esc(a.title) + "</h3><p>" + detail + "</p></div>";
     });
     return '<section class="timeline" aria-label="Programme"><div class="tl-bar" aria-hidden="true">' + bar + '</div><div class="tl-items">' + items + "</div></section>";
@@ -291,14 +296,32 @@
   }
 
   function viewSpeakers() {
-    var rows = S.sessions.filter(function (s) { return s.speaker; }).slice().reverse(), t = todayISO();
-    return hero("Drawn at the end of each session", "Speakers", "Each week one participant presents a new result or a work in progress, drawn one week in advance.")
-      + (rows.length ? '<div class="table-wrap"><table><caption class="visually-hidden">Talks by date</caption>'
+    var t = todayISO(), T = A.tally(S.sessions, S.members, t);
+    var talks = [];
+    S.sessions.slice().reverse().forEach(function (s) { A.talksOf(s).forEach(function (x) { talks.push({ date: s.date, t: x }); }); });
+    var cols = T.dates;
+    var gridHtml = '<div class="section-head"><h2>Who has presented</h2></div>'
+      + '<p class="lede-s">One row per participant: <span class="mk done">●</span> talk given, <span class="mk plan">○</span> scheduled. The draw at the end of each session picks among those with the fewest presentations.</p>'
+      + '<div class="table-wrap"><table class="tally"><caption class="visually-hidden">Presentations per participant</caption><thead><tr><th scope="col">Participant</th>'
+      + cols.map(function (d) { return '<th scope="col" class="c">' + esc(fmtDate(d, { day: "numeric", month: "short" })) + "</th>"; }).join("")
+      + '<th scope="col" class="c">Total</th></tr></thead><tbody>'
+      + T.rows.map(function (r) {
+          return "<tr" + (r.total ? "" : ' class="zero"') + '><th scope="row">' + esc(r.name) + (r.member ? "" : ' <span class="guest">guest</span>') + "</th>"
+            + cols.map(function (d) {
+                var x = r.talks[d];
+                return '<td class="c">' + (x ? '<span class="mk ' + (x.done ? "done" : "plan") + '" title="' + esc((x.done ? "Talk given" : "Scheduled") + (x.title ? ": " + x.title : "")) + '">' + (x.done ? "●" : "○") + "</span>" : "") + "</td>";
+              }).join("")
+            + '<td class="c n">' + r.given + (r.planned ? '<small> +' + r.planned + "</small>" : "") + "</td></tr>";
+        }).join("") + "</tbody></table></div>";
+    var listHtml = '<div class="section-head"><h2>All talks</h2></div>'
+      + (talks.length ? '<div class="table-wrap"><table><caption class="visually-hidden">Talks by date</caption>'
         + '<thead><tr><th scope="col">Date</th><th scope="col">Speaker</th><th scope="col">Talk</th></tr></thead><tbody>'
-        + rows.map(function (s) {
-            return '<tr><td class="date">' + esc(fmtDate(s.date)) + (s.date >= t ? '<span class="badge">next</span>' : "") + "</td><td>" + esc(s.speaker) + "</td><td>" + esc(s.talkTitle || "—") + "</td></tr>";
+        + talks.map(function (x) {
+            return '<tr><td class="date">' + esc(fmtDate(x.date)) + (x.date >= t ? '<span class="badge">next</span>' : "") + "</td><td>" + esc(x.t.speaker) + "</td><td>" + esc(x.t.title || "—") + (x.t.minutes ? ' <span class="mins">' + x.t.minutes + "′</span>" : "") + "</td></tr>";
           }).join("") + "</tbody></table></div>"
         : '<p class="empty">No talks recorded yet.</p>');
+    return hero("Drawn at the end of each session", "Speakers", "Each session opens with one or two talks. At the end, a name is drawn for a short presentation the following week, among the participants who have presented least.")
+      + gridHtml + listHtml;
   }
 
   function viewAbout() {
@@ -345,8 +368,10 @@
     });
   }
   Promise.all([getJSON("data/site.json"), getJSON("data/sessions.json"), getJSON("data/papers.json"),
-               getJSON("data/votes.json").catch(function () { return { papers: {} }; })])
+               getJSON("data/votes.json").catch(function () { return { papers: {} }; }),
+               getJSON("data/members.json").catch(function () { return { members: [] }; })])
     .then(function (res) {
+      S.members = (res[4] && res[4].members) || [];
       S.site = res[0];
       S.sessions = res[1].slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
       S.papers = res[2];

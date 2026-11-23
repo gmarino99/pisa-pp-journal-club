@@ -1,8 +1,18 @@
 [
   {
     "date": "2026-11-24",
-    "speaker": "Giulio Marino",
-    "talkTitle": "Learning from one-point correlators: new observables at LEP",
+    "talks": [
+      {
+        "speaker": "Giulio Marino",
+        "title": "Learning from one-point correlators: new observables at LEP",
+        "minutes": 15
+      },
+      {
+        "speaker": "Mateusz Duch",
+        "title": "Cosmological vacuum selection in dynamical symmetry breaking at zero vacuum energy",
+        "minutes": 15
+      }
+    ],
     "papers": [
       "2611.22092",
       "2611.23368",
@@ -10,12 +20,11 @@
       "2611.23370",
       "2611.23580"
     ],
-    "notes": "Talk on energy and charge correlators."
+    "notes": "Two 15-minute talks, then a quick run through the papers and the draw for next week."
   },
   {
     "date": "2026-12-01",
-    "speaker": "",
-    "talkTitle": "",
+    "talks": [],
     "papers": [],
     "notes": ""
   }

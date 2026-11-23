@@ -72,6 +72,15 @@ if isinstance(sessions, list):
         seen.add(s.get("date"))
         if "time" in s and not TIME.match(str(s["time"])):
             errors.append(f"{where}: 'time' must be HH:MM")
+        talks = s.get("talks", [])
+        if not isinstance(talks, list):
+            errors.append(f"{where}: 'talks' must be a list")
+            talks = []
+        for k, t in enumerate(talks):
+            if not isinstance(t, dict) or not t.get("speaker"):
+                errors.append(f"{where}: talk {k + 1} needs a 'speaker'")
+            elif "minutes" in t and not (isinstance(t["minutes"], int) and 0 < t["minutes"] <= 60):
+                errors.append(f"{where}: talk {k + 1}: 'minutes' must be a whole number between 1 and 60")
         for pid in s.get("papers", []):
             if pid not in ids:
                 errors.append(f"{where}: paper {pid} is not in papers.json (it will show as a bare arXiv link)")

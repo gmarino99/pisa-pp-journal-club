@@ -1,13 +1,15 @@
 name: Fetch arXiv feed
 
-# Saves the day's new arXiv papers to feeds/arxiv.json at 06:10 Rome time, before the 06:50 digest routine reads them.
+# Saves the day's new arXiv papers to feeds/arxiv.json from 06:10 Rome time, before the 06:50 digest routine reads them.
 on:
   schedule:
-    # 06:10 Rome time. GitHub cron is UTC: 05:10 UTC in winter (CET), 04:10 UTC in summer (CEST).
-    # Both are scheduled; the first step keeps only the one that is 06:10 in Rome today
-    # (it checks which schedule fired, so GitHub's start-up delays do not matter).
+    # GitHub cron is UTC and sometimes skips or delays a scheduled run, so there are spare attempts.
+    # 04:10/04:30 UTC = 06:10/06:30 Rome in summer (CEST); 05:10/05:30 UTC = 06:10/06:30 Rome in winter (CET).
+    # The first step skips an attempt that falls before 06:00 Rome or finds today's feed already saved.
     - cron: "10 4 * * 1-5"
     - cron: "10 5 * * 1-5"
+    - cron: "30 4 * * 1-5"
+    - cron: "30 5 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -19,14 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - name: Keep only the 06:10 Rome schedule
+      - name: Skip if too early or already done today
         id: gate
-        env:
-          FIRED: ${{ github.event.schedule }}
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            if [ "$(TZ=Europe/Rome date +%z)" = "+0200" ]; then WANT="10 4 * * 1-5"; else WANT="10 5 * * 1-5"; fi
-            if [ "$FIRED" != "$WANT" ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Not the 06:10 Rome schedule today, skipping."; fi
+            TODAY=$(TZ=Europe/Rome date +%F); HOUR=$(TZ=Europe/Rome date +%H)
+            DONE=$(python3 -c "import json;print(json.load(open('feeds/arxiv.json')).get('announced',''))" 2>/dev/null || true)
+            if [ "$HOUR" -lt 6 ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Before 06:00 Rome, skipping."
+            elif [ "$DONE" = "$TODAY" ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Today's feed is already saved, skipping."; fi
           fi
 
       - name: Download new announcements

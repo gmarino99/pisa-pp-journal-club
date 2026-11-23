@@ -10,24 +10,24 @@
   },
   "agenda": [
     {
-      "title": "Talk",
-      "minutes": 25,
-      "detail": "One participant presents a paper or a topic."
+      "title": "Talks",
+      "minutes": 35,
+      "detail": "One or two participants present a result, a paper or a work in progress (about 15 minutes each, plus questions)."
     },
     {
       "title": "Papers of the week",
-      "minutes": 25,
-      "detail": "Quick discussion of the selected arXiv papers."
+      "minutes": 15,
+      "detail": "A quick run through the selected papers, with their slides."
     },
     {
-      "title": "Ideas and announcements",
+      "title": "Draw and announcements",
       "minutes": 10,
-      "detail": "Open questions, pointers, next speaker."
+      "detail": "Draw next week's speaker for a short presentation; ideas and announcements."
     }
   ],
   "about": [
     "The journal club is open to students, postdocs and staff interested in high-energy physics, astroparticle physics and cosmology.",
-    "Each weekday a short digest of new arXiv papers is posted here; vote on the ones worth discussing. Every Monday a balanced selection, favouring the most voted, becomes the programme for Tuesday. Speakers are drawn at the end of each session for the following week."
+    "Each weekday a short digest of new arXiv papers is posted here; vote on the ones worth discussing. Every Monday a balanced selection, favouring the most voted, becomes the programme for Tuesday. At the end of each session a name is drawn among the participants who have presented least: that person gives a short presentation the following week. The Speakers page keeps count."
   ],
   "proposeUrl": "",
   "repoUrl": "https://github.com/gmarino99/pisa-pp-journal-club",

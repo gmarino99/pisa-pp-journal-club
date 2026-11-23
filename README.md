@@ -8,8 +8,8 @@ All content lives in JSON files under `data/`. Scheduled jobs update them automa
 
 | What | Where | Updated by |
 |---|---|---|
-| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays 06:10 Rome |
-| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 06:50 Rome, reading `feeds/arxiv.json` |
+| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays 06:10 Rome, spare attempt at 06:30 |
+| Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 06:50 Rome (catch-up run at 10:50 if the feed was late), reading `feeds/arxiv.json` |
 | Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 07:20 Rome |
 | Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 07:20 Rome |
 | Votes 👍/👎 on papers | GitHub Discussions (category Announcements), via giscus | participants, signed in with GitHub |
@@ -62,8 +62,10 @@ The site redeploys automatically within a minute or two. You can follow the prog
 ```json
 {
   "date": "2026-12-01",
-  "speaker": "A. Rossi",
-  "talkTitle": "Instantons at the LHC",
+  "talks": [
+    { "speaker": "A. Rossi", "title": "Instantons at the LHC", "minutes": 15 },
+    { "speaker": "B. Bianchi", "title": "", "minutes": 10 }
+  ],
   "papers": ["2611.22092", "2611.23370"],
   "notes": ""
 }
@@ -72,7 +74,7 @@ The site redeploys automatically within a minute or two. You can follow the prog
 | Field | Required | Meaning |
 |---|---|---|
 | `date` | yes | `YYYY-MM-DD`. Sessions are sorted by date automatically. |
-| `speaker`, `talkTitle` | no | Leave `""` if there is no talk. Sessions with a speaker appear on the Speakers page. |
+| `talks` | no | The talks that open the session, in order: `speaker`, `title` (may be `""` until the speaker sends it) and `minutes`. Use `[]` if there is no talk. The talk block of the agenda (35′) is split into one slot per talk, and the minutes left after the talks are shown as questions. Every talk counts in the "Who has presented" grid on the Speakers page. Older entries with `speaker` / `talkTitle` still work. |
 | `papers` | no | arXiv ids of the papers to discuss. Each id should also be in `papers.json`. |
 | `notes` | no | Short note shown on the Schedule page. |
 | `time`, `room`, `durationMinutes` | no | Only if different from the defaults in `site.json`. |
@@ -99,15 +101,19 @@ Past sessions move to "Past sessions" automatically, so there is nothing to arch
 `announced` is the arXiv announcement date and is optional.
 `interest` is an optional list of participants' surnames shown as "May interest".
 
-### Record the next speaker (after the draw)
+### Draw and record the next speaker
 
-At the end of each session, draw the speaker for the following week however you like, then add the name to that session in `data/sessions.json`:
+The session runs: talks (about 35′, e.g. two talks of 15′), a quick run through the selected papers (15′), then the draw and announcements (10′).
+
+The session board has a **Draw a name** button, both on the page and as the last slide of the presentation.
+It draws among the participants in `data/members.json` who are not already scheduled and have presented least, so everyone gets a turn before anyone presents twice.
+The result is only shown, not saved. Record it in the following session in `data/sessions.json`:
 
 ```json
-{ "date": "2026-12-01", "speaker": "A. Rossi", "talkTitle": "", "papers": [], "notes": "" }
+{ "date": "2026-12-01", "talks": [{ "speaker": "A. Rossi", "title": "", "minutes": 10 }], "papers": [], "notes": "" }
 ```
 
-The Monday routine keeps `speaker` and `talkTitle` and only fills in `papers`. Add the talk title later, when the speaker sends it.
+The Monday routine keeps `talks` and only fills in `papers`. The Speakers page counts every talk per participant (● given, ○ scheduled).
 
 ### Voting and ideas
 

@@ -243,3 +243,22 @@ kbd { font: 500 0.75rem/1 var(--mono); padding: 3px 6px; border: 1px solid var(-
 @keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
 .deck-count { font: 500 0.78rem/1 var(--mono); color: var(--stage-mut); }
 .paper .deck-btn { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Draw of next week's speaker */
+.draw { margin: 36px 0 8px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px; display: grid; gap: 12px; }
+.draw h2 { margin: 0; }
+.draw p { margin: 0; color: var(--mut); font-size: 0.92rem; max-width: 65ch; }
+.draw-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.draw-name { font: 600 clamp(1.4rem, 3.4vw, 2.2rem)/1.15 var(--display); color: var(--ink); min-height: 1.2em; }
+.draw-name.rolling { color: var(--mut); }
+.draw-name.picked { color: var(--accent); animation: draw-pop .5s ease both; }
+.draw-pool { display: flex; flex-wrap: wrap; gap: 6px; }
+.draw-pool span { font-size: 0.82rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--mut); }
+.draw-pool span.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+@keyframes draw-pop { from { transform: scale(.92); opacity: .4; } to { transform: none; opacity: 1; } }
+.slide.drawslide .draw { background: transparent; border-color: var(--stage-line); }
+.slide.drawslide .draw p, .slide.drawslide .draw-pool span { color: var(--stage-mut); border-color: var(--stage-line); }
+.slide.drawslide .draw-name { color: var(--stage-ink); font-size: clamp(2rem, 5vw, 3.6rem); }
+.slide.drawslide .draw-name.picked { color: #8fb8e0; }
+.slide.drawslide .draw-pool span.on { color: var(--stage-ink); border-color: #8fb8e0; background: transparent; }
+@media (prefers-reduced-motion: reduce) { .draw-name.picked { animation: none; } }
