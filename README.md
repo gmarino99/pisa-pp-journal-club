@@ -115,6 +115,12 @@ The result is only shown, not saved. Record it in the following session in `data
 
 The Monday routine keeps `talks` and only fills in `papers`. The Speakers page counts every talk per participant (● given, ○ scheduled).
 
+### Add or remove participants
+
+Open [the participant form](https://github.com/gmarino99/pisa-pp-journal-club/issues/new?template=participant.yml) (also linked from the Speakers page and the draw panel), choose Add or Remove, write the full name and, for an addition, the INSPIRE profile link.
+The `members.yml` workflow applies it within a minute, comments on the issue, closes it and redeploys the site. Only issues opened by the repository owner are applied.
+For an addition, the titles of the person's recent INSPIRE papers are saved in `feeds/inspire.json`, and the next daily digest turns them into research keywords.
+
 ### Voting and ideas
 
 Each paper card has a **Vote & discuss** button. It opens the paper's discussion on GitHub through giscus.

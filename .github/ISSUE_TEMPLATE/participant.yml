@@ -1,0 +1,26 @@
+name: Add or remove a participant
+description: Changes the list of journal-club participants (speaker draw and "May interest" tags). Only the repository owner's requests are applied.
+title: "Participant: "
+labels: ["participant"]
+body:
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action
+      options:
+        - Add
+        - Remove
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Full name
+      description: As it should appear on the site, e.g. "Giulio Marino". For a removal, the name as it appears in the list.
+    validations:
+      required: true
+  - type: input
+    id: inspire
+    attributes:
+      label: INSPIRE profile (optional)
+      description: Link to the INSPIRE author page, e.g. https://inspirehep.net/authors/2771622. The research interests are read from the person's recent papers.

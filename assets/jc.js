@@ -203,6 +203,7 @@
       + '<span class="draw-vol"><label for="vol-' + (onStage ? "s" : "b") + '">Volunteer</label><select id="vol-' + (onStage ? "s" : "b") + '" data-volunteer><option value="">choose…</option>'
       + st.names.map(function (r, i) { return '<option value="' + i + '">' + esc(r.name) + "</option>"; }).join("") + "</select></span>"
       + "</div>"
+      + (S.site.repoUrl ? '<p class="draw-note">Changes here last until the page is reloaded. To change the list for good: <a href="' + esc(S.site.repoUrl + "/issues/new?template=participant.yml") + '" target="_blank" rel="noopener">add or remove a participant ↗</a>.</p>' : "")
       + (st.names.some(function (r) { return r.planned; }) ? '<p class="draw-note">* already scheduled in a coming session.</p>' : "");
   }
   function redrawPanels() { document.querySelectorAll(".draw").forEach(function (el) { if (!el.hidden) drawPanel(el, !!el.closest(".slide")); }); }

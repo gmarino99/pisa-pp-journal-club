@@ -302,6 +302,7 @@
     var cols = T.dates;
     var gridHtml = '<div class="section-head"><h2>Who has presented</h2></div>'
       + '<p class="lede-s">One row per participant: <span class="mk done">●</span> talk given, <span class="mk plan">○</span> scheduled. The draw at the end of each session picks among those with the fewest presentations.</p>'
+      + (S.site.repoUrl ? '<p class="lede-s"><a href="' + esc(S.site.repoUrl + "/issues/new?template=participant.yml") + '" target="_blank" rel="noopener">Add or remove a participant ↗</a> (a short form on GitHub: name and INSPIRE link; the list updates in a few minutes).</p>' : "")
       + '<div class="table-wrap"><table class="tally"><caption class="visually-hidden">Presentations per participant</caption><thead><tr><th scope="col">Participant</th>'
       + cols.map(function (d) { return '<th scope="col" class="c">' + esc(fmtDate(d, { day: "numeric", month: "short" })) + "</th>"; }).join("")
       + '<th scope="col" class="c">Total</th></tr></thead><tbody>'
