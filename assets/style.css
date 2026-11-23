@@ -117,4 +117,5 @@ table.tally tr.zero th, table.tally tr.zero td.n { color: var(--mut); }
 .mk.done { color: var(--accent); }
 .mk.plan { color: var(--accent); opacity: .65; }
 .guest { font: 500 0.68rem/1 var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--mut); border: 1px solid var(--line); border-radius: 999px; padding: 2px 6px; margin-left: 4px; }
+.inspire { font: 500 0.68rem/1 var(--mono); letter-spacing: .03em; margin-left: 6px; white-space: nowrap; }
 .mins { font: 500 0.78rem/1 var(--mono); color: var(--mut); margin-left: 6px; }

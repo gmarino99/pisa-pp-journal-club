@@ -45,7 +45,7 @@
   function tally(sessions, members, today) {
     var rows = [], byName = {}, bySurname = {};
     (members || []).forEach(function (m) {
-      var r = { name: m.name, surname: m.surname || "", member: true, given: 0, planned: 0, talks: {} };
+      var r = { name: m.name, surname: m.surname || "", inspire: m.inspire || "", member: true, given: 0, planned: 0, talks: {} };
       rows.push(r); byName[norm(m.name)] = r;
       var sn = norm(m.surname);
       if (sn) bySurname[sn] = bySurname[sn] ? null : r;   // null marks an ambiguous surname

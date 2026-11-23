@@ -307,7 +307,8 @@
       + cols.map(function (d) { return '<th scope="col" class="c">' + esc(fmtDate(d, { day: "numeric", month: "short" })) + "</th>"; }).join("")
       + '<th scope="col" class="c">Total</th></tr></thead><tbody>'
       + T.rows.map(function (r) {
-          return "<tr" + (r.total ? "" : ' class="zero"') + '><th scope="row">' + esc(r.name) + (r.member ? "" : ' <span class="guest">guest</span>') + "</th>"
+          return "<tr" + (r.total ? "" : ' class="zero"') + '><th scope="row">' + esc(r.name) + (r.member ? "" : ' <span class="guest">guest</span>')
+            + (r.inspire ? ' <a class="inspire" href="https://inspirehep.net/authors/' + encodeURIComponent(r.inspire) + '" target="_blank" rel="noopener" title="' + esc(r.name) + ' on INSPIRE-HEP">INSPIRE ↗</a>' : "") + "</th>"
             + cols.map(function (d) {
                 var x = r.talks[d];
                 return '<td class="c">' + (x ? '<span class="mk ' + (x.done ? "done" : "plan") + '" title="' + esc((x.done ? "Talk given" : "Scheduled") + (x.title ? ": " + x.title : "")) + '">' + (x.done ? "●" : "○") + "</span>" : "") + "</td>";
