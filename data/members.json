@@ -19,7 +19,11 @@
       ],
       "declared": "",
       "learned": {
-        "likes": [],
+        "likes": [
+          "QCD instantons",
+          "pulsar timing arrays",
+          "ultralight dark matter around black holes"
+        ],
         "dislikes": []
       }
     },
