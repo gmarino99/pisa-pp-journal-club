@@ -177,5 +177,181 @@
     "digest": "2026-11-20",
     "gist": "A nonzero graviton mass would change the angular pattern of the cosmic gravitational-wave background, offering a way to constrain it.",
     "interest": []
+  },
+  {
+    "id": "2611.27986",
+    "title": "Ohmic warm inflation",
+    "authors": "A. Ghoshal, A. Strumia",
+    "area": "hep-ph",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Shows that the 'warm little inflation' model is anomalous and cannot sustain its thermal bath, and proposes anomaly-free replacements based on U(1) gauge groups with a Wilson-line inflaton.",
+    "abstract": "We show that Warm Little Inflation is anomalous, lacks a suitable inflaton potential, and cannot sustain the thermal bath, as the quasi-static approximation over-estimated the dissipated power. To address these issues, we propose a new friction mechanism and new anomaly-free models based on one fermion charged under a U(1) gauge group in one extra dimension. The four-dimensional lattice version is a ring of $N$ U(1) groups with one fermion at each site, reducing to an anomaly-free version of the warm little inflaton model for $N=2$. The inflaton is a Wilson line, protected for $N\\ge5$. Large $N$ allows a suitable monodromy inflaton potential. In the continuum limit, $N\\to\\infty$, the inflato",
+    "interest": [
+      "Strumia"
+    ]
+  },
+  {
+    "id": "2611.26718",
+    "title": "Dijet production in $e^+e^-$ collisions at NNLO+PS accuracy",
+    "authors": "F. König, M. Wiesemann, G. Zanderighi",
+    "area": "hep-ph",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "First event generator with NNLO QCD accuracy matched to a parton shower for lepton collisions, applied to dijets; relevant for LEP data and future e+e- colliders.",
+    "abstract": "We present the first complete Monte Carlo event generator with next-to-next-to-leading order QCD accuracy for lepton collisions. The approach is based on a new formulation of the MiNNLO formalism and is applied to dijet production. Starting from the resummation of the three-jet resolution variable $y_3$, we present the corresponding MiNNLO master formula and implement it within the Powheg framework. We discuss phenomenological results relevant for LEP and future electron-positron colliders.",
+    "interest": [
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.27518",
+    "title": "Probing Compressed Dark Sectors at a Muon Collider through Dilepton Signatures and Machine Learning",
+    "authors": "M. Belfkir, A. Hmissou, L. Rahili",
+    "area": "hep-ph",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Studies how well a muon collider could find inert-doublet dark matter with compressed spectra, using boosted decision trees on a dilepton signature.",
+    "abstract": "The inert doublet model (IDM), a minimal extension of the Standard Model (SM), provides a scalar dark matter (DM) candidate that belongs to the additional Higgs doublet. The model faces challenges in achieving the correct relic abundance for compressed spectra and DM masses in the high-mass range. In this work we investigate the prospects of detecting dark matter candidates at future high-energy muon colliders. Focusing on the process $\\mu^+ \\mu^- \\to AH$ with subsequent decay $A \\to H Z^*$ and $Z^* \\to \\ell^+\\ell^-$, we explore the sensitivity of machine learning techniques, specifically Boosted Decision Trees (BDT) and XGBoost, to distinguish the signal from Standard Model backgrounds. We ",
+    "interest": [
+      "Barducci",
+      "Buttazzo",
+      "Panci"
+    ]
+  },
+  {
+    "id": "2611.26692",
+    "title": "Moment bounds and UV reconstruction from curved positivity cones",
+    "authors": "F. Chang, S. Wan, S. Zhou",
+    "area": "hep-ph",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Analytic method to build the curved positivity cones of SMEFT quartic gauge couplings, also usable to infer which UV models sit on their boundaries.",
+    "abstract": "The fundamental principles of the S-matrix impose positivity bounds on the Wilson coefficients of EFTs, including the SMEFT. These bounds form convex cones that often have curved boundaries when there are degeneracies among the irreducible two-particle low-energy states. Numerical approximations have previously been used to evaluate these curved cones. We develop a moment-based framework to analytically carve out these cones, particularly those associated with anomalous quartic gauge couplings in the SMEFT. The framework also allows us to reverse engineer UV models from the curved boundaries of the positivity cones.",
+    "interest": [
+      "Vichi",
+      "Serra",
+      "Juliano"
+    ]
+  },
+  {
+    "id": "2611.27681",
+    "title": "Zeroing in on BSM at Colliders",
+    "authors": "C. Cesarotti, M. McCullough, M. Riembau",
+    "area": "hep-ph",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Explains when interference between light and heavy states makes an amplitude vanish well below the heavy threshold, and what the resulting dip says about UV physics at colliders.",
+    "abstract": "Destructive interference between light and heavy dynamics can produce a zero in the amplitude which, for strongly coupled UV completions, lies parametrically below the heavy threshold. We identify under which assumptions this parametrically light zero exists, and when it admits an effective field theory description. We study how absorptive effects and helicity structure affect the existence of the zero and turn it into a dip. When the dip is kinematically accessible, we show how its position, depth, and curvature constrain the UV dynamics. Collider examples illustrate the importance of interference in indirect searches and the information available when the zero is kinematically accessible.",
+    "interest": []
+  },
+  {
+    "id": "2611.27002",
+    "title": "Energy and Charge Transmission at Conformal Interfaces: Relations and Bounds",
+    "authors": "Y. Furuta, Y. Kusuki, T. Onagi, et al.",
+    "area": "hep-th",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Derives an exact relation between energy and charge transmission across WZW conformal interfaces, which rules out complete energy transmission between unequal levels.",
+    "abstract": "Symmetry constrains how independently energy and charge can pass through a conformal interface. For interfaces between Wess--Zumino--Witten (WZW) models $G_{k_L}$ and $G_{k_R}$ preserving the diagonal affine algebra, we derive an exact relation between the energy and charge transmission coefficients, $c_{LR}=2(\\dim G)k_{LR}/(k_L+k_R+2h^\\vee)$. Together with positivity of outgoing energy, this relation excludes complete energy transmission at unequal levels. With additional bulk degrees of freedom, the equality is replaced by bounds controlled by the coset central charges. Complete transmission from a lower-level WZW model then imposes a lower bound on the coset central charge on the other si",
+    "interest": [
+      "Vichi"
+    ]
+  },
+  {
+    "id": "2611.27611",
+    "title": "Cosmological Correlators with Triple Massive Exchanges",
+    "authors": "S. Aoki, L. Pinol, Z. Qin, et al.",
+    "area": "hep-th",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Gives an analytic formula for the primordial bispectrum from triple exchange of massive scalars, a key ingredient of cosmological collider signals.",
+    "abstract": "Among all tree-level contributions to the primordial bispectrum, the triple exchange of massive scalars is the most challenging. In this paper we present an analytical formula for this bispectrum in the form of a double series, which allows the three exchanged fields to have different masses and converges throughout the whole physical region. We obtain it by expanding the mixed propagator with the softest momentum, so that the triple exchange becomes a sum of integrals over two mixed propagators. Each of these integrals satisfies a differential equation and is fixed by its value at equal momentum. We further show that the squeezed limit follows directly from this formula and takes a simple a",
+    "interest": [
+      "Strumia"
+    ]
+  },
+  {
+    "id": "2611.27134",
+    "title": "String breaking in a (1+1)-dimensional $e^+e^-$ collider",
+    "authors": "R. Dempsey, A. Glück, S. Pufu, et al.",
+    "area": "hep-th",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Uses tensor networks to simulate real-time e+e- collisions of solitons in the massive Schwinger model, showing the formation and breaking of a flux string.",
+    "abstract": "In this paper, we develop a framework for studying solitons in $(1+1)$-dimensional gauge theories using tensor networks, and we apply it to simulate $e^+e^-$ collisions in the massive Schwinger model. We work at $\\theta = \\pi$ and at a bare fermion mass exceeding the critical value; in this regime, there are two degenerate vacua, and the $e^+$ and $e^-$ particles are realized as soliton states interpolating between them. We carefully explain how to find and characterize such soliton states using infinite tensor network methods, and then exhibit real-time simulations of their collisions. These collisions involve the formation of an energetic flux string, and we demonstrate that our final stat",
+    "interest": []
+  },
+  {
+    "id": "2611.27212",
+    "title": "Microscopic Cosmological Backreaction of an Ultralight Majoron Coupled to a Coherent Hidden Pseudo-Dirac Ensemble",
+    "authors": "K. Cheon, S. Kang, J. Lee",
+    "area": "gr-qc",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Builds a microscopic treatment of the cosmological backreaction from a pseudo-Dirac fermion ensemble coupled to an ultralight Majoron, including memory effects.",
+    "abstract": "We develop a microscopic framework for the cosmological backreaction of a hidden pseudo-Dirac fermion ensemble derivatively coupled to an ultralight Majoron. Starting from the effective action, we derive the exact operator Ward identity for the pseudo-Dirac current and the associated microscopic energy-transfer law. For a thermal density matrix prepared at a finite initial time, we calculate the subsequent collisionless, linearized coherence response without assuming continued thermal equilibrium or introducing phenomenological dissipation. The finite-time retarded solution retains the initial boundary transient and nonlocal memory contribution, allowing us to assess the validity of the lead",
+    "interest": [
+      "Marozzi"
+    ]
+  },
+  {
+    "id": "2611.27442",
+    "title": "A Relativistic Newton's Third Law for Binaries in Environments",
+    "authors": "C. Dyson, A. Pound, D. D'Orazio, et al.",
+    "area": "gr-qc",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Derives a relativistic Newton's third law for inspirals in matter environments, so orbital evolution follows from forces on the matter without solving for the perturbations.",
+    "abstract": "We derive the relativistic form of Newton's Third Law governing the interaction between intermediate- and extreme-mass-ratio inspirals and surrounding relativistic matter fields. Working within a two-parameter expansion, we rewrite the evolution of the secondary's orbital elements in a form resembling the integrated forces acting on the environment, avoiding the need to calculate any gravitational perturbations sourced by the dynamical matter content. Using the retarded and advanced Green's functions, we obtain both instantaneous and orbit-averaged laws relating the rate of change of the secondary's orbital energy and angular momentum to that of the matter and the gravitational-wave fluxes a",
+    "interest": [
+      "Juliano"
+    ]
+  },
+  {
+    "id": "2611.27069",
+    "title": "Beyond the Peak: Constraining early dark energy with the damping tail",
+    "authors": "H. Wang, G. Ye, Y. Piao",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Argues that the post-peak 'tail' of early dark energy is an extra observable and affects how well it can ease the Hubble tension.",
+    "abstract": "Early dark energy is commonly characterized by the amplitude and location of its primary energy-injection peak. We show that its post-peak evolution, which we call the \\emph{EDE tail}, provides an additional observable probe of the underlying scalar dynamics and can materially affect its ability to alleviate the Hubble tension. We construct a simple phenomenological framework in which distinct regions of a multiscale scalar potential govern the dynamics at different field scales. As a representative realization, we consider a potential that combines axion-like and $\\alpha$-attractor-like regimes, thereby allowing the EDE tail to be reshaped through reflection and asymmetric oscillations. Con",
+    "interest": []
+  },
+  {
+    "id": "2611.27249",
+    "title": "Baryon-Enhanced Strong Lensing Signatures of Self-Interacting Dark Matter Subhalos",
+    "authors": "M. Yang, D. Yang, S. Hou, et al.",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Shows that compact stars can make self-interacting dark matter subhalos better strong lenses than cold dark matter ones, giving a new SIDM test.",
+    "abstract": "Self-interacting dark matter (SIDM) is generally expected to suppress subhalo strong lensing through core formation, with subsequent gravothermal collapse potentially enhancing it. We show that compact stars can make a viable population of galaxy-hosting SIDM subhalos more efficient lenses than their cold dark matter (CDM) counterparts. When the baryonic potential weakens or reverses the inner velocity-dispersion gradient, SIDM halos suppress or bypass core formation, allowing inner densities to grow from early times. The evolved SIDM subhalos produce larger deflection angles and tangential caustics than in CDM. Such galaxy-hosting subhalos also dominate the galaxy-galaxy strong-lensing (GGS",
+    "interest": [
+      "Duch"
+    ]
+  },
+  {
+    "id": "2611.26681",
+    "title": "Lost in the Signal Model: Confusion Between Deterministic and Stochastic Gravitational Wave Signals in Pulsar Timing Array Data",
+    "authors": "C. Witt, N. Pol",
+    "area": "astro-ph.HE",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Studies how a stochastic gravitational-wave background and a single supermassive black hole binary can confuse each other in pulsar timing array searches.",
+    "abstract": "With growing evidence for the presence of a gravitational wave background (GWB) in pulsar timing array (PTA) data, it is imperative to understand how this signal will act as a foreground for other GW signals, particularly those from individual supermassive black hole binaries (SMBHBs), which are predicted to be detected in the next decade. For PTAs, since these two types of signals are long-timescale persistent signals, a signal from an SMBHB system may already be present in the latest PTA datasets. In this work, we analyze how the presence of this signal could affect our detection statistics for the GWB, and how the presence of the GWB can affect our search for the SMBHB system. We find tha",
+    "interest": []
+  },
+  {
+    "id": "2611.27821",
+    "title": "Sampling non-abelian lattice gauge theories with diffusion models",
+    "authors": "G. Aarts, D. Habibi, A. Ipp, et al.",
+    "area": "hep-lat",
+    "announced": "2026-11-23",
+    "digest": "2026-11-23",
+    "gist": "Uses gauge-equivariant diffusion models to sample lattice gauge theories, working in 2D U(2) and giving first results for 4D SU(3).",
+    "abstract": "We present gauge-equivariant diffusion models as samplers for lattice gauge theories (LGTs). Using lattice gauge-equivariant convolutional neural networks (L-CNNs) and the Metropolis-adjusted annealed Langevin algorithm (MAALA), we are able to accurately sample two-dimensional U(2) field configurations and show first promising results for four-dimensional SU(3). Our two-dimensional models extrapolate remarkably well to larger inverse couplings than originally trained on. We confirm this by comparing observables to analytically known values and to hybrid Monte Carlo results.",
+    "interest": []
   }
 ]
