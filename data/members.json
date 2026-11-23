@@ -2,28 +2,14 @@
   "note": "Research interests used for 'May interest' tags. Seeded from public INSPIRE profiles; 'declared' and 'learned' are updated by the digest routine from what participants post and vote. No emails.",
   "members": [
     {
-      "name": "Giulio Marino",
-      "surname": "Marino",
-      "inspire": 2771622,
-      "github": "gmarino99",
-      "keywords": [
-        "energy and charge correlators",
-        "jet substructure and event shapes at LEP",
-        "thermal and composite dark matter",
-        "minimal dark matter indirect detection",
-        "flavour-violating dark matter (MEG-II, Mu3e)",
-        "memory-burdened primordial black holes",
-        "511 keV line and ALPs",
-        "direct detection with perovskites",
-        "Higgs/electroweak factories"
-      ],
+      "name": "Alessandro Musmeci",
+      "surname": "Musmeci",
+      "inspire": null,
+      "github": "",
+      "keywords": [],
       "declared": "",
       "learned": {
-        "likes": [
-          "QCD instantons",
-          "pulsar timing arrays",
-          "ultralight dark matter around black holes"
-        ],
+        "likes": [],
         "dislikes": []
       }
     },
@@ -158,15 +144,16 @@
       }
     },
     {
-      "name": "Fabio Bernardo",
-      "surname": "Bernardo",
-      "inspire": 2914610,
+      "name": "Enrico Trincherini",
+      "surname": "Trincherini",
+      "inspire": 1043569,
       "github": "",
       "keywords": [
-        "thermal field theory",
-        "higher-dimensional operators at finite temperature",
-        "bubble nucleation",
-        "phase transitions and gravitational waves"
+        "black hole quasinormal modes (linear and nonlinear)",
+        "gravitational effective field theories and causality/positivity bounds",
+        "modified gravity (Gauss-Bonnet) and scalar radiation",
+        "black hole superradiance and ultralight dark matter",
+        "post-Newtonian dynamics of hierarchical three-body systems"
       ],
       "declared": "",
       "learned": {
@@ -175,17 +162,16 @@
       }
     },
     {
-      "name": "Francesco Serra",
-      "surname": "Serra",
-      "inspire": 1879084,
+      "name": "Giacomo Brunello",
+      "surname": "Brunello",
+      "inspire": 2843066,
       "github": "",
       "keywords": [
-        "EFT bootstrap and positivity",
-        "causality bounds",
-        "Lorentz symmetry breaking",
-        "black holes in EFT and quasinormal modes",
-        "hierarchical three-body problem",
-        "precision sensors"
+        "post-Newtonian and post-Minkowskian gravitational dynamics",
+        "scattering amplitudes and gravitational waveforms",
+        "intersection theory and Feynman integrals",
+        "multi-loop QCD (high-energy evolution)",
+        "on-shell renormalization of EFTs (axion-like particles)"
       ],
       "declared": "",
       "learned": {
@@ -194,22 +180,28 @@
       }
     },
     {
-      "name": "Giovanni Marozzi",
-      "surname": "Marozzi",
-      "inspire": 1032299,
-      "github": "",
+      "name": "Giulio Marino",
+      "surname": "Marino",
+      "inspire": 2771622,
+      "github": "gmarino99",
       "keywords": [
-        "cosmological perturbation theory",
-        "backreaction",
-        "light-cone observables",
-        "redshift drift",
-        "ultra-slow-roll inflation",
-        "primordial black holes",
-        "weak lensing and H0"
+        "energy and charge correlators",
+        "jet substructure and event shapes at LEP",
+        "thermal and composite dark matter",
+        "minimal dark matter indirect detection",
+        "flavour-violating dark matter (MEG-II, Mu3e)",
+        "memory-burdened primordial black holes",
+        "511 keV line and ALPs",
+        "direct detection with perovskites",
+        "Higgs/electroweak factories"
       ],
       "declared": "",
       "learned": {
-        "likes": [],
+        "likes": [
+          "QCD instantons",
+          "pulsar timing arrays",
+          "ultralight dark matter around black holes"
+        ],
         "dislikes": []
       }
     },
@@ -231,6 +223,22 @@
       }
     },
     {
+      "name": "Keshav Chaudhary",
+      "surname": "Chaudhary",
+      "inspire": 3214905,
+      "github": "",
+      "keywords": [
+        "multi-TeV muon/lepton colliders",
+        "multiboson production",
+        "rare Higgs decays"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
       "name": "Leonardo Juliano",
       "surname": "Juliano",
       "inspire": 2785306,
@@ -240,6 +248,25 @@
         "black hole perturbation theory",
         "gravitational EFT positivity",
         "melonic fixed points"
+      ],
+      "declared": "",
+      "learned": {
+        "likes": [],
+        "dislikes": []
+      }
+    },
+    {
+      "name": "Majid Ekhterachian",
+      "surname": "Ekhterachian",
+      "inspire": 1677617,
+      "github": "",
+      "keywords": [
+        "composite Higgs models",
+        "cosmological phase transitions",
+        "leptogenesis and baryon asymmetry",
+        "lepton flavour and accidental symmetries",
+        "warped extra dimensions",
+        "muon collider phenomenology"
       ],
       "declared": "",
       "learned": {
@@ -306,14 +333,16 @@
       }
     },
     {
-      "name": "Pierre Bechaz",
-      "surname": "Bechaz",
-      "inspire": 2952916,
+      "name": "Paulo Ferraz",
+      "surname": "Ferraz",
+      "inspire": 2113921,
       "github": "",
       "keywords": [
-        "redshift drift",
-        "light-cone cosmology",
-        "higher-order cosmological observables"
+        "warm and lukewarm inflation",
+        "primordial black holes and gravitational waves",
+        "QCD axion cosmology",
+        "Schwinger effect in de Sitter",
+        "superheavy dark matter production during inflation"
       ],
       "declared": "",
       "learned": {
