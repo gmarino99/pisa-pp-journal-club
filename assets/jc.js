@@ -101,16 +101,18 @@
 
     // timeline
     var t0 = startOf(s);
-    var bar = "", items = "", acc = 0;
+    var bar = "", items = "", acc = 0, nt = 0;
     A.programme(S.site, s).forEach(function (a) {
+      var jump = a.kind === "talk" && a.talk ? "t" + (++nt) : a.kind === "papers" && list.length ? "p1" : a.kind === "draw" && S.members.length ? "d" : "";
       var kind = a.kind === "draw" ? "other" : a.kind;
       var from = new Date(t0.getTime() + acc * 60000); acc += a.minutes || 0;
       bar += '<span class="seg-' + kind + '" style="flex:' + (a.minutes || 1) + '"></span>';
       var detail = a.kind === "talk" ? (a.talk ? "<b>" + esc(a.talk.speaker) + "</b>" + (a.talk.title ? " — <i>" + esc(a.talk.title) + "</i>" : "") + (a.talkMinutes ? "<br>" + a.talkMinutes + "′ + questions" : "") : "No talk this week")
         : a.kind === "papers" ? list.length + " papers, about " + Math.max(2, Math.round((a.minutes || 15) / Math.max(1, list.length))) + " min each"
         : esc(a.detail || "");
-      items += '<div class="tl-item"><span class="t">' + pad(from.getHours()) + ":" + pad(from.getMinutes()) + " · " + (a.minutes || "") + "′</span>"
-        + "<h3>" + esc(a.title) + "</h3><p>" + detail + "</p></div>";
+      var tag = jump ? "button" : "div";
+      items += "<" + tag + ' class="tl-item' + (jump ? ' tl-jump" type="button" data-jump="' + jump + '" title="Present from here' : "") + '"><span class="t">' + pad(from.getHours()) + ":" + pad(from.getMinutes()) + " · " + (a.minutes || "") + "′</span>"
+        + "<h3>" + esc(a.title) + "</h3><p>" + detail + "</p>" + (jump ? '<span class="tl-go">Present from here →</span>' : "") + "</" + tag + ">";
     });
     $("timeline").innerHTML = '<div class="tl-bar" aria-hidden="true">' + bar + '</div><div class="tl-items">' + items + "</div>";
     var showDraw = s.date >= iso(new Date()) && S.members.length > 0;
@@ -220,6 +222,11 @@
     if (S.members.length) out.push({ kind: "draw", key: "d" });
     return out;
   }
+  function keyIndex(key) {
+    for (var j = 0; j < P.slides.length; j++) if (P.slides[j].key === key) return j;
+    return -1;
+  }
+  function jumpTo(key) { var j = keyIndex(key); if (j >= 0) show(j); }
   function openStage(paperIndex) {
     var s = S.current; if (!s) return;
     P.slides = buildSlides();
@@ -228,7 +235,8 @@
     document.body.style.overflow = "hidden";
     try { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
     var start = 0;
-    if (paperIndex) P.slides.some(function (x, k) { if (x.kind === "title" && x.pi === paperIndex) { start = k; return true; } return false; });
+    if (typeof paperIndex === "string") start = Math.max(0, keyIndex(paperIndex));
+    else if (paperIndex) P.slides.some(function (x, k) { if (x.kind === "title" && x.pi === paperIndex) { start = k; return true; } return false; });
     show(start);
     $("next").focus();
   }
@@ -292,10 +300,21 @@
     }
     var keys = [];
     P.slides.forEach(function (y) { if (keys.indexOf(y.key) < 0) keys.push(y.key); });
-    $("dots").innerHTML = keys.map(function (k) {
-      var lab = k === "o" ? "Overview" : k === "d" ? "Draw" : (k[0] === "t" ? "Talk " : "Paper ") + k.slice(1);
-      return '<button type="button" data-k="' + k + '" aria-label="' + lab + '"' + (k === x.key ? ' aria-current="true"' : "") + "></button>";
-    }).join("");
+    var talks = A.talksOf(s), html = "", inPapers = false;
+    keys.forEach(function (k) {
+      var cur = k === x.key ? ' aria-current="true"' : "";
+      if (k[0] === "p") {
+        if (!inPapers) { html += '<span class="nav-group"><span class="nav-lab">Papers</span>'; inPapers = true; }
+        html += '<button type="button" class="nav-num" data-k="' + k + '" aria-label="Paper ' + k.slice(1) + '"' + cur + ">" + k.slice(1) + "</button>";
+        return;
+      }
+      if (inPapers) { html += "</span>"; inPapers = false; }
+      var t = k[0] === "t" ? talks[+k.slice(1) - 1] : null;
+      var lab = k === "o" ? "Overview" : k === "d" ? "Draw" : "Talk " + k.slice(1) + (t ? " · " + String(t.speaker).split(" ").pop() : "");
+      html += '<button type="button" class="nav-pill" data-k="' + k + '"' + cur + ">" + esc(lab) + "</button>";
+    });
+    if (inPapers) html += "</span>";
+    $("dots").innerHTML = html;
     $("progress-bar").style.width = (P.slides.length > 1 ? (P.idx / (P.slides.length - 1)) * 100 : 100) + "%";
     var timed = x.kind === "talk" ? !!x.talk.minutes : x.kind === "title" || x.kind === "deck";
     $("timer").style.visibility = timed ? "visible" : "hidden";
@@ -327,14 +346,14 @@
 
   $("present-btn").addEventListener("click", function () { openStage(0); });
   document.addEventListener("click", function (e) { var b = e.target.closest("[data-open-deck]"); if (b) openStage(+b.dataset.openDeck); });
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-jump]"); if (b) openStage(b.dataset.jump); });
   $("stage-close").addEventListener("click", closeStage);
   $("prev").addEventListener("click", function () { show(P.idx - 1); });
   $("next").addEventListener("click", function () { show(P.idx + 1); });
   $("timer-btn").addEventListener("click", function () { if (P.timerId) stopTimer(); else startTimer(); });
   $("dots").addEventListener("click", function (e) {
     var b = e.target.closest("[data-k]"); if (!b) return;
-    var k = b.dataset.k;
-    P.slides.some(function (x, j) { if (x.key === k) { show(j); return true; } return false; });
+    jumpTo(b.dataset.k);
   });
   document.addEventListener("keydown", function (e) {
     if ($("stage").hidden) return;
@@ -343,6 +362,11 @@
     else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(P.idx - 1); }
     else if (e.key === " " && e.target.tagName !== "BUTTON") { e.preventDefault(); if (P.timerId) stopTimer(); else startTimer(); }
     else if (e.key === "r" || e.key === "R") { resetTimer(); }
+    else if (e.key === "o" || e.key === "O" || e.key === "Home") { e.preventDefault(); show(0); }
+    else if (e.key === "t" || e.key === "T") { jumpTo("t1"); }
+    else if (e.key === "p" || e.key === "P") { jumpTo("p1"); }
+    else if (e.key === "d" || e.key === "D" || e.key === "End") { e.preventDefault(); jumpTo("d"); }
+    else if (/^[1-9]$/.test(e.key)) { jumpTo("p" + e.key); }
   });
   // swipe on touch screens
   var touchX = null;

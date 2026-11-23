@@ -161,8 +161,13 @@ kbd { font: 500 0.75rem/1 var(--mono); padding: 3px 6px; border: 1px solid var(-
 .stage-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
 .stage-nav .ghost { width: 48px; justify-content: center; padding: 0; font-size: 1.1rem; }
 .dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.dots button { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 0; background: var(--stage-line); cursor: pointer; }
-.dots button[aria-current="true"] { background: var(--stage-ink); transform: scale(1.25); }
+.dots { align-items: center; }
+.dots button { font: 500 0.82rem/1 var(--body); color: var(--stage-mut); background: transparent; border: 1px solid var(--stage-line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.dots button:hover { color: var(--stage-ink); border-color: var(--stage-mut); }
+.dots button[aria-current="true"] { color: var(--stage-bg); background: var(--stage-ink); border-color: var(--stage-ink); }
+.dots .nav-group { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--stage-line); border-radius: 999px; padding: 3px 4px 3px 12px; }
+.dots .nav-lab { font: 500 0.82rem/1 var(--body); color: var(--stage-mut); margin-right: 4px; }
+.dots .nav-num { border: 0; width: 28px; height: 28px; padding: 0; }
 .progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: transparent; }
 .progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .35s ease; }
 
@@ -262,3 +267,10 @@ kbd { font: 500 0.75rem/1 var(--mono); padding: 3px 6px; border: 1px solid var(-
 .slide.drawslide .draw-name.picked { color: #8fb8e0; }
 .slide.drawslide .draw-pool span.on { color: var(--stage-ink); border-color: #8fb8e0; background: transparent; }
 @media (prefers-reduced-motion: reduce) { .draw-name.picked { animation: none; } }
+
+/* Timeline items open the presentation at that part */
+.tl-jump { font: inherit; color: inherit; text-align: left; cursor: pointer; display: block; width: 100%; transition: border-color .15s, transform .15s; }
+.tl-jump:hover { border-color: var(--accent); transform: translateY(-1px); }
+.tl-jump:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tl-go { display: block; margin-top: 8px; font: 500 0.78rem/1.2 var(--mono); color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .tl-jump:hover { transform: none; } }
