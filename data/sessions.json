@@ -5,7 +5,8 @@
       {
         "speaker": "Giulio Marino",
         "title": "Learning from one-point correlators: new observables at LEP",
-        "minutes": 15
+        "minutes": 15,
+        "slides": "data/talks/2026-11-24-marino-correlators.html"
       },
       {
         "speaker": "Mateusz Duch",

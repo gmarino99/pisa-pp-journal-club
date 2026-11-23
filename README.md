@@ -74,7 +74,7 @@ The site redeploys automatically within a minute or two. You can follow the prog
 | Field | Required | Meaning |
 |---|---|---|
 | `date` | yes | `YYYY-MM-DD`. Sessions are sorted by date automatically. |
-| `talks` | no | The talks that open the session, in order: `speaker`, `title` (may be `""` until the speaker sends it) and `minutes`. Use `[]` if there is no talk. The talk block of the agenda (35′) is split into one slot per talk, and the minutes left after the talks are shown as questions. Every talk counts in the "Who has presented" grid on the Speakers page. Older entries with `speaker` / `talkTitle` still work. |
+| `talks` | no | The talks that open the session, in order: `speaker`, `title` (may be `""` until the speaker sends it) and `minutes`. Use `[]` if there is no talk. The talk block of the agenda (35′) is split into one slot per talk, and the minutes left after the talks are shown as questions. Every talk counts in the "Who has presented" grid on the Speakers page. Older entries with `speaker` / `talkTitle` still work. A talk can also have `slides`: the path of a self-contained HTML deck in `data/talks/` (see below). |
 | `papers` | no | arXiv ids of the papers to discuss. Each id should also be in `papers.json`. |
 | `notes` | no | Short note shown on the Schedule page. |
 | `time`, `room`, `durationMinutes` | no | Only if different from the defaults in `site.json`. |
@@ -171,6 +171,22 @@ python3 -m http.server 8000
 git remote add origin https://github.com/<user>/<repository>.git
 git push -u origin main
 ```
+
+## Talk slides (`data/talks/*.html`)
+
+A speaker can bring their own slides as a single self-contained HTML file.
+Put it in `data/talks/` (for example `data/talks/2026-11-24-marino-correlators.html`) and add its path to the talk in `data/sessions.json`:
+
+```json
+{ "speaker": "Giulio Marino", "title": "Learning from one-point correlators", "minutes": 15, "slides": "data/talks/2026-11-24-marino-correlators.html" }
+```
+
+In the session board, **Present** then shows the slides in place of the talk's title card, so the whole session runs in one sequence.
+The arrow keys and the ← → buttons step through the talk's slides; after its last slide they move on to the next talk or to the papers, and going back re-enters the talk at its end.
+If the deck has a slide labelled "Backup", the talk ends just before it; the backup slides stay reachable from the deck's own dots and overview.
+The deck keeps its own timer and notes (keys <kbd>Space</kbd>, <kbd>R</kbd>, <kbd>N</kbd>); the session shortcuts (<kbd>O</kbd>, <kbd>T</kbd>, <kbd>P</kbd>, <kbd>D</kbd>, <kbd>1</kbd>–<kbd>9</kbd>, <kbd>Esc</kbd>) still work.
+Smooth stepping needs a deck whose slides are `<section class="slide" data-steps="…" data-label="…">` and that fires a `talk:state` event, like the example; any other HTML file is still shown, and you navigate it with the mouse.
+The file is public, like everything on the site, speaker notes included.
 
 ## Paper slides (`data/decks/<arXiv id>.json`)
 

@@ -81,6 +81,12 @@ if isinstance(sessions, list):
                 errors.append(f"{where}: talk {k + 1} needs a 'speaker'")
             elif "minutes" in t and not (isinstance(t["minutes"], int) and 0 < t["minutes"] <= 60):
                 errors.append(f"{where}: talk {k + 1}: 'minutes' must be a whole number between 1 and 60")
+            if isinstance(t, dict) and "slides" in t:
+                sl = str(t["slides"])
+                if not re.fullmatch(r"data/talks/[A-Za-z0-9._-]+\.html", sl):
+                    errors.append(f"{where}: talk {k + 1}: 'slides' must look like data/talks/<name>.html")
+                elif not (ROOT.parent / sl).is_file():
+                    errors.append(f"{where}: talk {k + 1}: slides file {sl} not found")
         for pid in s.get("papers", []):
             if pid not in ids:
                 errors.append(f"{where}: paper {pid} is not in papers.json (it will show as a bare arXiv link)")

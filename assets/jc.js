@@ -274,7 +274,7 @@
   function openStage(paperIndex) {
     var s = S.current; if (!s) return;
     P.slides = buildSlides();
-    P.paper = "";
+    P.paper = ""; P.idx = -1;
     $("stage").hidden = false;
     document.body.style.overflow = "hidden";
     try { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
@@ -293,7 +293,9 @@
     $("present-btn").focus();
   }
   function show(i) {
+    var back = i === P.idx - 1;   // arriving from the next slide: an embedded talk opens on its last slide
     P.idx = Math.max(0, Math.min(P.slides.length - 1, i));
+    E = null;
     var s = S.current, x = P.slides[P.idx], el = $("slide");
     if (window.JCDeck) window.JCDeck.stop();
     el.className = "slide"; el.removeAttribute("data-area");
@@ -311,6 +313,11 @@
             return "<li><span>" + esc(a.minutes) + "′</span>" + esc(a.title) + (d ? " · " + esc(d) : "") + "</li>";
           }).join("") + "</ol>";
       $("stage-count").textContent = "Overview";
+    } else if (x.kind === "talk" && x.talk.slides) {
+      el.classList.add("embed");
+      el.innerHTML = '<iframe src="' + esc(x.talk.slides) + '" title="' + esc("Slides: " + (x.talk.title || "Talk") + " — " + x.talk.speaker) + '" allow="fullscreen"></iframe>';
+      embed(el.firstChild, back, "Talk " + x.ti + " of " + nTalks);
+      $("stage-count").textContent = "Talk " + x.ti + " of " + nTalks;
     } else if (x.kind === "talk") {
       el.classList.add("intro");
       el.innerHTML = '<p class="eyebrow">Talk ' + x.ti + (nTalks > 1 ? " of " + nTalks : "") + (x.talk.minutes ? " · " + x.talk.minutes + " min" : "") + "</p>"
@@ -360,7 +367,7 @@
     if (inPapers) html += "</span>";
     $("dots").innerHTML = html;
     $("progress-bar").style.width = (P.slides.length > 1 ? (P.idx / (P.slides.length - 1)) * 100 : 100) + "%";
-    var timed = x.kind === "talk" ? !!x.talk.minutes : x.kind === "title" || x.kind === "deck";
+    var timed = x.kind === "talk" ? !!x.talk.minutes && !x.talk.slides : x.kind === "title" || x.kind === "deck";   // embedded slides have their own timer
     $("timer").style.visibility = timed ? "visible" : "hidden";
     if (x.key !== P.paper) {   // the timer runs per talk or per paper, across all its slides
       P.paper = x.key;
@@ -368,6 +375,63 @@
       resetTimer();
     }
   }
+  // A talk with its own HTML slides (data/talks/*.html, same origin) is shown in an iframe.
+  // Arrows step through the talk's slides; past its last step (or before its first) they move on in the session.
+  var E = null;
+  function embed(frame, back, label) {
+    var e = E = { frame: frame, win: null, slide: 0, step: 0, n: 0, end: 0, last: 0, lastAll: 0, quiet: false };
+    frame.addEventListener("load", function () {
+      if (E !== e) return;
+      try {
+        var w = frame.contentWindow, d = w.document, sl = d.querySelectorAll(".slide");
+        var steps = function (k) { return sl[k] ? (+sl[k].getAttribute("data-steps") || 0) : 0; };
+        e.win = w; e.n = sl.length; e.end = sl.length - 1;
+        // The talk ends before a slide labelled "Backup": backup slides stay reachable from the slides' own dots and overview.
+        for (var b = 1; b < sl.length; b++) if (/^\s*backup\s*$/i.test(sl[b].getAttribute("data-label") || "")) { e.end = b - 1; break; }
+        e.last = steps(e.end); e.lastAll = steps(sl.length - 1);
+        d.addEventListener("talk:state", function (ev) {
+          e.slide = ev.detail.slide; e.step = ev.detail.step;
+          if (E === e) $("stage-count").textContent = label + " · " + (e.slide > e.end ? "backup " + (e.slide - e.end) : "slide " + (e.slide + 1) + "/" + (e.end + 1));
+        });
+        w.addEventListener("keydown", function (ev) {
+          if (e.quiet || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+          if (embedKey(ev.key, true)) { ev.preventDefault(); ev.stopImmediatePropagation(); }
+        }, true);
+        var tx = null;
+        w.addEventListener("touchstart", function (ev) { tx = ev.touches[0].clientX; }, { capture: true, passive: true });
+        w.addEventListener("touchend", function (ev) {
+          if (tx == null) return; var dx = ev.changedTouches[0].clientX - tx; tx = null;
+          if (dx < -50 && atEnd()) show(P.idx + 1); else if (dx > 50 && atStart()) show(P.idx - 1);
+        }, { capture: true, passive: true });
+        if (back) {
+          var dot = d.getElementById("dots"); dot = dot && dot.children[e.end];
+          if (dot) dot.click(); else press("End");
+          for (var k = 0; k < e.last; k++) press("ArrowRight");
+        }
+        $("stage-count").textContent = label + " · " + (e.slide > e.end ? "backup " + (e.slide - e.end) : "slide " + (e.slide + 1) + "/" + (e.end + 1));
+        w.focus();
+      } catch (err) { /* not same-origin or no deck engine: the slides still work with the mouse */ }
+    });
+  }
+  function atStart() { return !E || !E.win || (E.slide === 0 && E.step === 0); }
+  function atEnd() { return !E || !E.win || (E.slide === E.end && E.step >= E.last) || (E.slide >= E.n - 1 && E.step >= E.lastAll); }
+  function press(key) {
+    if (!E || !E.win) return;
+    E.quiet = true;
+    try { E.win.dispatchEvent(new E.win.KeyboardEvent("keydown", { key: key, bubbles: true, cancelable: true })); } finally { E.quiet = false; }
+  }
+  // Returns true when the key was used. fromFrame: the key was pressed inside the slides.
+  function embedKey(k, fromFrame) {
+    var fwd = k === "ArrowRight" || k === "PageDown" || (fromFrame && k === "Enter");
+    var bwd = k === "ArrowLeft" || k === "PageUp";
+    if (fwd) { if (atEnd()) { show(P.idx + 1); return true; } if (!fromFrame) { press("ArrowRight"); return true; } return false; }
+    if (bwd) { if (atStart()) { show(P.idx - 1); return true; } if (!fromFrame) { press("ArrowLeft"); return true; } return false; }
+    if (k === " " || k === "r" || k === "R" || k === "n" || k === "N") { if (!fromFrame) press(k); return !fromFrame; }   // the slides' own timer and notes
+    if (fromFrame && (k === "Escape" || /^[oOtTpPdD1-9]$/.test(k))) { stageKey(k); return true; }   // session shortcuts work inside the slides too
+    return false;
+  }
+  function stepNext() { if (!(E && embedKey("ArrowRight", false))) show(P.idx + 1); }
+  function stepPrev() { if (!(E && embedKey("ArrowLeft", false))) show(P.idx - 1); }
   function shortTitle(t) { t = String(t || ""); return t.length > 48 ? t.slice(0, 46) + "…" : t; }
 
   // timer
@@ -392,8 +456,8 @@
   document.addEventListener("click", function (e) { var b = e.target.closest("[data-open-deck]"); if (b) openStage(+b.dataset.openDeck); });
   document.addEventListener("click", function (e) { var b = e.target.closest("[data-jump]"); if (b) openStage(b.dataset.jump); });
   $("stage-close").addEventListener("click", closeStage);
-  $("prev").addEventListener("click", function () { show(P.idx - 1); });
-  $("next").addEventListener("click", function () { show(P.idx + 1); });
+  $("prev").addEventListener("click", stepPrev);
+  $("next").addEventListener("click", stepNext);
   $("timer-btn").addEventListener("click", function () { if (P.timerId) stopTimer(); else startTimer(); });
   $("dots").addEventListener("click", function (e) {
     var b = e.target.closest("[data-k]"); if (!b) return;
@@ -402,23 +466,30 @@
   document.addEventListener("keydown", function (e) {
     if ($("stage").hidden) return;
     if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName) && e.key !== "Escape") return;   // typing a name in the draw
-    if (e.key === "Escape") { e.preventDefault(); closeStage(); }
-    else if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(P.idx + 1); }
-    else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(P.idx - 1); }
-    else if (e.key === " " && e.target.tagName !== "BUTTON") { e.preventDefault(); if (P.timerId) stopTimer(); else startTimer(); }
-    else if (e.key === "r" || e.key === "R") { resetTimer(); }
-    else if (e.key === "o" || e.key === "O" || e.key === "Home") { e.preventDefault(); show(0); }
-    else if (e.key === "t" || e.key === "T") { jumpTo("t1"); }
-    else if (e.key === "p" || e.key === "P") { jumpTo("p1"); }
-    else if (e.key === "d" || e.key === "D" || e.key === "End") { e.preventDefault(); jumpTo("d"); }
-    else if (/^[1-9]$/.test(e.key)) { jumpTo("p" + e.key); }
+    if (E && (e.key !== " " || e.target.tagName !== "BUTTON") && embedKey(e.key, false)) { e.preventDefault(); return; }
+    if (e.key === " " && e.target.tagName === "BUTTON") return;
+    if (stageKey(e.key)) e.preventDefault();
   });
+  function stageKey(k) {
+    if (k === "Escape") closeStage();
+    else if (k === "ArrowRight" || k === "PageDown") show(P.idx + 1);
+    else if (k === "ArrowLeft" || k === "PageUp") show(P.idx - 1);
+    else if (k === " ") { if (P.timerId) stopTimer(); else startTimer(); }
+    else if (k === "r" || k === "R") resetTimer();
+    else if (k === "o" || k === "O" || k === "Home") show(0);
+    else if (k === "t" || k === "T") jumpTo("t1");
+    else if (k === "p" || k === "P") jumpTo("p1");
+    else if (k === "d" || k === "D" || k === "End") jumpTo("d");
+    else if (/^[1-9]$/.test(k)) jumpTo("p" + k);
+    else return false;
+    return true;
+  }
   // swipe on touch screens
   var touchX = null;
   $("stage").addEventListener("touchstart", function (e) { touchX = e.touches[0].clientX; }, { passive: true });
   $("stage").addEventListener("touchend", function (e) {
     if (touchX == null) return; var dx = e.changedTouches[0].clientX - touchX; touchX = null;
-    if (Math.abs(dx) > 50) show(P.idx + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 50) { if (dx < 0) stepNext(); else stepPrev(); }
   });
 
   /* ---------- load ---------- */
