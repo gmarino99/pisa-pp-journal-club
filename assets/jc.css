@@ -258,14 +258,24 @@ kbd { font: 500 0.75rem/1 var(--mono); padding: 3px 6px; border: 1px solid var(-
 .draw-name.rolling { color: var(--mut); }
 .draw-name.picked { color: var(--accent); animation: draw-pop .5s ease both; }
 .draw-pool { display: flex; flex-wrap: wrap; gap: 6px; }
-.draw-pool span { font-size: 0.82rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--mut); }
-.draw-pool span.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.draw-pool button { font: 0.82rem/1.2 var(--body); padding: 5px 10px; border-radius: 999px; border: 1px dashed var(--line); color: var(--mut); background: transparent; cursor: pointer; text-decoration: line-through; opacity: .7; }
+.draw-pool button small { font-family: var(--mono); opacity: .8; }
+.draw-pool button.in { border-style: solid; color: var(--ink); text-decoration: none; opacity: 1; }
+.draw-pool button.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.draw-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.draw-tools .ghost { padding: 6px 12px; font-size: 0.85rem; }
+.draw-add { display: inline-flex; gap: 6px; }
+.draw-add input, .draw-vol select { font: 0.88rem var(--body); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); min-width: 0; width: 11em; }
+.draw-vol { display: inline-flex; gap: 6px; align-items: center; font-size: 0.85rem; color: var(--mut); }
+.draw-note { font-size: 0.8rem !important; }
 @keyframes draw-pop { from { transform: scale(.92); opacity: .4; } to { transform: none; opacity: 1; } }
 .slide.drawslide .draw { background: transparent; border-color: var(--stage-line); }
-.slide.drawslide .draw p, .slide.drawslide .draw-pool span { color: var(--stage-mut); border-color: var(--stage-line); }
+.slide.drawslide .draw p, .slide.drawslide .draw-pool button, .slide.drawslide .draw-vol { color: var(--stage-mut); border-color: var(--stage-line); }
+.slide.drawslide .draw-pool button.in { color: var(--stage-ink); }
+.slide.drawslide .draw-add input, .slide.drawslide .draw-vol select { background: transparent; color: var(--stage-ink); border-color: var(--stage-line); }
 .slide.drawslide .draw-name { color: var(--stage-ink); font-size: clamp(2rem, 5vw, 3.6rem); }
 .slide.drawslide .draw-name.picked { color: #8fb8e0; }
-.slide.drawslide .draw-pool span.on { color: var(--stage-ink); border-color: #8fb8e0; background: transparent; }
+.slide.drawslide .draw-pool button.on { color: var(--stage-ink); border-color: #8fb8e0; background: transparent; }
 @media (prefers-reduced-motion: reduce) { .draw-name.picked { animation: none; } }
 
 /* Timeline items open the presentation at that part */

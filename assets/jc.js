@@ -167,34 +167,64 @@
   }
 
   /* ---------- draw of next week's speaker ---------- */
-  // Fair draw among the participants who are not already scheduled and have presented least.
-  // The result is shown, not saved: the chair records it in data/sessions.json.
+  // By default the draw is among participants not already scheduled who have presented least.
+  // The chair can tick names in or out, add a name, or pick a volunteer directly.
+  // Nothing is saved: the chair records the result in data/sessions.json.
   function nextSession(s) { return S.sessions.find(function (x) { return x.date > s.date; }); }
-  function drawPanel(el, onStage) {
-    var s = S.current, d = A.drawPool(S.sessions, S.members, s.date), nx = nextSession(s);
-    var when = nx ? fmt(nx.date, { weekday: "long", day: "numeric", month: "long" }) : "next week";
-    var times = d.min === 0 ? "have not presented yet" : "have presented " + d.min + " time" + (d.min > 1 ? "s" : "");
-    el.innerHTML = '<h2 id="' + (onStage ? "draw-h-stage" : "draw-h") + '">Next week\'s speaker</h2>'
-      + "<p>A short presentation on " + esc(when) + ". The name is drawn among the " + d.pool.length + " participants who " + times
-      + " and are not already scheduled (see the count on the Speakers page).</p>"
-      + '<div class="draw-row"><button type="button" class="primary" data-draw>Draw a name</button>'
-      + '<span class="draw-name" aria-live="polite"></span></div>'
-      + '<div class="draw-pool">' + d.pool.map(function (r) { return "<span>" + esc(r.name) + "</span>"; }).join("") + "</div>";
-    el._pool = d.pool;
+  function drawState() {
+    var s = S.current;
+    if (S.draw && S.draw.date === s.date) return S.draw;
+    var d = A.drawPool(S.sessions, S.members, s.date);
+    var T = A.tally(S.sessions, S.members, s.date);
+    var names = T.rows.filter(function (r) { return r.member; }).map(function (r) { return { name: r.name, total: r.total, planned: r.planned }; })
+      .sort(function (x, y) { return x.total - y.total || x.name.localeCompare(y.name); });
+    var on = {};
+    d.pool.forEach(function (r) { on[r.name] = true; });
+    S.draw = { date: s.date, names: names, on: on, min: d.min, result: "" };
+    return S.draw;
   }
+  function drawPanel(el, onStage) {
+    var s = S.current, st = drawState(), nx = nextSession(s);
+    var when = nx ? fmt(nx.date, { weekday: "long", day: "numeric", month: "long" }) : "next week";
+    var pool = st.names.filter(function (r) { return st.on[r.name]; });
+    el.innerHTML = '<h2 id="' + (onStage ? "draw-h-stage" : "draw-h") + '">Next week\'s speaker</h2>'
+      + "<p>A short presentation on " + esc(when) + ". Pre-selected: who has presented least and is not already scheduled. "
+      + "Click a name to put it in or take it out of the draw; the number is how many times that person has presented.</p>"
+      + '<div class="draw-row"><button type="button" class="primary" data-draw' + (pool.length ? "" : " disabled") + ">Draw among " + pool.length + "</button>"
+      + '<span class="draw-name' + (st.result ? " picked" : "") + '" aria-live="polite">' + esc(st.result) + "</span></div>"
+      + '<div class="draw-pool" role="group" aria-label="Names in the draw">' + st.names.map(function (r, i) {
+          return '<button type="button" data-toggle="' + i + '" aria-pressed="' + !!st.on[r.name] + '" class="' + (st.on[r.name] ? "in" : "") + (r.name === st.result ? " on" : "") + '">'
+            + esc(r.name) + " <small>" + r.total + (r.planned ? "*" : "") + "</small></button>";
+        }).join("") + "</div>"
+      + '<div class="draw-tools">'
+      + '<button type="button" class="ghost" data-pool="all">Everyone</button><button type="button" class="ghost" data-pool="none">No one</button><button type="button" class="ghost" data-pool="fair">Reset</button>'
+      + '<form class="draw-add" data-add><label class="visually-hidden" for="add-' + (onStage ? "s" : "b") + '">Add a name</label>'
+      + '<input id="add-' + (onStage ? "s" : "b") + '" placeholder="Add a name" maxlength="60" autocomplete="off"><button type="submit" class="ghost">Add</button></form>'
+      + '<span class="draw-vol"><label for="vol-' + (onStage ? "s" : "b") + '">Volunteer</label><select id="vol-' + (onStage ? "s" : "b") + '" data-volunteer><option value="">choose…</option>'
+      + st.names.map(function (r, i) { return '<option value="' + i + '">' + esc(r.name) + "</option>"; }).join("") + "</select></span>"
+      + "</div>"
+      + (st.names.some(function (r) { return r.planned; }) ? '<p class="draw-note">* already scheduled in a coming session.</p>' : "");
+  }
+  function redrawPanels() { document.querySelectorAll(".draw").forEach(function (el) { if (!el.hidden) drawPanel(el, !!el.closest(".slide")); }); }
   var rolling = null;
   document.addEventListener("click", function (e) {
+    var st = S.draw; if (!st || rolling) return;
+    var t = e.target.closest("[data-toggle]");
+    if (t) { var r = st.names[+t.dataset.toggle]; st.on[r.name] = !st.on[r.name]; redrawPanels(); return; }
+    var pb = e.target.closest("[data-pool]");
+    if (pb) {
+      var m = pb.dataset.pool;
+      st.names.forEach(function (r) { st.on[r.name] = m === "all" ? !r.planned : m === "none" ? false : (!r.planned && r.total === st.min); });
+      redrawPanels(); return;
+    }
     var b = e.target.closest("[data-draw]"); if (!b) return;
-    var box = b.closest(".draw"), pool = box._pool || [], out = box.querySelector(".draw-name"), chips = box.querySelectorAll(".draw-pool span");
-    if (!pool.length || rolling) return;
+    var box = b.closest(".draw"), out = box.querySelector(".draw-name");
+    var pool = st.names.filter(function (r) { return st.on[r.name]; });
+    if (!pool.length) return;
+    var chips = Array.prototype.filter.call(box.querySelectorAll("[data-toggle]"), function (c) { return st.on[st.names[+c.dataset.toggle].name]; });
     var win = A.drawOne(pool), k = 0, n = 0, steps = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 22;
     b.disabled = true; out.className = "draw-name rolling";
-    function done() {
-      rolling = null;
-      chips.forEach(function (c, j) { c.classList.toggle("on", pool[j] === win); });
-      out.className = "draw-name picked"; out.textContent = win.name;
-      b.disabled = false; b.textContent = "Draw again";
-    }
+    function done() { rolling = null; st.result = win.name; redrawPanels(); }
     if (!steps) { done(); return; }
     (function tick() {
       k = (k + 1) % pool.length; n += 1;
@@ -202,6 +232,19 @@
       out.textContent = pool[k].name;
       rolling = n < steps ? setTimeout(tick, 40 + n * n / 3) : (done(), null);
     })();
+  });
+  document.addEventListener("submit", function (e) {
+    var f = e.target.closest("[data-add]"); if (!f) return;
+    e.preventDefault();
+    var st = S.draw, v = f.querySelector("input").value.replace(/\s+/g, " ").trim();
+    if (!st || !v) return;
+    var ex = st.names.find(function (r) { return r.name.toLowerCase() === v.toLowerCase(); });
+    if (!ex) { ex = { name: v, total: 0, planned: 0 }; st.names.push(ex); }
+    st.on[ex.name] = true; redrawPanels();
+  });
+  document.addEventListener("change", function (e) {
+    var sel = e.target.closest("[data-volunteer]"); if (!sel || !S.draw || sel.value === "") return;
+    S.draw.result = S.draw.names[+sel.value].name + " (volunteer)"; redrawPanels();
   });
 
   /* ---------- presentation ---------- */
@@ -357,6 +400,7 @@
   });
   document.addEventListener("keydown", function (e) {
     if ($("stage").hidden) return;
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName) && e.key !== "Escape") return;   // typing a name in the draw
     if (e.key === "Escape") { e.preventDefault(); closeStage(); }
     else if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(P.idx + 1); }
     else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(P.idx - 1); }
