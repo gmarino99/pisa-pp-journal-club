@@ -10,6 +10,9 @@ on:
     - cron: "10 5 * * 1-5"
     - cron: "30 4 * * 1-5"
     - cron: "30 5 * * 1-5"
+    # More spare attempts, because GitHub can skip or delay the early ones by hours: every hour at :25 from 05:25 to 08:25 UTC
+    # (06:25-09:25 Rome in winter, 07:25-10:25 in summer), so the 10:50 catch-up digest normally finds the feed.
+    - cron: "25 5-8 * * 1-5"
   workflow_dispatch:
 
 permissions:
