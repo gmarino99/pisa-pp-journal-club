@@ -353,5 +353,197 @@
     "gist": "Uses gauge-equivariant diffusion models to sample lattice gauge theories, working in 2D U(2) and giving first results for 4D SU(3).",
     "abstract": "We present gauge-equivariant diffusion models as samplers for lattice gauge theories (LGTs). Using lattice gauge-equivariant convolutional neural networks (L-CNNs) and the Metropolis-adjusted annealed Langevin algorithm (MAALA), we are able to accurately sample two-dimensional U(2) field configurations and show first promising results for four-dimensional SU(3). Our two-dimensional models extrapolate remarkably well to larger inverse couplings than originally trained on. We confirm this by comparing observables to analytically known values and to hybrid Monte Carlo results.",
     "interest": []
+  },
+  {
+    "id": "2611.28211",
+    "title": "Revealing Dark Matter in the Dark-Electron Rate of Xenon Detectors",
+    "authors": "L. Santos-Olmsted, R. Leane, C. Blanco, et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Argues that xenon detectors should use the full single-electron 'dark-electron' rate, not severely cut data, to probe sub-GeV dark matter scattering on electrons, with much better reach.",
+    "abstract": "There is high interest in improving experimental sensitivity to sub-GeV dark matter (DM) that scatters with electrons, as compelling theoretical models seem within reach. At the lowest DM masses, most of the expected signal lies in the single-electron regime, but so do large backgrounds. Xenon experiments therefore either do not yet search there at all or, as in XENONnT, apply cuts so severe that only $\\sim$$10^{-4}$ of the exposure is retained, with sensitivity set by the criterion $S \\lesssim B$, where those are the signal and background counts. We advocate that xenon detectors instead utilize most of their dark-electron rate (i.e., the total raw electron hit rate) and perform an annual-mo",
+    "interest": [
+      "Di Lecce",
+      "Panci"
+    ]
+  },
+  {
+    "id": "2611.30113",
+    "title": "Superheavy gravitational dark matter from runaway bubble collisions",
+    "authors": "C. Chiang, V. Tran",
+    "area": "hep-ph",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Shows that gravity alone can produce superheavy dark matter, up to about 10^17 GeV, through graviton exchange in collisions of runaway bubble walls.",
+    "abstract": "A stable particle that couples only through gravity is pair-produced in collisions of runaway bubble walls by graviton exchange. For a transition of duration $1/\\beta$, a Dirac fermion reaches the yield $Y_X\\simeq6.8\\times10^{-3}(H/\\beta)(T_{\\rm reh}/M_{\\rm P})^3$, where $H$ is the Hubble rate of the vacuum energy, $T_{\\rm reh}$ the reheating temperature and $M_{\\rm P}$ the reduced Planck mass. The yield is flat up to masses near $(H/\\beta)M_{\\rm P}/\\nu^2$, where $\\nu$ of order one sets the wall-field excursion. Gravity alone then gives dark matter up to about $10^{17}$~GeV at reheating temperatures far below its mass, where freeze-in fails.",
+    "interest": [
+      "Ferraz",
+      "Strumia"
+    ]
+  },
+  {
+    "id": "2611.29072",
+    "title": "A billion colour states: exact soft-gluon evolution beyond leading colour for many-jet QCD",
+    "authors": "B. Chargeishvili",
+    "area": "hep-ph",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "New method for orthogonal colour bases that computes one-loop soft-gluon evolution exactly in full colour for many-jet QCD processes, keeping all colour interference.",
+    "abstract": "We present a new method, and its implementation, for constructing orthogonal colour bases and computing colour factors for any process with quarks, antiquarks and gluons, and use it to compute one-loop soft-gluon evolution exactly in full colour, keeping all colour interference. Each basis vector is labelled, independently of $N_c$, by the sequence of colour representations that appear when the partons are coupled one at a time. We derive a closed formula for the norms of the basis vectors, and colour operators act only on the part of a label between the partons involved, through small tables. Basis vectors can therefore be generated and used one at a time, without listing the complete basis",
+    "interest": [
+      "Marino",
+      "Brunello"
+    ]
+  },
+  {
+    "id": "2611.28214",
+    "title": "Vector boson scattering in composite Higgs models",
+    "authors": "R. Caliri, M. Kunkel, W. Porod",
+    "area": "hep-ph",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Studies WZjj vector boson scattering in composite Higgs models with an underlying fermionic description; distribution tails deviate from the SM even when resonances lie beyond LHC reach.",
+    "abstract": "Vector boson scattering is a powerful tool to test the mechanism of electroweak symmetry breaking. We focus on Composite Higgs models with an underlying fermionic description and assume that only one pseudo Nambu-Goldstone boson contributes to electroweak symmetry breaking, which we identify as the Higgs state of the Standard Model. In these scenarios, LHC data imply lower bounds on the predicted resonances below 2 TeV depending on the scenario. Using $WZjj$ production as a benchmark, we demonstrate that the tails of various distributions nevertheless show significant deviations from Standard Model predictions. This holds in particular for the case of longitudinally polarised vector bosons.",
+    "interest": [
+      "Ekhterachian",
+      "Chaudhary"
+    ]
+  },
+  {
+    "id": "2611.28208",
+    "title": "Bring Your Own Instanton: Monopole Catalysis from Sourced SU(2) Instantons",
+    "authors": "C. Csáki, L. Kiriliuk, Z. Liu, et al.",
+    "area": "hep-th",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Shows monopole catalysis of proton decay proceeds through new 'sourced SU(2) instantons' carrying unit instanton number, without exponential suppression.",
+    "abstract": "We show that Rubakov-Callan catalysis of proton decay in the field of a 't Hooft-Polyakov monopole proceeds through \"sourced SU(2) instantons\", which are novel topological gauge configurations sourced by fermions and carrying unit instanton number. Unlike vacuum BPST instantons, these sourced instantons do not give rise to exponentially suppressed rates. We relate the winding number to the number of fermionic zero modes, suggesting an underlying index theorem for sourced instantons. We also calculate the closed-form expression for the leading-order correlator for fermion insertions both outside and inside the monopole core. Our results indicate that Rubakov-Callan catalysis is an IR effect w",
+    "interest": [
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.29670",
+    "title": "Quadratic-in-spin scattering of compact bodies at fourth post-Minkowskian order",
+    "authors": "T. Ahmed, S. Hasan",
+    "area": "hep-th",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Computes the 4PM scattering angle of aligned spinning compact bodies through quadratic spin, including radiation reaction and spin-induced quadrupoles.",
+    "abstract": "We present the fourth-post-Minkowskian scattering angle of aligned spinning compact bodies through quadratic spin at arbitrary velocity and mass ratio. We include spin-induced quadrupoles and radiation reaction, supplemented by curvature-squared spin-tidal terms. Three-loop worldline integrals yield closed forms in polylogarithms and elliptic integrals. Infrared poles cancel exactly, fixing the tail logarithm. We obtain a new post-Newtonian coefficient and third-order angular-momentum loss for general quadrupoles. The new input shifts resummed predictions for black-hole scattering.",
+    "interest": [
+      "Brunello"
+    ]
+  },
+  {
+    "id": "2611.28205",
+    "title": "The Gradient Structure of Perturbative RG Flows",
+    "authors": "L. Benfatto, W. Pannell, A. Stergiou",
+    "area": "hep-th",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Shows perturbative RG flows are exact gradient flows to all orders, by removing the long-standing antisymmetric obstruction with a scheme choice via a sphere Ward identity.",
+    "abstract": "Weyl consistency conditions show that perturbative renormalisation group flows in two, four and six dimensions are almost gradient flows. The obstruction is an antisymmetric contribution to the metric on the space of couplings, which has resisted removal since the work of Jack and Osborn more than 35 years ago. We show that a conformal Ward identity on the sphere allows it to be removed by a choice of scheme. The beta function is then the gradient of a potential $A$ with respect to a symmetric metric, to all orders in perturbation theory. The Ward identity gives this result in any dimension $d$, in theories with and without a Weyl anomaly. At leading order the metric is fixed by the two-poin",
+    "interest": [
+      "Vichi"
+    ]
+  },
+  {
+    "id": "2611.30272",
+    "title": "Lorentz-invariant fiducial decay selection for the ATLAS $H\\to ZZ^{*}\\to 4\\ell$ STXS measurement",
+    "authors": "ATLAS Collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Recasts ATLAS H→ZZ*→4ℓ STXS results into a Lorentz-invariant fiducial region, so EFT interpretations no longer depend on Standard Model decay acceptance.",
+    "abstract": "ATLAS measurements of Higgs boson production-mode cross-sections and Simplified Template Cross Sections (STXS), $\\sigma\\cdot B$, in the $H\\to ZZ^{*}\\to 4\\ell$ decay channel rely on selection factors that fold in a decay-side fiducial acceptance evaluated with Standard Model decay kinematics. In an effective-field-theory interpretation that acceptance depends on the Wilson coefficients themselves. We recast these production-side $\\sigma\\cdot B$ results into a single Lorentz-invariant fiducial (LIF) decay region defined by the $H\\to 4\\ell$ decay, absorbing the EFT-dependent fiducial acceptance into the signal parametrisation, while the remaining reconstruction-efficiency corrections are shown ",
+    "interest": [
+      "Barducci",
+      "Buttazzo"
+    ]
+  },
+  {
+    "id": "2611.28500",
+    "title": "Design of a Resonator Array Axion Haloscope and its Projected Sensitivity from 2 to 4 GHz",
+    "authors": "ADMX Collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Presents the design of an 18-cavity ADMX haloscope with coherent signal combination and its projected sensitivity to QCD axion dark matter at 2-4 GHz.",
+    "abstract": "The QCD axion is a dark matter (DM) candidate particle which can also solve the long-standing strong charge-parity problem. The Axion Dark Matter eXperiment (ADMX) searches for resonantly-enhanced conversion of axion DM into photons in a strong magnetic field. Previous versions of the experiment probed most QCD axion DM from 2.7 $\\mu$eV to 4.2 $\\mu$eV, with ongoing and planned runs poised to cover up to 8 $\\mu$eV (2 GHz). We present the design of a haloscope with 18 cavities 1 m in length read out using individual low-noise amplifier chains and digital coherent signal combination called ADMX extended frequency range (EFR). We discuss details on magnet and cryogenic infrastructure, cavity des",
+    "interest": [
+      "Strumia",
+      "Zantedeschi"
+    ]
+  },
+  {
+    "id": "2611.29052",
+    "title": "Quasinormal Modes and Excitation Factors of a Parity-Symmetric Beyond-Horndeski Black Hole",
+    "authors": "R. Konoplya, M. Skvortsova",
+    "area": "gr-qc",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Computes quasinormal modes and excitation factors of a beyond-Horndeski black hole using several cross-checked methods, relevant for ringdown tests of modified gravity.",
+    "abstract": "We study scalar, electromagnetic, and Dirac perturbations of an asymptotically flat black hole in parity-symmetric beyond-Horndeski gravity. The quasinormal spectrum is computed with very-high-order WKB expansions and Pad\\'e resummation, with Ces\\`aro means used to diagnose internal convergence. The dominant modes are independently tested by time-domain evolution with Prony extraction and by Chebyshev pseudospectral collocation; the latter also provides systematic frequency scans in both the metric-scale and physical ADM-mass normalizations. Excitation factors are obtained separately from Green-function residues by complex-contour integration. In the fixed metric-scale normalization, approac",
+    "interest": [
+      "Trincherini",
+      "Juliano"
+    ]
+  },
+  {
+    "id": "2611.29939",
+    "title": "Ionization of gravitational atoms by a companion-sourced Yukawa potential",
+    "authors": "Y. Wang, J. Yao",
+    "area": "gr-qc",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Studies how an extra Yukawa force from a binary companion changes ionization of ultralight-boson clouds around spinning black holes, altering orbital energy extraction.",
+    "abstract": "Superradiant instabilities around rotating black holes can produce clouds of ultralight bosons bound by the black hole's gravitational field. A binary companion can ionize these clouds by driving transitions into continuum states in the black hole's 1/r gravitational potential, extracting energy and angular momentum from the orbit. We investigate how a companion-sourced Yukawa interaction modifies this process. At weak coupling, the interference term between the gravitational and Yukawa transition amplitudes provides the leading correction to the ionization power. For the orbital frequencies here, an attractive interaction enhances continuum ionization and accelerates the inspiral, whereas a",
+    "interest": [
+      "Trincherini",
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.31196",
+    "title": "Optimal Statistic for a Stochastic Gravitational Wave Background using Pulsar-Timing--Astrometry Cross Correlations",
+    "authors": "K. Boddy, J. Hazboun, K. Pardo",
+    "area": "gr-qc",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Builds an optimal cross-correlation statistic combining pulsar timing and astrometric stellar deflections to search for a stochastic gravitational wave background.",
+    "abstract": "Astrometric measurements have emerged as a viable probe of gravitational waves (GWs), complementing pulsar timing searches by providing overlapping and higher GW frequency coverage. At its core, the search for GWs using astrometry is very similar to the search with pulsar timing data: GWs induce a change in pulse arrival times along the line of sight to a pulsar and a transverse angular deflection in the apparent position of a star. In analogy to pulsar timing, we develop a correlation statistic between pairs of stellar deflections for astrometry to search for a stochastic GW background. With a common formalism for both astrometry and pulsar timing, we also develop the cross-correlation stat",
+    "interest": [
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.31130",
+    "title": "The Sensitivity of Gamma-Ray Searches for Dark Matter Annihilation in Milky Way Dwarf Galaxies: the LSST Era and Beyond",
+    "authors": "I. Chavez, A. Ghosh, C. Kelso, et al.",
+    "area": "astro-ph.HE",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Forecasts how LSST-discovered dwarf galaxies affect gamma-ray limits on dark matter annihilation, finding modest gains (below 20%) in most cases.",
+    "abstract": "We forecast the sensitivity of gamma-ray searches to dark matter annihilation in Milky Way satellite dwarf galaxies using BabyBison, a Monte Carlo pipeline combining cosmological satellite simulations and observational selection functions with a joint likelihood analysis of gamma-ray data. Although LSST is expected to substantially expand the catalog of known satellite galaxies, we find that these discoveries are likely to produce only modest improvements in the resulting dark matter annihilation constraints, typically below 20\\%. Much more substantial gains are possible, however, in relatively rare realizations that contain yet-to-be-discovered satellites with large $J$-factors. These resul",
+    "interest": [
+      "Gaggero",
+      "Panci"
+    ]
+  },
+  {
+    "id": "2611.30487",
+    "title": "Constraints on ultralight dark matter couplings from orbital perturbations of binary pulsars",
+    "authors": "F. Huxhagen, D. López Nacir",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-24",
+    "digest": "2026-11-24",
+    "gist": "Uses NANOGrav 15-yr binary pulsar timing to constrain ultralight dark matter couplings (scalar and B-L vector) for masses 10^-23 to 10^-18 eV.",
+    "abstract": "Ultralight dark matter coupled directly to ordinary matter perturbs the orbits of binary pulsars, and the perturbation grows secularly when its frequency matches a harmonic of the orbital motion. We use this effect to constrain three couplings with the wideband timing data for the $50$ binary pulsars of the NANOGrav 15 yr data set: a linear and a quadratic universal coupling of a scalar field to matter, and a vector field coupled to baryon minus lepton number ($B-L$). For every system and for masses between $10^{-23}$ and $10^{-18}\\,$eV, we build the timing signature from the perturbed orbital elements. We then sample the coupling together with the local amplitude, phase and direction of the",
+    "interest": [
+      "Marino",
+      "Zantedeschi"
+    ]
   }
 ]
