@@ -1,0 +1,130 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\newcommand{\referee}[1]{\begin{quote}\itshape\color{black!70}#1\end{quote}}
+\newcommand{\Hf}{\mathcal{H}}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Reply to the Referees}\\[4pt]
+Manuscript DT13405 --- ``Higgs radial modes and the UV completion of non-linear sigma models''\\
+G.~Marino
+\end{center}
+
+Dear Editor,
+
+I thank both Referees for their careful reading of the manuscript and for their comments, which led to a substantial revision of the paper. Before answering point by point, I summarize the main changes.
+
+\section*{Summary of the main changes}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Uniform proof for the three cosets.} The cancellation of the $\mathcal{O}(E^2)$ growth is now proven for $SU(N)\times SU(N)/SU(N)$, $SU(N)/SO(N)$ and $SU(2N)/Sp(2N)$ at once (new Lemma~1, Sec.~V). The proof rests on a trace identity for the broken generators,
+\[
+f^{ABI}f^{CDI}=d^{ACE}d^{BDE}-d^{ADE}d^{BCE},
+\]
+which holds in the three cases because the broken generators, together with the identity, close under anticommutation (they form the Jordan algebras of Hermitian matrices over $\mathbb{C}$, $\mathbb{R}$, $\mathbb{H}$). We also give the exact tree-level $\pi\pi\to\pi\pi$ amplitude in closed form [Eq.~(25)].
+
+\item \textbf{Correction of an error in the original derivation.} While revising the paper I found that the original Eqs.~(1.8)--(1.9), $d^{abe}d^{cde}=A\,\delta^{ab}\delta^{cd}+B(\delta^{ac}\delta^{bd}+\delta^{ad}\delta^{bc})$ and $f^{abi}f^{cdi}=\tilde C(\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc})$, are \emph{not} tensor identities for $N\ge3$. They are isotropic averages, obtained by fixing $A,B$ from contractions, and are exact only for $N=2$. As a consequence, the original ``main result'' Eq.~(2.27) was true by the definition~(1.10) of $\tilde C$ and did not constitute a proof. The physical conclusion is nevertheless correct: it follows from the exact identity above, which was already quoted as Eq.~(1.7) of the original manuscript. The revised paper uses only exact relations, and all statements have been verified numerically for $N=2,3,4$ (residuals at machine precision). Interestingly, $\tilde C=N/(N^2-2)$ has a meaning: it is the average sectional curvature of the coset, which now enters the lower bound of Proposition~1.
+
+\item \textbf{Representation-independent results.} We show that the $E^2$ cancellation is the Gauss equation of the embedding of $\mathcal{G}/\mathcal{H}$ into the linear field space [Eq.~(10)], and derive from it:
+\begin{itemize}[nosep]
+\item Proposition~1: a singlet radial mode is required in every linear completion, with a lower bound on its coupling;
+\item Proposition~2: a singlet alone suffices if and only if the coset has constant curvature, which happens only for $N=2$ (rank argument);
+\item Proposition~3: for $N\ge3$ all radial modes of the minimal representation are necessary;
+\item Proposition~4: for $N=3$ any linear completion must contain the radial multiplet with the NGB quantum numbers, with couplings at least as large as in the minimal model. For $N\ge4$ we point out that the sum rules alone leave room for alternative completions.
+\end{itemize}
+
+\item \textbf{Polar parametrization $\Hf=u\Phi u^T$ and parity.} Following Referee A, we now use the parametrization with $u$ unitary and $\Phi$ Hermitian (Takagi factorization in the symmetric and antisymmetric cases). This yields a closed-form Lagrangian valid to all orders in the NGBs [Eq.~(20)], in which intrinsic parity is manifest. The incorrect statement on parity has been removed.
+
+\item \textbf{New material} answering Referee B: tree-level unitarity bounds on the radial-mode masses (Table~III, Fig.~2, Eqs.~(33)--(34)), and a section of phenomenological remarks (Sec.~VIII) on Higgs-coupling sum rules, the mass scale of the radial modes and vacuum stability.
+
+\item \textbf{Errors corrected in the $Sp$ section.} The original Sec.~3.2 contained errors: $\dim Sp(2N)=N(2N+1)$, not $N(N+1)/2-1$, and the NGBs transform in the $\Omega$-traceless antisymmetric representation of $Sp(2N)$, of dimension $(N-1)(2N+1)$. These are corrected.
+
+\item \textbf{Literature.} The bibliography has been extended from 17 to 70 references. It now covers the technicolor patterns (Peskin; Preskill; Dimopoulos and Preskill), the chiral Lagrangians of QCD-like theories (Gasser and Leutwyler; Kogut \emph{et al.}; Splittorff, Toublan and Verbaarschot; Bijnens and Lu), fermionic UV completions (Ferretti and Karateev; Barnard \emph{et al.}; Cacciapaglia and Sannino), linear sigma models with $N_f>2$ (Schechter and Ueda; Fariborz, Jora and Schechter; Lenaghan \emph{et al.}; Parganlija \emph{et al.}), the geometric approach to scalar EFTs (Alonso, Jenkins and Manohar; Cohen \emph{et al.}; Nagai \emph{et al.}), and unitarity and Higgs sum rules (Lee, Quigg and Thacker; Gunion, Haber and Wudka; Falkowski, Rychkov and Urbano). The wrong general decomposition of the amplitude with a Levi-Civita term, present in the earlier draft, has been removed. The amplitude is now given in the exact forms of Eqs.~(7) and (26), with references to the standard decompositions.
+\end{enumerate}
+
+%====================================================================
+\section*{Reply to Referee A}
+
+\referee{The manuscript describes how to construct a linear sigma model for the three standard technicolor implementations. This is in principle publishable but I find the amount of new material a bit on the low side for a typical Phys.\ Rev.\ D paper. The main new part is the claim (not really shown fully) which $\mathcal{G}$ representations one needs to get a UV completion with scalars added, which I believe can be derived much simpler.}
+
+I thank the Referee for the overall positive assessment. The revised version contains substantially more new material: the uniform proof for the three families (Lemma~1); the closed-form all-order Lagrangian [Eq.~(20)]; the exact tree-level amplitude [Eq.~(25)]; the representation-independent Propositions~1--4 derived from the Gauss equation, including the rigidity result for $N=3$ and the discussion of $N\ge4$; and the unitarity bounds on the radial masses (Sec.~VII). The claim is now proven in full; see below.
+
+\referee{1) The main proof is only given for the $SU(N)\times SU(N)/SU(N)$ case, the other cases are simply said `it can be proven.' The conclusions and introduction claim the proof. So the part where it is actually shown that the full representation as given is needed must be included explicitly in 3.1 and 3.2 (as done in Sec.~2.2 for the standard case).}
+
+The Referee is right. The proof is now given explicitly and simultaneously for the three cosets in Sec.~V. The key observation is that in all three cases the broken generators $X^A$ (including the identity) satisfy both $[X^A,X^B]\in\mathfrak{h}$ (symmetric coset) and $\{X^A,X^B\}=d^{ABC}X^C$ (Jordan algebra, Eq.~(13)). Lemma~1 then follows from the elementary trace identity (29), which holds for arbitrary matrices. The cubic couplings of the radial modes to the NGBs are $\frac1f d^{ABC}\rho^C\partial\pi^A\partial\pi^B$ for all three families [Eqs.~(21)--(22)], derived from the closed-form Lagrangian (20). Hence the cancellation of the $E^2$ terms [Eq.~(30)] holds for the three families with the same proof. The necessity of each radial mode is then established in Proposition~3, again for the three families. Dropping the multiplet $H^a$ leaves a non-vanishing growth because, by Proposition~2 (rank $N-1\ge2$), the coset curvature is not constant; dropping the singlet violates Proposition~1. We have also checked numerically for $N=3,4$ in the three families that with all radial modes the residual vanishes to machine precision, while dropping $H^a$ leaves a residual of order one.
+
+\referee{2) The equation numbering is strange, they use (a.b) but b does not reset when a is increased.}
+
+Corrected. The paper is now in REVTeX format with sequential equation numbering.
+
+\referee{3) The proof as asked for under point 1) should similarly point out the cases where a simpler version exists. Those cases are at least mentioned in the introduction.}
+
+Done; see Sec.~V.B (``$N=2$'') and Propositions~2 and~3. For $N=2$ the Jordan algebra is a spin factor, every traceless element squares to a multiple of the identity, and $d^{abc}=0$. The multiplet $H^a$ then decouples from $\pi\pi$ scattering and the singlet alone saturates the sum rule, reproducing the $O(4)$, $O(3)$ and $O(6)$ models for $SU(2)\times SU(2)/SU(2)$, $SU(2)/SO(2)$ and $SU(4)/Sp(4)$. Geometrically, these are exactly the cases where the coset is a sphere (constant curvature), and Proposition~2 shows that this is the \emph{only} situation in which a singlet suffices. We also point out a subtlety. If the $U(1)$ NGB $\eta$ is retained, the triplet $H^a$ is needed for $N=2$ to unitarize $\pi\eta\to\pi\eta$ within the irreducible representation $(\mathbf 2,\mathbf 2)_{\mathbb{C}}$. A smaller reducible representation $(\mathbf 2,\mathbf 2)_{\mathbb R}\oplus\mathbf 1_{\mathbb C}$ avoids it (Sec.~VI).
+
+\referee{4) Parity is not an accidental symmetry of the NL$\Sigma$M, it is $\mathcal{H}$ to $\mathcal{H}^\dagger$ in the linear sigma model. A variant of the polar decomposition using $\mathcal{H}=u\phi u$ with $u$ unitary and $\phi$ Hermitian makes this clear.}
+
+I fully agree, and I thank the Referee for this remark. The original statement, Eq.~(2.21), was an artifact of the parametrization $\Hf=\Sigma\phi$ and has been removed. The revised paper uses $\sqrt2\,\Hf=u\Phi u$, $u\Phi u^T$, $u\Phi\Omega u^T$ for the three families [Eq.~(16)], with $u=e^{i\pi\cdot X/f}$ and $\Phi$ Hermitian (Takagi factorization for the symmetric and antisymmetric cases). Intrinsic parity $\pi\to-\pi$ then corresponds to $\Hf\to\Hf^\dagger$, $\Hf\to\Hf^*$ and $\Hf\to\Omega^{-1}\Hf^*\Omega$ respectively [Eq.~(18)]. This is a symmetry of the L$\Sigma$M, broken only by a complex phase of the determinant (Pfaffian) term. With this parametrization the Lagrangian takes the closed form
+\[
+\mathcal{L}=\tfrac14\Tr\big[(\nabla_\mu\Phi)^2\big]+\tfrac14\Tr\big[\{d_\mu,\Phi\}^2\big]-V(\Phi),
+\]
+manifestly even in $d_\mu$, so no vertices with an odd number of NGBs arise. The WZW term, which breaks intrinsic parity in the EFT, originates from the anomalies of the underlying fermionic theory and has no counterpart in the renormalizable L$\Sigma$M.
+
+\referee{5) The main claim of the paper is derivable in a much simpler manner. The GB transform linearly under $\mathcal{H}$, one needs to look at the possible representations of $\mathcal{G}$ that contain this as part of the full $\mathcal{G}$ representation. I am quite sure this requires in all the cases mentioned the full representation under $\mathcal{G}$ that is derived here. Then one writes the usual linear sigma model with that $\mathcal{G}$ representation which is automatically UV well-behaved (up to the triviality issue). This alternative way should be discussed in the manuscript and compared with the method of requiring good behavior in scattering amplitudes.}
+
+I agree with the Referee that the group-theoretical route identifies the linear representation, and that any renormalizable L$\Sigma$M built on it has bounded tree-level amplitudes. This is in fact how the representation $\Hf$ was chosen in the original manuscript (page~6), where the smallest linear representation of $\mathcal G$ containing the NGBs was considered. I apologize that this was not stated clearly. In the revision, this approach is presented explicitly in a dedicated section (Sec.~III, Table~I), and the boundedness of the amplitudes in any linear completion is used as the starting point of Sec.~II.B.
+
+The two approaches answer different questions, and the revised paper compares them explicitly (end of Sec.~III and Sec.~VI):
+\begin{itemize}[leftmargin=*]
+\item Group theory gives the \emph{candidate} field content of a completion: a representation with a $\mathcal{H}$-singlet vacuum and the NGBs in its tangent space. It does not by itself say whether every radial mode in that representation is \emph{dynamically required}. A larger representation with the same orbit, or a smaller reducible one, may also do the job (see the $N=2$ example with $\eta$ in Sec.~VI). Nor does it say which radial modes unitarize which channels (Table~II).
+\item The amplitude method gives, through the Gauss equation (10), \emph{representation-independent} necessary conditions on the radial content. From it we derive (i) a singlet is always necessary (Prop.~1); (ii) a non-singlet radial multiplet is necessary in \emph{every} completion for $N\ge3$ (Prop.~2); (iii) all radial modes of the minimal representation are necessary (Prop.~3); (iv) for $N=3$ any completion contains the multiplet with the NGB quantum numbers (Prop.~4).
+\end{itemize}
+Regarding the Referee's expectation that ``the full representation'' is needed in all cases: for the minimal representation this is confirmed (Prop.~3). However, our analysis shows that the answer is more subtle in general. For $N\ge4$ the Gauss equation admits, in principle, completions in which the radial multiplet in the NGB representation is replaced by another $\mathcal{H}$-irrep ($\mathbf{20}'$ of $SU(4)$, $\mathbf{10}$ of $SO(4)$, $\mathbf{42}$ of $Sp(8)$). We state this openly in Sec.~VI as a question for future work. I believe the combination of the two viewpoints makes the paper considerably stronger, and I thank the Referee for the suggestion.
+
+%====================================================================
+\section*{Reply to Referee B}
+
+I thank the Referee for the comments. Before answering, let me clarify the scope of the paper, which is perhaps not evident from the original abstract. The paper is a field-theoretical study of the linear UV completions of non-linear sigma models with the three symmetric cosets realized by QCD-like theories, with possible applications to technicolor and composite Higgs models. It is not an analysis of the SM Higgs sector. The term ``Higgs radial modes'' refers to the generalization of the SM Higgs boson as the radial mode of the $O(4)$ sigma model. In the original version, the possible stabilization of the SM vacuum was mentioned as a speculative outlook; I agree that, as written, it was not substantiated. In the revised version I have removed this claim from the abstract, and added a dedicated section (Sec.~VIII) addressing the phenomenological points raised by the Referee, as detailed below.
+
+\referee{1. It has been pointed out that the Higgs vacuum stability/instability issue of the Standard Model can be addressed in the prescribed scenario. However, there is no discussion regarding the Higgs quartic coupling and the top quark mass. The nature of stability/instability strongly depends on top quark mass. There is no discussion in the context of this which is extremely crucial.}
+
+The Referee is right that the stability of the SM vacuum depends crucially on the top-quark mass. In the revised Sec.~VIII (``Vacuum stability'') I now recall that the SM quartic turns negative at $\Lambda_I\sim10^{10}$--$10^{11}$~GeV for the central value of $m_t$, and that absolute stability would require $m_t\lesssim171$~GeV [Sher; Degrassi \emph{et al.}; Buttazzo \emph{et al.}]. I also discuss the mechanism by which additional scalars can stabilize the potential, namely positive contributions to the beta function and tree-level threshold effects [Elias-Mir\'o \emph{et al.}; Lebedev]. The radial modes of an L$\Sigma$M completion are natural candidates for this mechanism if they lie below $\Lambda_I$. I state explicitly that a quantitative analysis requires specifying the embedding of the SM Higgs doublet and of the top Yukawa coupling into the L$\Sigma$M, which is model dependent and beyond the scope of this paper. Accordingly, the claim has been toned down in the conclusions and removed from the abstract.
+
+\referee{2. It must be pointed out, to study that the Higgs branching ratio and production should reproduce the SM benchmark values which have been studied by CMS and ATLAS at the LHC. [\dots] to draw the resemblance between the prescribed scenario and the Standard Model.}
+
+In the revised Sec.~VIII (``Higgs couplings and sum rules'') I discuss the relation with the SM and with the LHC Higgs measurements [ATLAS and CMS, Nature 607 (2022); PDG 2024]. The main points are:
+\begin{itemize}[leftmargin=*]
+\item For $N=2$ the chiral L$\Sigma$M \emph{is} the SM Higgs sector. The radial singlet has exactly the SM couplings to the would-be NGBs ($\kappa_V=1$), so the SM benchmarks are reproduced by construction. The $SU(4)/Sp(4)$ case corresponds to the elementary Goldstone Higgs models studied in the literature, which we cite.
+\item For $N\ge3$, the projection of our Gauss equation onto the eaten NGBs is the sum rule $\sum_r\kappa_{V,r}^2=1$ for the couplings of all radial modes to $VV$. We show that its distribution between $h$ and $H$ depends on the electroweak embedding. In a one-family-technicolor-like embedding $h$ has SM-like couplings, $\kappa_V=1$. If $SU(2)_L$ acts on a single $2\times2$ block, $\kappa_V^2(h)=2/n$ and $\kappa_V^2(H)=1-2/n$. In the latter case the LHC measurements of $\kappa_V$ exclude the identification of the 125~GeV boson with a pure radial singlet, and predict additional scalar resonances coupled to $W_LW_L$.
+\end{itemize}
+A full study of production cross sections and branching ratios would require specifying the couplings to fermions and the full electroweak embedding, which goes beyond the model-independent analysis presented here.
+
+\referee{3. It is not clear in the article about the mass scale of $m_H^2$ in Eq.~2.38 and how it is constrained by the observed Higgs mass and quartic coupling if the vacuum stability/instability scenario is satisfied.}
+
+In the L$\Sigma$M, $m_h^2=(n\lambda_1+\lambda_2)f^2$ and $m_H^2=\lambda_2f^2$ [Eq.~(24)] are free parameters, set by the quartic couplings and by the scale $f$; they are not fixed by the 125~GeV Higgs mass unless one specifies how the SM Higgs is embedded. To make this point quantitative I have added a new section (Sec.~VII) with the tree-level perturbative-unitarity constraints on the quartic couplings, computed for all two-particle channels (Table~III). These give upper bounds on the radial masses:
+\[
+(D_{\mathbb R}+2)\,m_h^2+(D_{\mathbb R}-2)\,m_H^2\le8\pi n f^2 ,
+\]
+and, for degenerate radial modes, $m\le\sqrt{2\pi/N}\,f$, $\sqrt{4\pi/(N+1)}\,f$ and $\sqrt{4\pi/(2N-1)}\,f$ for the three families. Fig.~2 shows the allowed region for $N=3$. As a cross-check, for the $O(4)$ model the procedure reproduces the classic bound $m_h\lesssim710$~GeV. The large-$N$ statement of the original version, that the adjoint masses vanish, held only at fixed Lagrangian parameters; it has been corrected (end of Sec.~IV.C). In Sec.~VIII we comment on the resulting mass scale in composite Higgs ($f\gtrsim$ TeV) and technicolor-like ($f\simeq v$) scenarios.
+
+\referee{(b) 1. Figure numbers and captions must be given carefully and clearly. There are figures without any caption in this article.}
+
+Corrected. All figures are now numbered and captioned. The Feynman diagrams relevant for the main result are collected in Fig.~1, drawn with consistent notation (dashed: NGBs; solid: $h$; double: $H$). The diagrams of the potential, which did not carry information beyond the Lagrangian, have been removed. Fig.~2 is new (unitarity bounds).
+
+\referee{(b) 2. There is a table in the article that must be properly framed.}
+
+Corrected. The former Table~1, an unstructured list of processes, has been replaced by Table~II. For each class of processes it gives the energy growth of the NL$\Sigma$M amplitude and the radial-mode exchanges that cancel it. Tables~I and~III (minimal representations and unitarity eigenvalues) are new; all tables are framed according to the journal style.
+
+\bigskip
+I hope that the revised manuscript is now suitable for publication in Physical Review~D.
+
+\medskip
+Sincerely,\\
+Giulio Marino
+
+\end{document}

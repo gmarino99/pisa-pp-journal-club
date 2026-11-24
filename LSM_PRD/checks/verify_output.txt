@@ -1,0 +1,25 @@
+(0) isotropic ansatz of the draft: max|dd - ansatz|, max|ff - Ct(dd-dd)|
+   N=2 (np.float64(0.0), np.float64(0.0))
+   N=3 (np.float64(0.3809523809523812), np.float64(0.5714285714285714))
+   N=4 (np.float64(0.5252100840336136), np.float64(0.7142857142857145))
+case I   N=2: dim p=3+1, dim h=3, Gauss resid=0.0e+00, kinetic resid=2.4e-11, O(s) coeff (sampled amplitudes, all modes)=3.3e-10; Gauss residual: all=0.0e+00 only-h=0.00e+00 none=1.00e+00; sect.curv. range=[1.000,1.000]  |d_abc|max=0.000 coupling h: 1.0000 (sqrt(2/n)=1.0000)
+case I   N=3: dim p=8+1, dim h=8, Gauss resid=4.4e-16, kinetic resid=2.7e-11, O(s) coeff (sampled amplitudes, all modes)=4.4e-10; Gauss residual: all=4.4e-16 only-h=6.67e-01 none=1.00e+00; sect.curv. range=[0.000,1.000]  |d_abc|max=0.577 coupling h: 0.8165 (sqrt(2/n)=0.8165)
+case I   N=4: dim p=15+1, dim h=15, Gauss resid=3.3e-16, kinetic resid=2.0e-10, O(s) coeff (sampled amplitudes, all modes)=8.5e-10; Gauss residual: all=3.3e-16 only-h=5.00e-01 none=1.00e+00; sect.curv. range=[0.000,1.000]  |d_abc|max=0.816 coupling h: 0.7071 (sqrt(2/n)=0.7071)
+case II  N=2: dim p=2+1, dim h=1, Gauss resid=0.0e+00, kinetic resid=2.0e-11, O(s) coeff (sampled amplitudes, all modes)=3.3e-10; Gauss residual: all=0.0e+00 only-h=0.00e+00 none=1.00e+00; sect.curv. range=[1.000,1.000]  |d_abc|max=0.000 coupling h: 1.0000 (sqrt(2/n)=1.0000)
+case II  N=3: dim p=5+1, dim h=3, Gauss resid=4.4e-16, kinetic resid=2.7e-10, O(s) coeff (sampled amplitudes, all modes)=9.7e-10; Gauss residual: all=3.3e-16 only-h=6.67e-01 none=1.00e+00; sect.curv. range=[0.000,1.000]  |d_abc|max=0.577 coupling h: 0.8165 (sqrt(2/n)=0.8165)
+case II  N=4: dim p=9+1, dim h=6, Gauss resid=2.2e-16, kinetic resid=8.9e-11, O(s) coeff (sampled amplitudes, all modes)=1.3e-09; Gauss residual: all=2.2e-16 only-h=5.00e-01 none=1.00e+00; sect.curv. range=[0.000,1.000]  |d_abc|max=0.816 coupling h: 0.7071 (sqrt(2/n)=0.7071)
+case III N=2: dim p=5+1, dim h=10, Gauss resid=2.2e-16, kinetic resid=5.7e-11, O(s) coeff (sampled amplitudes, all modes)=1.4e-10; Gauss residual: all=1.1e-16 only-h=1.11e-16 none=5.00e-01; sect.curv. range=[0.500,0.500]  |d_abc|max=0.000 coupling h: 0.7071 (sqrt(2/n)=0.7071)
+case III N=3: dim p=14+1, dim h=21, Gauss resid=2.8e-16, kinetic resid=2.2e-10, O(s) coeff (sampled amplitudes, all modes)=4.7e-10; Gauss residual: all=2.2e-16 only-h=3.33e-01 none=5.00e-01; sect.curv. range=[0.000,0.500]  |d_abc|max=0.408 coupling h: 0.5774 (sqrt(2/n)=0.5774)
+case III N=4: dim p=27+1, dim h=36, Gauss resid=1.7e-16, kinetic resid=2.7e-10, O(s) coeff (sampled amplitudes, all modes)=4.5e-10; Gauss residual: all=1.7e-16 only-h=2.50e-01 none=5.00e-01; sect.curv. range=[0.000,0.500]  |d_abc|max=0.577 coupling h: 0.5000 (sqrt(2/n)=0.5000)
+(6a) radial masses: |dV|, m_h^2 (num), (n l1+l2) f^2, m_H^2 (num), l2 f^2
+   I 3 (np.float64(9.816591983735634e-09), np.float64(3.399999992659275), 3.4, array([1.6]), 1.6)
+   II 3 (np.float64(9.816591983735634e-09), np.float64(3.399999992659275), 3.4, array([1.6]), 1.6)
+   III 3 (np.float64(8.583134203377085e-09), np.float64(3.4000000148637355), 3.4000000000000004, array([1.04615]), 1.0461538461538464)
+(6) unitarity eigenvalues  a*lambda1 + b*lambda2 : multiplicity
+   I 2 {(np.float64(2.0), np.float64(-2.0)): 2, (np.float64(2.0), np.float64(-0.0)): 9, (np.float64(2.0), np.float64(2.0)): 18, (np.float64(2.0), np.float64(4.0)): 6, (np.float64(10.0), np.float64(8.0)): 1}
+   I 3 {(np.float64(2.0), np.float64(-2.0)): 18, (np.float64(2.0), np.float64(-0.0)): 64, (np.float64(2.0), np.float64(2.0)): 72, (np.float64(2.0), np.float64(6.0)): 16, (np.float64(20.0), np.float64(12.0)): 1}
+   I 4 {(np.float64(2.0), np.float64(-2.0)): 72, (np.float64(2.0), np.float64(-0.0)): 225, (np.float64(2.0), np.float64(2.0)): 200, (np.float64(2.0), np.float64(8.0)): 30, (np.float64(34.0), np.float64(16.0)): 1}
+   II 3 {(np.float64(2.0), np.float64(-1.0)): 12, (np.float64(2.0), np.float64(-0.0)): 27, (np.float64(2.0), np.float64(2.0)): 30, (np.float64(2.0), np.float64(5.0)): 8, (np.float64(14.0), np.float64(8.0)): 1}
+   II 4 {(np.float64(2.0), np.float64(-1.0)): 40, (np.float64(2.0), np.float64(-0.0)): 84, (np.float64(2.0), np.float64(2.0)): 70, (np.float64(2.0), np.float64(6.0)): 15, (np.float64(22.0), np.float64(10.0)): 1}
+   III 2 {(np.float64(2.0), np.float64(-2.0)): 2, (np.float64(2.0), np.float64(0.0)): 20, (np.float64(2.0), np.float64(1.0)): 40, (np.float64(2.0), np.float64(2.0)): 15, (np.float64(14.0), np.float64(6.0)): 1}
+   III 3 {(np.float64(2.0), np.float64(-2.0)): 30, (np.float64(2.0), np.float64(-0.0)): 189, (np.float64(2.0), np.float64(1.0)): 210, (np.float64(2.0), np.float64(4.0)): 35, (np.float64(32.0), np.float64(10.0)): 1}
