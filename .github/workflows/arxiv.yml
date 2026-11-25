@@ -1,18 +1,20 @@
 name: Fetch arXiv feed
 
-# Saves the day's new arXiv papers to feeds/arxiv.json from 06:10 Rome time, before the 06:50 digest routine reads them.
+# Saves the day's new arXiv papers to feeds/arxiv.json for the digest routine.
+# Main trigger: the digest routine pushes data/fetch-request.json when it finds no feed for today; a push starts this
+# workflow within seconds, while scheduled runs on this repository have been starting many hours late.
 on:
+  push:
+    branches: [main]
+    paths: ["data/fetch-request.json"]
   schedule:
-    # GitHub cron is UTC and sometimes skips or delays a scheduled run, so there are spare attempts.
+    # Backup only: GitHub cron is UTC and can skip or delay scheduled runs by hours.
     # 04:10/04:30 UTC = 06:10/06:30 Rome in summer (CEST); 05:10/05:30 UTC = 06:10/06:30 Rome in winter (CET).
     # The first step skips an attempt that falls before 06:00 Rome or finds today's feed already saved.
     - cron: "10 4 * * 1-5"
     - cron: "10 5 * * 1-5"
     - cron: "30 4 * * 1-5"
     - cron: "30 5 * * 1-5"
-    # More spare attempts, because GitHub can skip or delay the early ones by hours: every hour at :25 from 05:25 to 08:25 UTC
-    # (06:25-09:25 Rome in winter, 07:25-10:25 in summer), so the 10:50 catch-up digest normally finds the feed.
-    - cron: "25 5-8 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -27,10 +29,11 @@ jobs:
       - name: Skip if too early or already done today
         id: gate
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
+          EVENT="${{ github.event_name }}"
+          if [ "$EVENT" = "schedule" ] || [ "$EVENT" = "push" ]; then
             TODAY=$(TZ=Europe/Rome date +%F); HOUR=$(TZ=Europe/Rome date +%H)
             DONE=$(python3 -c "import json;print(json.load(open('feeds/arxiv.json')).get('announced',''))" 2>/dev/null || true)
-            if [ "$HOUR" -lt 6 ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Before 06:00 Rome, skipping."
+            if [ "$EVENT" = "schedule" ] && [ "$HOUR" -lt 6 ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Before 06:00 Rome, skipping."
             elif [ "$DONE" = "$TODAY" ]; then echo "skip=true" >> "$GITHUB_OUTPUT"; echo "Today's feed is already saved, skipping."; fi
           fi
 

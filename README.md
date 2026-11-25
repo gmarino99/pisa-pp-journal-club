@@ -8,7 +8,7 @@ All content lives in JSON files under `data/`. Scheduled jobs update them automa
 
 | What | Where | Updated by |
 |---|---|---|
-| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), weekdays 06:10 Rome, spare attempts at 06:30 and hourly at :25 until about 09:25 (GitHub sometimes skips or delays scheduled runs) |
+| New arXiv announcements (raw feed) | `feeds/arxiv.json` | GitHub Actions (`arxiv.yml`), started by the digest routine: when it finds no feed for today it pushes `data/fetch-request.json`, which runs the workflow within seconds. Scheduled attempts at 06:10 and 06:30 Rome are only a backup (GitHub has been starting them hours late) |
 | Daily paper digest (with "May interest" names) | `data/papers.json` | Claude routine, weekdays 06:50 Rome (catch-up run at 10:50 if the feed was late), reading `feeds/arxiv.json` |
 | Programme of next Tuesday | `data/sessions.json` | Claude routine, Mondays 07:20 Rome |
 | Weekly email to the mailing list | push notification to the chair | Claude routine, Mondays 07:20 Rome |
