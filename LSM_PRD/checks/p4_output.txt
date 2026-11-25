@@ -1,0 +1,60 @@
+== J3(R): dim J=6, Jordan identity resid=1.7e-18, trace-form assoc resid=0.0e+00
+   d^(ab0)=0.81650 (sqrt(2/3)=0.81650);  Lemma (Jordan form) resid=2.22e-16
+   scalar curvature R=7.5000, Kbar=R/(D(D-1))=0.37500, C_d=1.16667, sectional curvature range=[0.0000,1.0000]
+   dim Der(J) = 3
+   derivations kill identity: 5.2e-16; antisymmetric: 5.8e-16
+   Sym^2(R_pi) irreps (Casimir, dim): [(np.float64(-0.0), 1), (np.float64(0.6), 5), (np.float64(2.0), 9)]
+      T_R(dim 1) = +0.20000 A -0.00000 F   (resid 3.1e-16)
+      T_R(dim 5) = -0.57143 A +0.85714 F   (resid 3.9e-16)
+      T_R(dim 9) = -0.12857 A -0.85714 F   (resid 8.9e-16)
+   minimal solution expected (c1,c_pi)=(2D/n, C_d)=(3.3333,1.1667); null direction (1+D/2,1,1)=(3.5,1,1)
+== linear completion of J3(R) complexified, vev = identity: dim V(real)=12, dim g=8, dim h=3, dim p=5, metric isotropy=3.3e-16, f^2=0.1667
+   Gauss residual = 1.11e-16   |F| = 0.250
+   normal space dim = 7; image of 2nd fundamental form dim = 6
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.1667 A +0.0000 F
+   radial irrep coupled to pi pi: dim=   5 Casimir(normal)=  0.6000   contribution to Gauss = -0.1667 A +1.0000 F
+== J3(C): dim J=9, Jordan identity resid=4.2e-17, trace-form assoc resid=0.0e+00
+   d^(ab0)=0.81650 (sqrt(2/3)=0.81650);  Lemma (Jordan form) resid=2.22e-16
+   scalar curvature R=24.0000, Kbar=R/(D(D-1))=0.42857, C_d=1.66667, sectional curvature range=[0.0000,1.0000]
+   dim Der(J) = 8
+   derivations kill identity: 2.8e-16; antisymmetric: 4.3e-16
+   Sym^2(R_pi) irreps (Casimir, dim): [(np.float64(-0.0), 1), (np.float64(1.0), 8), (np.float64(2.6667), 27)]
+      T_R(dim 1) = +0.12500 A -0.00000 F   (resid 2.2e-16)
+      T_R(dim 8) = -0.40000 A +0.60000 F   (resid 6.7e-16)
+      T_R(dim 27) = -0.22500 A -0.60000 F   (resid 7.8e-16)
+   minimal solution expected (c1,c_pi)=(2D/n, C_d)=(5.3333,1.6667); null direction (1+D/2,1,1)=(5.0,1,1)
+== linear completion of J3(C) complexified, vev = identity: dim V(real)=18, dim g=16, dim h=8, dim p=8, metric isotropy=3.3e-16, f^2=0.1667
+   Gauss residual = 1.11e-16   |F| = 0.250
+   normal space dim = 10; image of 2nd fundamental form dim = 9
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.1667 A -0.0000 F
+   radial irrep coupled to pi pi: dim=   8 Casimir(normal)=  1.0000   contribution to Gauss = -0.1667 A +1.0000 F
+== J3(H): dim J=15, Jordan identity resid=2.8e-16, trace-form assoc resid=1.1e-16
+   d^(ab0)=0.81650 (sqrt(2/3)=0.81650);  Lemma (Jordan form) resid=2.22e-16
+   scalar curvature R=84.0000, Kbar=R/(D(D-1))=0.46154, C_d=2.66667, sectional curvature range=[0.0000,1.0000]
+   dim Der(J) = 21
+   derivations kill identity: 3.1e-16; antisymmetric: 7.2e-16
+   Sym^2(R_pi) irreps (Casimir, dim): [(np.float64(0.0), 1), (np.float64(1.5), 14), (np.float64(3.5), 90)]
+      T_R(dim 1) = +0.07143 A +0.00000 F   (resid 1.4e-16)
+      T_R(dim 14) = -0.25000 A +0.37500 F   (resid 2.8e-16)
+      T_R(dim 90) = -0.32143 A -0.37500 F   (resid 8.9e-16)
+   minimal solution expected (c1,c_pi)=(2D/n, C_d)=(9.3333,2.6667); null direction (1+D/2,1,1)=(8.0,1,1)
+== linear completion of J3(H) complexified, vev = identity: dim V(real)=30, dim g=35, dim h=21, dim p=14, metric isotropy=3.3e-16, f^2=0.1667
+   Gauss residual = 1.11e-16   |F| = 0.250
+   normal space dim = 16; image of 2nd fundamental form dim = 15
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)=  0.0000   contribution to Gauss = +0.1667 A +0.0000 F
+   radial irrep coupled to pi pi: dim=  14 Casimir(normal)=  1.5000   contribution to Gauss = -0.1667 A +1.0000 F
+== J3(O): dim J=27, Jordan identity resid=1.3e-15, trace-form assoc resid=2.2e-15
+   d^(ab0)=0.81650 (sqrt(2/3)=0.81650);  Lemma (Jordan form) resid=2.22e-16
+   scalar curvature R=312.0000, Kbar=R/(D(D-1))=0.48000, C_d=4.66667, sectional curvature range=[0.0000,1.0000]
+   dim Der(J) = 52
+   derivations kill identity: 2.1e-16; antisymmetric: 9.8e-16
+   Sym^2(R_pi) irreps (Casimir, dim): [(np.float64(0.0), 1), (np.float64(2.0), 26), (np.float64(4.3333), 324)]
+      T_R(dim 1) = +0.03846 A +0.00000 F   (resid 6.9e-17)
+      T_R(dim 26) = -0.14286 A +0.21429 F   (resid 3.9e-16)
+      T_R(dim 324) = -0.39560 A -0.21429 F   (resid 1.3e-15)
+   minimal solution expected (c1,c_pi)=(2D/n, C_d)=(17.3333,4.6667); null direction (1+D/2,1,1)=(14.0,1,1)
+== linear completion of J3(O) complexified, vev = identity: dim V(real)=54, dim g=78, dim h=52, dim p=26, metric isotropy=6.7e-16, f^2=0.1667
+   Gauss residual = 8.66e-17   |F| = 0.250
+   normal space dim = 28; image of 2nd fundamental form dim = 27
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.1667 A +0.0000 F
+   radial irrep coupled to pi pi: dim=  26 Casimir(normal)=  2.0000   contribution to Gauss = -0.1667 A +1.0000 F

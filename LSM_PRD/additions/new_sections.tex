@@ -1,0 +1,131 @@
+% =====================================================================
+%  New material for "Higgs radial modes in linear completions of NLSMs"
+%  Four self-contained subsections, ready to be inserted in the paper.
+%  Notation follows the paper: X^A (A=0..D) broken generators with X^0 = 1/sqrt(2n),
+%  d^{ABC} Jordan symbols, f^{abI}f^{cdI} = F^{abcd}, A^{abcd} = d^{ac}d^{bd} - d^{ad}d^{bc}.
+%  Numerical checks: checks/p1_lecs.py, p2_realize.py, p4_octonion.py.
+%  Bibliography keys: refs.bib + additions/additions.bib.
+% =====================================================================
+
+% ---------------------------------------------------------------------
+\subsection{Low-energy constants and positivity}
+\label{add:lecs}
+% ---------------------------------------------------------------------
+
+Integrating out the radial modes at tree level determines the four-derivative chiral Lagrangian. In the closed-form Lagrangian~\eqref{eq:master} the radial modes couple linearly to the NGBs through $\frac14\Tr\{d_\mu,\Phi\}^2\supset 2f\,\Tr(\hat\rho\, d_\mu d^\mu)$, with $\hat\rho=2\rho^CX^C$. The source of $\rho^C$ is therefore $J^C=4f\,\Tr(X^C d_\mu d^\mu)$, which at lowest order reproduces the cubic couplings $\frac1f d^{ABC}\rho^C\partial\pi^A\!\cdot\partial\pi^B$. Since $d_\mu d^\mu=\frac12\{d_\mu,d^\mu\}$ belongs to the Jordan algebra, the completeness of the basis $X^C$ gives, for the three families,
+\begin{equation}
+\begin{split}
+\mathcal L_4={}&\frac{4f^2}{n\,m_h^2}\big[\Tr(d_\mu d^\mu)\big]^2\\
+&+\frac{4f^2}{m_H^2}\Big\{\Tr\big(d_\mu d^\mu d_\nu d^\nu\big)-\frac1n\big[\Tr(d_\mu d^\mu)\big]^2\Big\}+\mathcal O(p^6).
+\end{split}
+\label{eq:L4tree}
+\end{equation}
+In the basis $\langle u_\mu u^\mu\rangle^2$, $\langle u_\mu u_\nu\rangle\langle u^\mu u^\nu\rangle$, $\langle u_\mu u^\mu u_\nu u^\nu\rangle$, $\langle u_\mu u_\nu u^\mu u^\nu\rangle$, with $u_\mu=2d_\mu$ and leading-order Lagrangian $\frac{f^2}{4}\langle u_\mu u^\mu\rangle$, Eq.~\eqref{eq:L4tree} corresponds to
+\begin{equation}
+\begin{split}
+&L_1=\frac{f^2}{4n}\Big(\frac{1}{m_h^2}-\frac{1}{m_H^2}\Big),\qquad L_3=\frac{f^2}{4m_H^2},\\
+&L_0=L_2=0 ,
+\end{split}
+\label{eq:LECs}
+\end{equation}
+where $n$ is the size of the matrices. For specific $N$ the Cayley--Hamilton relations reduce the operator basis~\cite{Bijnens:2009qm,Bijnens:2011fm}. Equation~\eqref{eq:LECs} is the linear-sigma-model counterpart of resonance saturation~\cite{Ecker:1988te}. For $n=3$, the radial octet gives $L_1=-L_3/3$ and $L_3=c_d^2/(2m_H^2)$ with $c_d=f/\sqrt2$. The radial singlet gives $L_1=\tilde c_d^{\,2}/(2m_h^2)$ with $\tilde c_d=c_d/\sqrt3$, which is the nonet relation. As for scalar resonances in QCD, $L_0$ and $L_2$ are not generated at this order.
+
+The same coefficients follow from the low-energy expansion of the exact amplitude~\eqref{eq:Afull}:
+\begin{equation}
+\begin{split}
+\mathcal A^{(4)}=\frac{1}{f^2}\sum_{E=0}^{D}\frac{1}{m_E^2}\Big[&d^{ABE}d^{CDE}s^2+d^{ACE}d^{BDE}t^2\\
+&+d^{ADE}d^{BCE}u^2\Big].
+\end{split}
+\label{eq:A4}
+\end{equation}
+We have checked numerically that the Feynman rules of Eq.~\eqref{eq:L4tree} reproduce Eq.~\eqref{eq:A4}, including $\eta$, for the three families. Equation~\eqref{eq:A4} makes the positivity of the completion manifest. For arbitrary real superpositions $|\alpha\rangle=\alpha^A\pi^A$ and $|\beta\rangle=\beta^B\pi^B$, the forward elastic amplitude has
+\begin{equation}
+\begin{split}
+&\frac{1}{2}\frac{\partial^2}{\partial s^2}\mathcal A(\alpha\beta\to\alpha\beta)\Big|_{t=0}\\
+&\qquad=\frac{2}{f^2}\sum_E\frac{(\alpha^Ad^{ABE}\beta^B)^2}{m_E^2}\;\ge\;0 .
+\end{split}
+\end{equation}
+The radial modes therefore satisfy, flavor by flavor, the positivity bounds that analyticity and unitarity impose on the $\mathcal O(p^4)$ coefficients~\cite{Adams:2006sv,Manohar:2008tc}. The bounds are saturated by contributions of the form ``coupling squared over mass squared'', and the Gauss equation fixes the corresponding $\mathcal O(p^2)$ sum rule.
+
+% ---------------------------------------------------------------------
+\subsection{Non-minimal completions at $N=4$ are realized}
+\label{add:N4}
+% ---------------------------------------------------------------------
+
+The Gauss equation allows, for $N\ge4$, solutions in which the radial multiplet with the NGB quantum numbers is replaced by a second irreducible representation $R'$ of $\Hg$ in ${\rm Sym}^2(R_\pi)$: $\mathbf{20}'$ for $SU(4)$, $\mathbf 5_L\oplus\mathbf 5_R$ for $SO(4)$, and $\mathbf{42}$ for $Sp(8)$. We now show that these solutions are realized by explicit linear representations of $\G$. For a field in a representation with generators $t_\alpha$ and vacuum $v$, we compute three quantities directly from the representation: the intrinsic curvature of the orbit, $F^{abcd}=-(t_cv)\cdot([[t_a,t_b],t_d]v)/f^2$; the second fundamental form, Eq.~\eqref{eq:cubicgeneric}; and the decomposition of the normal couplings into irreducible representations of $\Hg$.
+
+\begin{enumerate}
+\item \emph{$SU(4)\times SU(4)/SU(4)$ via a real $(\mathbf6,\mathbf6)$.} Since $SU(4)\simeq Spin(6)$, the antisymmetric $\mathbf6=\Lambda^2\mathbf4$ is real. A real $6\times6$ matrix field $\mathcal O\to L_6\,\mathcal O\,R_6^T$ with $\langle\mathcal O\rangle\propto\mathbb{1}$ breaks $SU(4)_L\times SU(4)_R$ to $SU(4)_V$. The 36 real fields contain the 15 NGBs in the antisymmetric part and the radial modes in the symmetric part, ${\rm Sym}^2\mathbf6=\mathbf1\oplus\mathbf{20}'$. No radial adjoint exists. The potential $V=-\frac{\mu^2}{2}\Tr\mathcal O\mathcal O^T+\frac{\lambda_1}{4}(\Tr\mathcal O\mathcal O^T)^2+\frac{\lambda_2}{4}\Tr(\mathcal O\mathcal O^T)^2$ with $\lambda_2>0$ has its minimum along $\mathbb{1}$, as in Sec.~\ref{sec:LSM}.
+\item \emph{$SU(4)/SO(4)$ via the $\mathbf{20}'$.} With $SU(4)/SO(4)\simeq SO(6)/SO(3)\times SO(3)$, a real symmetric traceless $6\times6$ matrix $S\to OSO^T$ with $\langle S\rangle\propto{\rm diag}(1,1,1,-1,-1,-1)$ has stabilizer $SO(3)\times SO(3)\simeq SO(4)$. Of its 20 components, 9 are NGBs and the radial modes are $\mathbf1\oplus\mathbf5_L\oplus\mathbf5_R$. For a potential even in $S$ with positive coefficient of $\Tr S^4$, this vacuum is the minimum: at fixed $\Tr S^2$, $\Tr S^4$ is minimal when all six eigenvalues have equal modulus.
+\item \emph{$SU(8)/Sp(8)$ via $\Lambda^4\mathbf8$.} The four-form representation of $SU(8)$ is real ($\mathbf{70}$). The vacuum $\omega\wedge\omega$, with $\omega$ the symplectic form, has stabilizer $Sp(8)$. Under $Sp(8)$, $\mathbf{70}=\mathbf1\oplus\mathbf{27}\oplus\mathbf{42}$: the $\mathbf{27}$ are the NGBs and the radial modes are $\mathbf1\oplus\mathbf{42}$. Since the $Sp(8)$-invariant subspace is one dimensional, this orbit is critical for every $SU(8)$-invariant potential at the radius that minimizes the potential along the invariant direction~\cite{Michel:1971}. Whether it is a minimum depends on the quartic couplings, and we do not analyze it further.
+\end{enumerate}
+
+\begin{table*}[t]
+\caption{Share of the curvature term $f^{abI}f^{cdI}$ in the Gauss equation carried by each radial multiplet coupled to $\pi\pi$, for several linear completions. In all cases the residual of the Gauss equation vanishes to machine precision ($\lesssim5\times10^{-16}$). The singlet only contributes to $\delta\delta-\delta\delta$ and is not listed.}
+\label{tab:shares}
+\begin{ruledtabular}
+\begin{tabular}{llll}
+coset & field & radial multiplets coupled to $\pi\pi$ & share of $f^{abI}f^{cdI}$\\
+\hline
+$SU(3)^2/SU(3)$ & $(\mathbf3,\bar{\mathbf3})$ (minimal) & $\mathbf1,\ \mathbf8$ & $\mathbf8$: $1$\\
+$SU(3)^2/SU(3)$ & $(\mathbf8,\mathbf8)$ & $\mathbf1,\ \mathbf8,\ \mathbf{27}$ & $\mathbf8$: $9/5$;\ \ $\mathbf{27}$: $-4/5$\\
+$SU(4)^2/SU(4)$ & $(\mathbf6,\mathbf6)_{\mathbb R}$ & $\mathbf1,\ \mathbf{20}'$ & $\mathbf{20}'$: $1$\\
+$SU(4)/SO(4)$ & $\mathbf{20}'$ of $SO(6)$ & $\mathbf1,\ \mathbf5_L\oplus\mathbf5_R$ & $\mathbf5_L\oplus\mathbf5_R$: $1$\\
+$SU(8)/Sp(8)$ & $\Lambda^4\mathbf8=\mathbf{70}$ & $\mathbf1,\ \mathbf{42}$ & $\mathbf{42}$: $1$\\
+$SU(5)^2/SU(5)$ & $(\mathbf{10},\overline{\mathbf{10}})$ & $\mathbf1,\ \mathbf{24},\ \mathbf{75}$ & $\mathbf{24}$: $1/9$;\ \ $\mathbf{75}$: $8/9$
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+The results are collected in Table~\ref{tab:shares}. The $(\mathbf8,\mathbf8)$ completion of $SU(3)\times SU(3)/SU(3)$ illustrates Proposition~\ref{prop:rigidity}: the radial $\mathbf{27}$ contributes with negative sign, and the octet coupling is correspondingly larger than in the minimal model. In the three $N=4$ completions the multiplet with the NGB quantum numbers is absent, and the curvature is carried entirely by $R'$. Rigidity is therefore sharp: it holds at $N=3$ and fails at $N=4$ in all three families.
+
+The mechanism is transparent in the chiral case. For a field in $(R,\bar R)$, the coupling of a radial adjoint to $\pi\pi$ is proportional to the symmetric trace $\Tr_R(\{T^a,T^b\}T^c)=A(R)\,d^{abc}/2$, i.e.\ to the anomaly coefficient of $R$. For $R=\Lambda^2\mathbf N$, $A(R)=N-4$: it vanishes at $N=4$, where $\Lambda^2\mathbf4$ is real, and it is small at $N=5$. This is reflected in the small share $1/9$ of the $\mathbf{24}$ in the $(\mathbf{10},\overline{\mathbf{10}})$ completion. The $N=4$ examples also show that completions with the same number of fields can differ in their radial content. For $SU(4)/SO(4)$, both the complex two-index symmetric $\mathbf{10}$ and the real $\mathbf{20}'$ have 20 real components, with radial modes $\mathbf1\oplus\mathbf9$ and $\mathbf1\oplus\mathbf5_L\oplus\mathbf5_R$ respectively (the former also contains the $U(1)$ NGB). The minimal irreducible representation is not unique.
+
+% ---------------------------------------------------------------------
+\subsection{QCD and lattice spectra}
+\label{add:qcd}
+% ---------------------------------------------------------------------
+
+The unitarity bounds of Sec.~\ref{sec:unitarity} give a quantitative measure of how far a strongly coupled spectrum is from a perturbative linear completion. In QCD with three light flavors, $f\simeq F_\pi\simeq92$~MeV in our normalization. For degenerate radial modes, Eq.~\eqref{eq:unitarity_deg} gives $m\lesssim\sqrt{2\pi/3}\,f\simeq130$~MeV. For the physical scalar spectrum, with $f_0(500)$ at $\sqrt s\simeq(450-i\,275)$~MeV~\cite{Pelaez:2015qba,ParticleDataGroup:2024cfk} and the nonet partner $a_0(980)$, the left-hand side of the singlet-channel condition~\eqref{eq:unitarity_singlet} exceeds the right-hand side by a factor of about~30. Thus the scalar mesons of QCD lie far outside the perturbative window. A linear sigma model reproduces them only with quartic couplings of order $m^2/f^2\sim25$--$100$, consistent with the large width of the $f_0(500)$.
+
+The same conclusion holds for the minimal fundamental composite-Higgs template, $SU(2)$ gauge theory with two fundamental Dirac flavors, i.e.\ the coset $SU(4)/Sp(4)$. Lattice simulations give $m_\sigma/F_{\rm PS}=19(11)$ and $m_{a_0}/F_{\rm PS}=17(5)$~\cite{Arthur:2016ozw}; recent determinations of the singlet are in Ref.~\cite{Bowes:2025sigma}. The bound for $N=2$ in the antisymmetric family is $m\lesssim\sqrt{4\pi/3}\,f\simeq2f$. The lattice values therefore exceed it by about an order of magnitude in mass, independently of factors of $\sqrt2$ between conventions for the decay constant. A weakly coupled linear completion of a composite Higgs sector is thus an additional dynamical assumption rather than an approximation to the known strongly coupled dynamics. This is consistent with the radial modes in the matrix benchmarks of Sec.~\ref{sec:pheno} lying near $f$ rather than near $4\pi f$.
+
+% ---------------------------------------------------------------------
+\subsection{The exceptional member: $E_6/F_4$}
+\label{add:e6}
+% ---------------------------------------------------------------------
+
+Lemma~\ref{lem:identity} is a statement about Jordan algebras and does not require associativity of the underlying matrices. Let $J$ be a Euclidean Jordan algebra with product $x\circ y$, associative trace form $\langle x\circ y,z\rangle=\langle x,y\circ z\rangle$, and multiplication operators $L_x y=x\circ y$. Choose an orthonormal basis with $\langle X^A,X^B\rangle=\frac12\delta^{AB}$ and define
+\[
+d^{ABC}=4\langle X^A\circ X^B,X^C\rangle,
+\]
+\[
+F^{ABCD}=-8\,\big\langle[L_{X^A},L_{X^B}]X^C,X^D\big\rangle .
+\]
+Associativity of the trace form gives $\langle X^A\circ(X^B\circ X^C),X^D\rangle=\langle X^B\circ X^C,X^A\circ X^D\rangle$, and hence
+\begin{equation}
+F^{ABCD}=d^{ACE}d^{BDE}-d^{ADE}d^{BCE}
+\label{eq:jordanlemma}
+\end{equation}
+in two lines. For Hermitian matrices $[L_X,L_Y]Z=\frac14[[X,Y],Z]$, and Eq.~\eqref{eq:jordanlemma} reduces to Eq.~\eqref{eq:identity}. In general, $[L_X,L_Y]$ is a derivation of $J$. The Lie algebra ${\rm Der}(J)\oplus i\,L(J_0)$ is the compact form of the reduced structure algebra, and $F^{ABCD}$ is the curvature of the corresponding symmetric space~\cite{FarautKoranyi}.
+
+By the Jordan--von Neumann--Wigner classification~\cite{Jordan:1933vh}, the simple Euclidean Jordan algebras are $J_N(\mathbb R)$, $J_N(\mathbb C)$, $J_N(\mathbb{H})$, the spin factors, and the exceptional algebra $J_3(\mathbb O)$ of $3\times3$ octonionic Hermitian matrices~\cite{Baez:2001dm}. The spin factors give the spheres, i.e.\ the $O(n)$ models with a single radial singlet. The exceptional algebra gives the symmetric space $E_6/F_4$, with $\dim E_6-\dim F_4=78-52=26$ NGBs. Its minimal linear completion is the complex $\mathbf{27}$ of $E_6$, extended by a $U(1)$ factor, with vacuum along the identity of $J_3(\mathbb O)$. The radial modes are a singlet and a $\mathbf{26}$ of $F_4$, and their couplings to the NGBs are the octonionic Jordan symbols $d^{ABC}$. Together with $SU(3)/SO(3)$, $SU(3)\times SU(3)/SU(3)$ and $SU(6)/Sp(6)$, $E_6/F_4$ completes the $J_3(\mathbb K)$ row of the Freudenthal--Tits magic square~\cite{Freudenthal:1964,Tits:1966,GurseyTze}.
+
+The rigidity argument of Sec.~\ref{sec:beyond} applies unchanged. The rank of $E_6/F_4$ is two, so $f^{abI}f^{cdI}$ and $\delta\delta-\delta\delta$ are independent. Moreover ${\rm Sym}^2(\mathbf{26})=\mathbf1\oplus\mathbf{26}\oplus\mathbf{324}$ under $F_4$, with $\mathcal T_{\mathbf{324}}$ having a negative component along $f^{abI}f^{cdI}$. Therefore every linear completion of $E_6/F_4$ contains a radial $\mathbf{26}$ of $F_4$, with summed squared couplings at least those of the $\mathbf{27}$ of $E_6$. In the normalization $\langle\mathbb{1},\mathbb{1}\rangle=3$ one finds $d^{ab0}=\sqrt{2/3}\,\delta^{ab}$, $C_d=14/3$ and $\bar K=12/25$. Table~\ref{tab:magic} summarizes the four members of the $N=3$ family.
+
+\begin{table*}[t]
+\caption{The $N=3$ members of the family, in the normalization $\langle\mathbb{1},\mathbb{1}\rangle=3$ of $J_3(\mathbb K)$. $D$ is the number of non-abelian NGBs, $\bar K$ the average sectional curvature of Eq.~\eqref{eq:singletbound}, $C_d=d^{acd}d^{acd}/D$. In all four cases ${\rm Sym}^2(R_\pi)$ has exactly three irreducible components, so the rigidity of Proposition~\ref{prop:rigidity} applies. For $SU(6)/Sp(6)$ this normalization differs by a factor of 2 from the $n=6$ matrix normalization of Table~\ref{tab:reps}.}
+\label{tab:magic}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+$\mathbb K$ & coset & $D$ & ${\rm Sym}^2(R_\pi)$ & $\bar K$ & $C_d$\\
+\hline
+$\mathbb R$ & $SU(3)/SO(3)$ & 5 & $\mathbf1\oplus\mathbf5\oplus\mathbf9$ & $3/8$ & $7/6$\\
+$\mathbb C$ & $SU(3)\times SU(3)/SU(3)$ & 8 & $\mathbf1\oplus\mathbf8\oplus\mathbf{27}$ & $3/7$ & $5/3$\\
+$\mathbb{H}$ & $SU(6)/Sp(6)$ & 14 & $\mathbf1\oplus\mathbf{14}\oplus\mathbf{90}$ & $6/13$ & $8/3$\\
+$\mathbb O$ & $E_6/F_4$ & 26 & $\mathbf1\oplus\mathbf{26}\oplus\mathbf{324}$ & $12/25$ & $14/3$
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+We have verified numerically, with an explicit implementation of the octonions, that $J_3(\mathbb O)$ satisfies the Jordan identity and has an associative trace form, that ${\rm Der}\,J_3(\mathbb O)$ is 52-dimensional, that Eq.~\eqref{eq:jordanlemma} holds, and the decomposition of ${\rm Sym}^2(\mathbf{26})$. We have also verified that the $\mathbf{27}$ of $E_6$ satisfies the Gauss equation, with the curvature computed directly from the $E_6$ Lie bracket, and has radial content $\mathbf1\oplus\mathbf{26}$. The same code reproduces $\dim{\rm Der}\,J_3(\mathbb K)=3,8,21$ and the corresponding data for $\mathbb K=\mathbb R,\mathbb C,\mathbb{H}$. The polar parametrization of Sec.~\ref{sec:LSM} generalizes as $\Hf=P(u)\,\Phi$, where $P(a)b=2a\circ(a\circ b)-a^2\circ b$ is the quadratic representation; for Hermitian matrices $P(u)\Phi=u\Phi u$. The renormalizable potential of the $\mathbf{27}$ contains the $E_6$-invariant cubic norm $\det\Hf$, which breaks the $U(1)$ as the determinant term does for $N=3$.

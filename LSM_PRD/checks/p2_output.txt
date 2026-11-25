@@ -1,0 +1,32 @@
+== SU(3)xSU(3) minimal (3,3bar)  [sanity: expect 1+8, Gauss=0]: dim V(real)=18, dim g=16, dim h=8, dim p=8, metric isotropy=8.9e-16, f^2=1.0000
+   Gauss residual = 1.11e-16   |F| = 0.359
+   normal space dim = 10; image of 2nd fundamental form dim = 9
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.3333 A -0.0000 F
+   radial irrep coupled to pi pi: dim=   8 Casimir(normal)=  1.0000   contribution to Gauss = -0.3333 A +1.0000 F
+== SU(3)xSU(3) via (8,8)  [rigidity N=3: expect the 8 to appear]: dim V(real)=128, dim g=16, dim h=8, dim p=8, metric isotropy=1.2e-15, f^2=6.0000
+   Gauss residual = 4.44e-16   |F| = 0.406
+   normal space dim = 120; image of 2nd fundamental form dim = 36
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)=  0.0000   contribution to Gauss = +0.7500 A +0.0000 F
+   radial irrep coupled to pi pi: dim=   8 Casimir(normal)=  0.0625   contribution to Gauss = -0.6000 A +1.8000 F
+   radial irrep coupled to pi pi: dim=  27 Casimir(normal)=  0.1667   contribution to Gauss = -0.1500 A -0.8000 F
+== SU(4)xSU(4) via (6,6)  [expect radial 1+20prime only]: dim V(real)=72, dim g=30, dim h=15, dim p=15, metric isotropy=1.2e-15, f^2=2.0000
+   Gauss residual = 3.89e-16   |F| = 0.327
+   normal space dim = 57; image of 2nd fundamental form dim = 21
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.3333 A +0.0000 F
+   radial irrep coupled to pi pi: dim=  20 Casimir(normal)=  0.5000   contribution to Gauss = -0.3333 A +1.0000 F
+== SU(4)/SO(4) = SO(6)/SO(3)xSO(3) via 20prime  [expect radial 1+5L+5R]: dim V(real)=72, dim g=15, dim h=6, dim p=9, metric isotropy=0.0e+00, f^2=4.0000
+   Gauss residual = 5.55e-17   |F| = 0.500
+   normal space dim = 63; image of 2nd fundamental form dim = 11
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)=  0.0000   contribution to Gauss = +0.6667 A -0.0000 F
+   radial irrep coupled to pi pi: dim=  10 Casimir(normal)=  0.2500   contribution to Gauss = -0.6667 A +1.0000 F
+== SU(8)/Sp(8) via Lambda^4 (70)  [expect radial 1+42]: dim V(real)=140, dim g=63, dim h=36, dim p=27, metric isotropy=1.9e-15, f^2=8.0000
+   Gauss residual = 5.00e-16   |F| = 0.329
+   normal space dim = 113; image of 2nd fundamental form dim = 43
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)=  0.0000   contribution to Gauss = +0.3333 A -0.0000 F
+   radial irrep coupled to pi pi: dim=  42 Casimir(normal)=  0.6000   contribution to Gauss = -0.3333 A +1.0000 F
+== SU(5)xSU(5) via (10,10bar)  [control: adjoint expected since A(Lambda^2)=N-4!=0]: dim V(real)=200, dim g=48, dim h=24, dim p=24, metric isotropy=2.2e-15, f^2=3.0000
+   Gauss residual = 4.16e-16   |F| = 0.279
+   normal space dim = 176; image of 2nd fundamental form dim = 100
+   radial irrep coupled to pi pi: dim=   1 Casimir(normal)= -0.0000   contribution to Gauss = +0.3000 A -0.0000 F
+   radial irrep coupled to pi pi: dim=  24 Casimir(normal)=  0.1667   contribution to Gauss = -0.0222 A +0.1111 F
+   radial irrep coupled to pi pi: dim=  75 Casimir(normal)=  0.2667   contribution to Gauss = -0.2778 A +0.8889 F
