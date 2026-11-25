@@ -545,5 +545,174 @@
       "Marino",
       "Zantedeschi"
     ]
+  },
+  {
+    "id": "2611.31368",
+    "title": "Dark vector meson effects on composite dark matter",
+    "authors": "T. Abe, R. Sato, O. Semin, et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Studies how dark vector mesons change the relic abundance and detection prospects of composite dark matter models.",
+    "abstract": "We extend previous studies of $\\mathcal{G}$-parity-odd dark pion dark matter in a QCD-like $\\mathrm{SU}(N_c)$ gauge theory with electroweakly interacting dark quarks to include the effects of $\\rho$ mesons. We show that vector mesons can substantially affect relic abundance calculations through resonant enhancement, significantly affecting the conditions required to reproduce the observed relic abundance. Electroweak interactions further induce mixing between the dark $\\rho$ mesons and Standard Model gauge bosons, opening new decay channels for the dark $\\rho$ and modifying the effective interactions of the dark pions. We recast existing ATLAS and CMS searches to constrain the model, and per",
+    "interest": [
+      "Di Lecce",
+      "Panci",
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.33057",
+    "title": "Boosted energy-energy correlators in the small-acoplanarity limit",
+    "authors": "B. Jobilal, Z. Kang, D. Padilla",
+    "area": "hep-ph",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Computes boosted energy-energy correlators in the small-acoplanarity limit, relevant for precision jet substructure studies at colliders.",
+    "abstract": "We study the energy-energy correlator in the hadronic decay of a boosted boson. We focus on the small-acoplanarity region, where the two hadron momenta are nearly back-to-back in the plane transverse to the boson momentum. We derive a transverse-momentum-dependent factorization formula for electroweak and Higgs bosons in this region, expressed directly in boosted-frame variables in terms of hard, soft, and jet functions with a one-dimensional recoil measurement. We verify its singular real-emission terms at next-to-leading order and present resummed predictions up to N$^3$LL for asymmetric $e^+e^-$ colliders. For vector bosons, the azimuthal orientation of the hadron pair about the boost axi",
+    "interest": [
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.31388",
+    "title": "Charge-resolved four-lepton probes of an $e\\mu$-flavour-violating scalar at FCC-ee",
+    "authors": "K. Deka, B. Rawat, T. Srivastava",
+    "area": "hep-ph",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Proposes charge-resolved four-lepton signatures to probe an e-mu flavour-violating scalar at FCC-ee.",
+    "abstract": "We study a real neutral scalar $X$ with a single flavour-off-diagonal coupling $h_{e\\mu}=h_{\\mu e}\\equiv h$. The coupling induces associated production, $e^+e^-\\to e^\\pm\\mu^\\mp X$, and the decay $X\\to e^\\pm\\mu^\\mp$. The resulting four-lepton final state separates into the charge-balanced channel $e^+e^-\\mu^+\\mu^-$ and the same-sign same-flavour channels $e^\\pm e^\\pm\\mu^\\mp\\mu^\\mp$. The charge-balanced channel receives a large prompt continuum background, while the same-sign category has a small estimated background under our benchmark assumptions. We analyse the two channels at FCC-ee for $\\sqrt{s}=240~\\mathrm{GeV}$ and $\\mathcal{L}=10.8~\\mathrm{ab}^{-1}$, including a detector simulation. Th",
+    "interest": [
+      "Barducci",
+      "Buttazzo",
+      "Korajac"
+    ]
+  },
+  {
+    "id": "2611.31373",
+    "title": "Discovering Warped Extra Dimensions at Next Generation Dark Matter Detectors",
+    "authors": "K. Agashe, A. Banerjee, K. Panchal, et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Shows that warped extra-dimension models, motivated by the hierarchy problem, can be tested at next-generation dark matter direct detection experiments.",
+    "abstract": "The coming years will see what could be the final push in the search for WIMP dark matter (DM), with direct detection reaching into the neutrino fog and indirect detection reaching TeV-scale thermal relics. We study a class of models that these experiments could discover: DM emerging from a warped extra dimension. In the IR, these scenarios appear generically as a $Z'$-type portal. We show that DM with electroweak couplings and TeV scale masses remains viable and discoverable within such a bottom-up context. However, the models require a 20\\% tuning between the DM and $Z'$ masses, a tuning that is relaxed if the DM and $Z'$ are strongly coupled and heavier ($\\sim$$10$ TeV). In fact, it is th",
+    "interest": [
+      "Ekhterachian",
+      "Di Lecce"
+    ]
+  },
+  {
+    "id": "2611.31600",
+    "title": "Thermodynamic constraints on warm inflation with the Standard Model",
+    "authors": "M. A. Mojahed",
+    "area": "hep-ph",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Derives thermodynamic constraints on warm inflation when the inflaton couples to the Standard Model plasma.",
+    "abstract": "In warm inflation with the Standard Model (SM), an axion-like inflaton dissipates energy into the plasma through QCD sphaleron transitions. Current predictions assume a friction linear in the bias, defined as the free energy released per transition in units of the temperature. The friction, however, has only been simulated at moderate biases in pure SU(2) gauge theory. We show that, during slow roll, energy conservation, the axial anomaly and thermodynamics relate the bias to the quark chemical potentials generated by the transitions, independently of the form of the friction and of the reaction network in the plasma. A bias within the simulated range requires chemical potentials a few times",
+    "interest": [
+      "Ferraz",
+      "Strumia"
+    ]
+  },
+  {
+    "id": "2611.31587",
+    "title": "All the Positive Energy Correlators",
+    "authors": "L. Ricci, M. Riembau, M. Son",
+    "area": "hep-th",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Characterises the set of positive energy correlators in QFT, using positivity to derive constraints on the allowed correlator space.",
+    "abstract": "We develop a framework to systematically obtain the full set of positivity bounds on multi-point energy correlators for sources of arbitrary spin. The constraints are organized in a family of positive operators $\\mathscr{E}^{(N,k)}$, with $k=0,\\ldots,\\lfloor N/2\\rfloor$. Our approach provides outer bounds, which exclude correlators that violate the positivity of $\\mathscr{E}^{(N,k)}$, and inner bounds, obtained by constructing ensembles of consistent collider events via linear programming. Both methods converge to each other as numerical precision increases. This approach, in particular, characterizes the allowed higher-point correlators once lower-point correlators are determined. We illust",
+    "interest": [
+      "Vichi",
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.31369",
+    "title": "The Hidden Simplicity of the Classical Limit",
+    "authors": "Y. F. Bautista, S. De Angelis, D. A. Kosower, et al.",
+    "area": "hep-th",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Shows a hidden simplicity in the classical limit of scattering amplitudes, useful for gravitational dynamics and waveform computations.",
+    "abstract": "We study the classical limit of two-to-two massive-scalar amplitudes at all orders of perturbation theory. We compute these amplitudes in the probe limit for several theories: a family of scalar theories, electrodynamics, and $\\mathcal{N}=8$ supergravity with half-BPS matter. We show that related multiple-emission classical amplitudes obey a simple factorization derivable from the usual factorization of quantum amplitudes. The classical factorization, which reflects the second-order nature of classical dynamics, holds in more general theories --- including gravity. We further show that both the multiple-emission and the two-to-two classical amplitudes have a simple organization in terms of w",
+    "interest": [
+      "Brunello"
+    ]
+  },
+  {
+    "id": "2611.31381",
+    "title": "How to Play a Black Hole: Understanding Quasinormal Mode Excitation",
+    "authors": "L. Vélez-Tartajo, V. Cardoso, J. Redondo-Yuste",
+    "area": "gr-qc",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Explains how quasinormal modes of black holes are excited, clarifying what determines their amplitudes in the ringdown signal.",
+    "abstract": "Understanding the excitation of black hole quasinormal modes is essential for interpreting gravitational-wave signals and inferring black hole properties from them. In this work, we investigate the excitation of the quasinormal modes of Schwarzschild black holes under controlled probes. In the absence of a source, we find that broader initial data suppresses mode excitation, enhancing the relative contribution of the late-time tail, while data localized near the light ring strongly suppresses overtones relative to the fundamental mode. On the other hand, plunging sources give rise to two distinct ringdown stages, associated with scattered radiation generated during the particle's infall and ",
+    "interest": [
+      "Trincherini",
+      "Juliano"
+    ]
+  },
+  {
+    "id": "2611.31389",
+    "title": "On the evidence of lensing in GW231123",
+    "authors": "A. Liu, M. Wright, J. Heynen, et al.",
+    "area": "gr-qc",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Re-examines the claimed evidence for gravitational lensing in the exceptional gravitational-wave event GW231123.",
+    "abstract": "Just like light, gravitational waves may be gravitationally lensed by massive objects along their travel path, however, this has not been observed so far. GW231123 is the most massive binary black-hole merger observed to-date, and quasi-circular gravitational wave analyses infer high masses and spin parameters that are particularly sensitive to the waveform model used. Here we investigate whether gravitational lensing can account for these features. We model the signal as a superposition of multiple overlapping images of the same merger and find support for lensing across four waveform models. The lensing interpretation reduces the support for these high spins, bringing both the inferred spi",
+    "interest": []
+  },
+  {
+    "id": "2611.32857",
+    "title": "Modified recombination or dynamical dark energy (or both)?",
+    "authors": "A. Reeves, G. P. Lynch, A. Nicola, et al.",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Compares modified recombination and dynamical dark energy as explanations of current cosmological tensions, finding what data can distinguish them.",
+    "abstract": "Several recent analyses report a hint of modified recombination when the latest cosmic microwave background (CMB) and baryon acoustic oscillation (BAO) data are jointly analysed. We examine whether this preference persists when allowing for departures in the late-time expansion history of the Universe. We fit a seven-parameter reconstruction of the free-electron fraction and a $w_0w_a$ dark-energy model, separately and jointly, to DESI DR2 BAO, a $5\\times2$pt combination of galaxy clustering and CMB lensing, and three CMB likelihoods: P-ACT, Planck PR4 and Planck 2018. With a cosmological constant, our baseline data combination favours early recombination near last scattering, agreeing with ",
+    "interest": []
+  },
+  {
+    "id": "2611.32671",
+    "title": "Cosmic ray protons from 40 GeV to 10 EeV due to star formation?",
+    "authors": "T. Dzhatdoev, I. Kudryashov, A. Semenov",
+    "area": "astro-ph.HE",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Tests whether star formation can account for the cosmic-ray proton spectrum from 40 GeV to 10 EeV in a single model.",
+    "abstract": "The formation of massive stars eventually results in supernovae explosions. Typical supernova remnants (SNRs) accelerate cosmic ray (CR) protons up to $E_{max-p} \\sim 10$ TeV; the value of $E_{max-p}$ may reach $\\sim 1$ EeV for the case of the hypernovae and/or for a sub-relativistic velocity of the SNR's shock wave. We show that the observable CR proton spectrum in the energy range between 40 GeV and 10 EeV is reasonably well described with a sum of three components that correspond to three distinct SNR populations. We consider two basic scenarios of CR origin: I) the supergalactic scenario assuming diffusion of the protons inside a magnetic field structure with the characteristic radius $H",
+    "interest": [
+      "Gaggero"
+    ]
+  },
+  {
+    "id": "2611.32106",
+    "title": "Updated T2K measurement of neutrino oscillation parameters with the first data from the Gadolinium-loaded far detector",
+    "authors": "The T2K collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Updated T2K neutrino oscillation measurement including the first data with gadolinium-loaded Super-Kamiokande.",
+    "abstract": "The T2K experiment presents updated measurements of neutrino oscillation parameters using $21.4(16.3)\\times10^{20}$ protons on target (POT) in (anti-)neutrino mode at the far detector, Super-Kamiokande. This analysis uses an additional neutrino dataset of $1.7 \\times 10^{20}$ POT compared to the previous result, and for the very first time, data collected with Super-Kamiokande doped with Gadolinium (Gd). Significant improvements were introduced in the far detector selection and systematic error treatment. Both semi-frequentist and Bayesian analyses are presented, including results on $\\sin^{2} \\theta_{23}$, $\\Delta m^2_{32} $, $\\sin^{2} \\theta_{13}$ and $\\delta_{CP}$. Both analyses favor nor",
+    "interest": []
+  },
+  {
+    "id": "2611.31749",
+    "title": "Parton Physics in the Schwinger Model from Matrix Product States",
+    "authors": "M. C. Bañuls, K. Cichy, C.-J. D. Lin, et al.",
+    "area": "hep-lat",
+    "announced": "2026-11-25",
+    "digest": "2026-11-25",
+    "gist": "Computes parton distribution-like quantities in the Schwinger model with matrix product states, a step toward quantum-simulation approaches to hadron structure.",
+    "abstract": "Parton distribution functions (PDFs) and light-cone distribution amplitudes (LCDAs) encode the non-perturbative structure of hadrons in terms of their partonic constituents. They are defined through matrix elements containing parton operators that are connected by a Wilson line along a light-front direction, which makes them difficult to access in Euclidean lattice calculations. We demonstrate how parton functions can be directly obtained in Minkowski space using the Hamiltonian framework. We compute fermion and antifermion PDFs, LCDAs, and decay constants of the vector meson in the Schwinger model for several fermion masses. States in Hilbert space are efficiently represented by tensor netw",
+    "interest": []
   }
 ]
