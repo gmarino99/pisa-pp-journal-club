@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
@@ -56,5 +56,16 @@ jobs:
         with:
           path: _site
 
+      # GitHub sometimes reports "No artifacts named github-pages were found" right after a successful upload
+      # (seen on 25 Nov 2026 for every push-triggered run). Try once more after a short wait before failing.
       - id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+      - name: Wait before retrying the deploy
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+
+      - id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
