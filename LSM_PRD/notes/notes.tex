@@ -1,0 +1,987 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\usepackage{cleveref}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\numberwithin{equation}{section}
+
+\newtheorem{prop}{Proposizione}
+\newtheorem{lem}{Lemma}
+\newtheorem{defi}{Definizione}
+\newtheorem{fatto}{Fatto}
+\theoremstyle{remark}
+\newtheorem*{oss}{Osservazione}
+\newtheorem*{pedante}{Nota pedante}
+\newtheorem*{attenzione}{Attenzione}
+
+\newtcolorbox{riass}{colback=blue!4,colframe=blue!40!black,title=Riassunto della sezione,fonttitle=\bfseries}
+\newtcolorbox{verifica}{colback=green!4,colframe=green!40!black,title=Verifica che puoi fare da solo,fonttitle=\bfseries}
+
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Hf}{\mathcal{H}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\Hg}{\mathcal{H}_0}
+\newcommand{\p}{\mathfrak{p}}
+\newcommand{\h}{\mathfrak{h}}
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\one}{\mathbb{1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\HH}{\mathbb{H}}
+
+\title{\textbf{Radial modes e completamenti lineari dei modelli sigma non lineari}\\[4pt]
+\large Note di studio passo per passo: tutto ciò che serve per capire e ri-dimostrare i risultati del paper}
+\author{Note per Giulio Marino}
+\date{Novembre 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Queste note ricostruiscono, da zero e senza saltare passaggi, tutti gli ingredienti necessari per arrivare ai risultati principali del paper: teoria dei gruppi e spazi simmetrici, costruzione CCWZ, ampiezze di scattering dei bosoni di Goldstone, geometria del coset (curvatura, seconda forma fondamentale, equazione di Gauss), completamenti lineari generici, algebre di Jordan, il modello sigma lineare in coordinate polari, l'identità di traccia, la necessità dei modi radiali, la rigidità a $N=3$, i bound di unitarietà e il legame con la fisica elettrodebole. Ogni conto è svolto esplicitamente; dove un risultato è standard lo si dice e lo si dimostra comunque, oppure si indica come verificarlo. I box verdi indicano verifiche che puoi fare a mano o con gli script in \texttt{LSM\_PRD/checks/}.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Mappa delle note e convenzioni}
+%=====================================================================
+
+\subsection{La logica del paper in una pagina}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item Un modello sigma non lineare (NL$\Sigma$M) sul coset $\G/\Hg$ ha ampiezze $\pi\pi\to\pi\pi$ che crescono come $s/f^2$. Il coefficiente della crescita è la \emph{curvatura} del coset (Sez.~\ref{sec:ccwz}--\ref{sec:geom}).
+\item Un completamento lineare rinormalizzabile (campi in una rappresentazione lineare di $\G$, potenziale polinomiale) ha ampiezze limitate. Riscritto in coordinate polari, contiene il NL$\Sigma$M più dei modi radiali $\rho^r$ accoppiati come $\frac1f g^r_{ab}\rho^r\partial\pi^a\partial\pi^b$. La cancellazione della crescita impone l'\emph{equazione di Gauss}
+\[
+f^{abI}f^{cdI}=\sum_r\big(g^r_{ac}g^r_{bd}-g^r_{ad}g^r_{bc}\big)
+\]
+(Sez.~\ref{sec:linear}).
+\item Dall'equazione di Gauss seguono, senza scegliere una rappresentazione:
+\begin{itemize}[nosep]
+\item il singoletto radiale è sempre necessario, con un bound inferiore (Prop.~\ref{prop:singlet});
+\item i soli singoletti bastano solo se la curvatura è costante, cioè per $N=2$ (Prop.~\ref{prop:sphere}).
+\end{itemize}
+\item Per i tre coset, la rappresentazione lineare standard ha una struttura comune: l'algebra di Jordan delle matrici Hermitiane su $\R,\C,\HH$ (Sez.~\ref{sec:jordan}). I modi radiali sono un singoletto $h$ e un multipletto $H^a$ con gli stessi numeri quantici dei NGB.
+\item Con la parametrizzazione polare $\Hf=u\Phi u^T$ la Lagrangiana ha una forma chiusa (Sez.~\ref{sec:polar}). Gli accoppiamenti cubici sono i simboli $d^{ABC}$ del prodotto di Jordan.
+\item L'equazione di Gauss diventa un'identità di traccia tra commutatori e anticommutatori (Lemma~\ref{lem:trace}), valida per i tre casi insieme. Ne segue l'ampiezza esatta, che è limitata (Sez.~\ref{sec:amp}).
+\item Per $N\ge3$ tutti i modi radiali del modello matriciale sono necessari (Sez.~\ref{sec:necessity}). Per $N=3$ il multipletto $H$ è necessario in \emph{qualunque} completamento (Sez.~\ref{sec:rigidity}).
+\item Unitarietà a onde parziali: bound sulle masse radiali (Sez.~\ref{sec:unit}). Fisica elettrodebole e regole di somma (Sez.~\ref{sec:ew}).
+\end{enumerate}
+
+\subsection{Convenzioni}
+
+\begin{itemize}
+\item Metrica $\eta=\mathrm{diag}(+,-,-,-)$. Momenti tutti \emph{entranti} nei vertici e nelle ampiezze, salvo avviso. Per $1+2\to3+4$ con impulsi fisici $p_1,p_2\to p_3,p_4$:
+\[
+s=(p_1+p_2)^2,\qquad t=(p_1-p_3)^2,\qquad u=(p_1-p_4)^2 .
+\]
+Per particelle senza massa $s+t+u=0$. Se tratti tutti i momenti come entranti ($p_3\to-p_3$, $p_4\to-p_4$) valgono:
+\begin{equation}
+p_1\!\cdot p_2=p_3\!\cdot p_4=\tfrac{s}{2},\qquad p_1\!\cdot p_3=p_2\!\cdot p_4=\tfrac{t}{2},\qquad p_1\!\cdot p_4=p_2\!\cdot p_3=\tfrac{u}{2}.
+\label{eq:dots}
+\end{equation}
+\begin{pedante}
+Con tutti i momenti entranti, $t=(p_1+p_3)^2=2p_1\!\cdot p_3$ (massless). La conservazione $p_1+p_2+p_3+p_4=0$ dà $p_3\!\cdot p_4=\frac12(p_3+p_4)^2=\frac12(p_1+p_2)^2=p_1\!\cdot p_2$. Le altre uguaglianze si ottengono allo stesso modo.
+\end{pedante}
+\item Regole di Feynman: $\partial_\mu\phi\to -ip_\mu$ per un campo che annichila una particella entrante di impulso $p$. Il vertice è $i\times$(coefficiente in $\mathcal L$)$\times$(somma su tutti i modi di attaccare le gambe esterne). Il propagatore scalare è $i/(p^2-m^2)$. L'ampiezza $\mathcal M$ è definita da $i\mathcal M=$ somma dei diagrammi.
+\item Generatori: $\Tr(X^AX^B)=\frac12\delta^{AB}$, $\Tr(T^IT^J)=\frac12\delta^{IJ}$, tutti Hermitiani.
+\item Indici: $A,B,\ldots=0,\dots,D$ per i generatori rotti includendo l'identità $X^0=\one/\sqrt{2n}$; $a,b,\ldots=1,\dots,D$ per i NGB non abeliani; $I,J,\ldots$ per l'algebra non rotta $\h$. Gli indici ripetuti sono sommati.
+\item $n$ è la dimensione delle matrici: $n=N,N,2N$ per i tre coset.
+\end{itemize}
+
+%=====================================================================
+\section{Teoria dei gruppi: tutto ciò che serve}
+\label{sec:groups}
+%=====================================================================
+
+\subsection{Algebre di Lie, generatori, costanti di struttura}
+
+Un gruppo di Lie compatto $\G$ di matrici unitarie si scrive vicino all'identità come $g=e^{i\theta^\alpha G^\alpha}$ con $G^\alpha$ Hermitiani (i generatori). L'algebra di Lie è chiusa sotto commutatore:
+\begin{equation}
+[G^\alpha,G^\beta]=i f^{\alpha\beta\gamma}G^\gamma ,
+\end{equation}
+dove $f^{\alpha\beta\gamma}$ sono reali e, con la normalizzazione $\Tr(G^\alpha G^\beta)=\frac12\delta^{\alpha\beta}$, totalmente antisimmetrici:
+\begin{equation}
+f^{\alpha\beta\gamma}=-2i\,\Tr\big([G^\alpha,G^\beta]G^\gamma\big).
+\end{equation}
+\begin{pedante}
+Perché sono totalmente antisimmetrici? $\Tr([G^\alpha,G^\beta]G^\gamma)=\Tr(G^\alpha G^\beta G^\gamma)-\Tr(G^\beta G^\alpha G^\gamma)$. Per ciclicità, scambiare $\beta\leftrightarrow\gamma$ cambia il segno. L'antisimmetria in $\alpha\beta$ è ovvia.
+\end{pedante}
+
+\subsection{$SU(N)$: simboli $f$ e $d$ e identità di Haber}
+
+Per $U(N)$ si aggiunge $T^0=\one/\sqrt{2N}$. Per l'anticommutatore dei generatori di $SU(N)$ vale
+\begin{equation}
+\{T^a,T^b\}=\frac1N\delta^{ab}\one+d^{abc}T^c,\qquad d^{abc}=2\Tr(\{T^a,T^b\}T^c),
+\label{eq:dSU}
+\end{equation}
+con $d^{abc}$ totalmente simmetrico. Relazioni utili, tutte da Haber (SciPost Lect.\ Notes 21):
+\begin{align}
+f^{acd}f^{bcd}&=N\delta^{ab}, & d^{acd}d^{bcd}&=\frac{N^2-4}{N}\delta^{ab}, & d^{aac}&=0, \label{eq:haber1}\\
+f^{abe}f^{cde}&=\frac2N(\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc})+d^{ace}d^{bde}-d^{bce}d^{ade}. \label{eq:haber2}
+\end{align}
+La \eqref{eq:haber2} è il caso $SU(N)$ dell'identità centrale del paper (Lemma~\ref{lem:trace}); la dimostreremo in generale.
+
+\begin{attenzione}
+\textbf{L'errore della v1.} Nella prima versione si scriveva $d^{abe}d^{cde}=A\delta^{ab}\delta^{cd}+B(\delta^{ac}\delta^{bd}+\delta^{ad}\delta^{bc})$, fissando $A$ e $B$ con due contrazioni. Questa \emph{non} è un'identità per $N\ge3$: $d^{abe}d^{cde}$ è un tensore invariante indipendente da quelli costruiti con le $\delta$. Le contrazioni fissano solo la sua ``media isotropa''. Si vede in un caso esplicito. Per $SU(3)$ servono solo $d^{118}=d^{338}=1/\sqrt3$ e $d^{448}=-1/(2\sqrt3)$ (con $d^{113}=d^{114}=0$). Si trova
+\[
+\textstyle\sum_e d^{11e}d^{33e}=d^{118}d^{338}=\tfrac13,\qquad \sum_e d^{11e}d^{44e}=d^{118}d^{448}=-\tfrac16 .
+\]
+L'ansatz dà invece $A$ per entrambe, perché in tutti e due i casi $a=b\neq c=d$. Lo script \texttt{verify.py}, punto (0), dà uno scarto massimo di $0.38$.
+\end{attenzione}
+
+\subsection{Rappresentazioni reali, complesse, pseudoreali}
+
+Una rappresentazione irriducibile $R$ di $\G$ si dice:
+\begin{itemize}[nosep]
+\item \emph{complessa} se $R\not\simeq\bar R$ (esempio: la fondamentale di $SU(N)$, $N\ge3$);
+\item \emph{reale} se $R\simeq\bar R$ con una matrice simmetrica (esempio: l'aggiunta; la vettoriale di $SO(N)$);
+\item \emph{pseudoreale} se $R\simeq\bar R$ con una matrice antisimmetrica (esempio: la $\mathbf 2$ di $SU(2)$, con $\epsilon=i\sigma^2$; la fondamentale di $Sp(2N)$, con $\Omega$).
+\end{itemize}
+Questo serve per due motivi:
+\begin{enumerate}[nosep]
+\item Il tipo della rappresentazione dei fermioni della teoria di gauge sottostante determina il pattern di rottura: complessa $\to SU(N)\times SU(N)/SU(N)$, reale $\to SU(N)/SO(N)$, pseudoreale $\to SU(2N)/Sp(2N)$ (Peskin 1980; Kogut et al.\ 2000).
+\item Se la rappresentazione del campo lineare è reale, si può imporre una condizione di realtà che dimezza i gradi di libertà. Per $N=2$ senza $U(1)$, la $(\mathbf2,\mathbf2)$ di $SU(2)\times SU(2)$ è reale ($=$ vettore di $SO(4)$): $\Hf=\sigma^2\Hf^*\sigma^2$ lascia 4 campi reali, cioè $\sigma+\vec\pi$.
+\end{enumerate}
+
+\subsection{I gruppi $SO(N)$ e $Sp(2N)$ in pratica}
+
+\textbf{$SO(N)\subset SU(N)$.} È il sottogruppo delle matrici reali. I generatori Hermitiani di $SU(N)$ si dividono in:
+\begin{itemize}[nosep]
+\item immaginari antisimmetrici, $T^*=-T$, $T^T=-T$: generano $SO(N)$; sono $N(N-1)/2$;
+\item reali simmetrici a traccia nulla, $X^*=X$, $X^T=X$: sono i generatori rotti; sono $N(N+1)/2-1$.
+\end{itemize}
+
+\textbf{$Sp(2N)\subset SU(2N)$.} Con
+\[
+\Omega=\begin{pmatrix}0&\one_N\\-\one_N&0\end{pmatrix},\qquad \Omega^T=-\Omega=\Omega^{-1},\qquad \Omega^2=-\one,
+\]
+$USp(2N)=\{V\in SU(2N):V^T\Omega V=\Omega\}$. Per $V=e^{i\epsilon T}$ al primo ordine $(iT)^T\Omega+\Omega(iT)=0$, cioè
+\begin{equation}
+\text{generatori di } \h=\mathfrak{sp}(2N):\quad T^T\Omega=-\Omega T;\qquad \text{generatori rotti } \p:\quad X^T\Omega=+\Omega X .
+\label{eq:spcond}
+\end{equation}
+Dimensioni: $\dim Sp(2N)=N(2N+1)$, quindi i generatori rotti di $SU(2N)$ sono $4N^2-1-N(2N+1)=(N-1)(2N+1)=2N^2-N-1$.
+
+\begin{attenzione}
+Nella v1 c'era $\dim USp(2N)=N(N+1)/2-1$: è sbagliato. La formula giusta è $N(2N+1)$. Per $N=2$: $\dim Sp(4)=10$, $\dim SU(4)=15$, quindi 5 NGB, come $SO(6)/SO(5)$.
+\end{attenzione}
+
+\begin{verifica}
+Conta le matrici Hermitiane $2N\times2N$ con $X^T\Omega=\Omega X$. Scrivi $X=\begin{pmatrix}A&B\\B^\dagger&D\end{pmatrix}$ e imponi la condizione: viene $D=A^T$ e $B^T=-B$. Allora $A$ è Hermitiana ($N^2$ parametri reali) e $B$ è complessa antisimmetrica ($N(N-1)$ parametri reali), per un totale di $N(2N-1)$. Togliendo la traccia restano $2N^2-N-1$. \checkmark
+\end{verifica}
+
+%=====================================================================
+\section{Rottura spontanea e conteggio dei Goldstone}
+\label{sec:ssb}
+%=====================================================================
+
+\textbf{Teorema di Goldstone.} Se il vuoto è invariante sotto $\Hg\subset\G$, compare un bosone di Goldstone senza massa per ogni generatore rotto: $n_{\rm NGB}=\dim\G-\dim\Hg$. Questo vale per teorie relativistiche con simmetrie interne.
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+coset & $\dim\G$ & $\dim\Hg$ & NGB non abeliani ($D$) \\
+\hline
+$SU(N)\times SU(N)/SU(N)$ & $2(N^2-1)$ & $N^2-1$ & $N^2-1$ (aggiunta)\\
+$SU(N)/SO(N)$ & $N^2-1$ & $N(N-1)/2$ & $N(N+1)/2-1$ (simm.\ a traccia nulla) \\
+$SU(2N)/Sp(2N)$ & $4N^2-1$ & $N(2N+1)$ & $2N^2-N-1$ (antisimm.\ $\Omega$-traccia nulla)\\
+\hline
+\end{tabular}
+\end{center}
+
+Includendo il $U(1)$ extra (sotto cui il campo lineare ha carica 1), si aggiunge un NGB singoletto $\eta$. In totale ci sono $D+1$ NGB.
+
+\textbf{I NGB trasformano linearmente sotto $\Hg$.} Lo fanno nella rappresentazione di $\Hg$ sullo spazio $\p$ dei generatori rotti (rappresentazione ``aggiunta ristretta'', $[T^I,X^a]=i f^{Iab}X^b$). Questo è il punto di partenza dell'approccio gruppale suggerito dal referee~A.
+
+%=====================================================================
+\section{Spazi simmetrici}
+\label{sec:symm}
+%=====================================================================
+
+\begin{defi}
+Si decompone $\g=\h\oplus\p$, con $\p$ il complemento ortogonale rispetto a $\Tr$. Il coset è \emph{simmetrico} se esiste un automorfismo $\mathcal R$ di $\g$ (la ``grading'', o parità) con $\mathcal R|_\h=+1$ e $\mathcal R|_\p=-1$. Equivalentemente:
+\begin{equation}
+[\h,\h]\subset\h,\qquad [\h,\p]\subset\p,\qquad [\p,\p]\subset\h .
+\label{eq:symm}
+\end{equation}
+\end{defi}
+\begin{pedante}
+Perché sono equivalenti? Se $\mathcal R$ è un automorfismo, allora $\mathcal R[x,y]=[\mathcal Rx,\mathcal Ry]$. Per $x,y\in\p$ questo dà $\mathcal R[x,y]=[-x,-y]=[x,y]$, quindi $[x,y]$ ha autovalore $+1$, cioè sta in $\h$. Allo stesso modo $\mathcal R[h,x]=-[h,x]$, quindi $[\h,\p]\subset\p$. Viceversa, se valgono le \eqref{eq:symm}, la mappa $+1$ su $\h$ e $-1$ su $\p$ preserva i commutatori.
+\end{pedante}
+
+\subsection{I tre casi esplicitamente}
+
+\begin{enumerate}
+\item \textbf{Chirale.} $\G=SU(N)_L\times SU(N)_R$, $\mathcal R$: $L\leftrightarrow R$. $\h=\{(T,T)\}$ è l'aggiunta diagonale, $\p=\{(T,-T)\}$. Come matrici si identifica $\p$ con le Hermitiane a traccia nulla.
+\item \textbf{$SU(N)/SO(N)$.} $\mathcal R(g)=g^*=(g^{-1})^T$. Sui generatori: $G\to-G^*$ (perché $g^*=e^{-i\theta G^*}$). Su $\h$ (immaginari): $-T^*=T$, segno $+$. Su $\p$ (reali): $-X^*=-X$, segno $-$. \checkmark
+\item \textbf{$SU(2N)/Sp(2N)$.} $\mathcal R(g)=\Omega g^*\Omega^{-1}$. Sui generatori $G\to-\Omega G^*\Omega^{-1}=-\Omega G^T\Omega^{-1}$ (perché $G^*=G^T$ per $G$ Hermitiano). Per $T\in\h$: $T^T=-\Omega^{-1}T\Omega$, quindi $-\Omega T^T\Omega^{-1}=T$. Per $X\in\p$: $X^T=\Omega^{-1}X\Omega$, quindi $-\Omega X^T\Omega^{-1}=-X$. \checkmark
+\end{enumerate}
+
+\begin{verifica}
+Verifica $[\p,\p]\subset\h$ direttamente. Caso $SO$: se $X,Y$ sono reali simmetriche, $[X,Y]$ è reale antisimmetrica, quindi $[X,Y]=i\cdot$(immaginaria antisimmetrica) $\in i\h$. Caso $Sp$: $[X,Y]^T\Omega=(Y^TX^T-X^TY^T)\Omega=Y^T\Omega X-X^T\Omega Y=\Omega YX-\Omega XY=-\Omega[X,Y]$. Quindi $T=-i[X,Y]$ soddisfa $T^T\Omega=-\Omega T$. \checkmark
+\end{verifica}
+
+\subsection{Rango e sottospazi piatti}
+
+Il \emph{rango} di uno spazio simmetrico è la dimensione massima di un sottospazio abeliano $\mathfrak a\subset\p$ ($[\mathfrak a,\mathfrak a]=0$). Per i tre coset è $N-1$:
+\begin{itemize}[nosep]
+\item matrici diagonali reali a traccia nulla (casi chirale e $SO$);
+\item matrici della forma $\mathrm{diag}(\Lambda,\Lambda)$ con $\Lambda$ diagonale reale a traccia nulla (caso $Sp$).
+\end{itemize}
+Verifica che $\mathrm{diag}(\Lambda,\Lambda)$ soddisfa $X^T\Omega=\Omega X$: $\Omega\,\mathrm{diag}(\Lambda,\Lambda)=\begin{pmatrix}0&\Lambda\\-\Lambda&0\end{pmatrix}=\mathrm{diag}(\Lambda,\Lambda)\,\Omega$. \checkmark
+
+Conseguenza cruciale (Sez.~\ref{sec:geom}): se $N\ge3$ esistono due generatori rotti \emph{ortonormali e commutanti}, per esempio $X^3\propto\mathrm{diag}(1,-1,0,\ldots)$ e $X^8\propto\mathrm{diag}(1,1,-2,0,\ldots)$. Per $N=2$ il rango è 1 e non ne esistono.
+
+%=====================================================================
+\section{La costruzione CCWZ e la Lagrangiana del NL$\Sigma$M}
+\label{sec:ccwz}
+%=====================================================================
+
+\subsection{Il campo dei Goldstone e come trasforma}
+
+Si pone
+\begin{equation}
+u(\pi)=\exp\!\Big(\frac{i\pi^AX^A}{f}\Big)\equiv e^{iA},\qquad A\equiv\frac{\pi^AX^A}{f}\in\p .
+\end{equation}
+Sotto $g\in\G$: $g\,u(\pi)=u(\pi')\,k(g,\pi)$ con $k\in\Hg$. Questa è la decomposizione unica (vicino all'identità) di un elemento di $\G$ in ``coset $\times$ sottogruppo''. Quindi
+\begin{equation}
+u\to g\,u\,k^{-1}(g,\pi).
+\end{equation}
+Il compensatore $k$ dipende da $\pi$ (non linearità) tranne quando $g\in\Hg$. In quel caso $k=g$ e $\pi\to g\pi g^{-1}$ trasforma linearmente.
+
+\textbf{Caso chirale.} Si usano $u_L=u$, $u_R=u^\dagger$, con $u\to L\,u\,k^\dagger=k\,u\,R^\dagger$. Allora $\Sigma\equiv u_Lu_R^\dagger=u^2\to L\Sigma R^\dagger$.
+
+\subsection{Forma di Maurer--Cartan e sviluppo esplicito}
+
+$u^{-1}\partial_\mu u$ sta nell'algebra (moltiplicata per $i$). La si decompone in parte $\p$ e parte $\h$:
+\begin{equation}
+u^{-1}\partial_\mu u=i(d_\mu+E_\mu),\qquad d_\mu\in\p,\quad E_\mu\in\h .
+\end{equation}
+Sotto $\G$: $d_\mu\to k\,d_\mu\,k^{-1}$ (covariante) e $E_\mu\to k(E_\mu-i\partial_\mu)k^{-1}$ (connessione). Per il caso chirale: $u^\dagger\partial u=i(d+E)$ e $u\partial u^\dagger=i(-d+E)$, perché passare da $u_L$ a $u_R$ manda $A\to-A$, e $d$ è dispari in $A$ mentre $E$ è pari.
+
+\textbf{Formula da usare.} Per una matrice $A(x)$:
+\begin{equation}
+e^{-iA}\partial e^{iA}=\int_0^1\!ds\;e^{-isA}(i\partial A)e^{isA}=\sum_{k\ge0}\frac{(-i\,\mathrm{ad}_A)^k}{(k+1)!}(i\partial A),\qquad \mathrm{ad}_A X\equiv[A,X].
+\end{equation}
+Termine per termine:
+\begin{align*}
+k=0:&\quad i\partial A,\\
+k=1:&\quad \tfrac12(-i)[A,i\partial A]=\tfrac12[A,\partial A],\\
+k=2:&\quad \tfrac16(-i)^2[A,[A,i\partial A]]=-\tfrac{i}{6}[A,[A,\partial A]].
+\end{align*}
+Poiché $A\in\p$, $[A,\partial A]\in\h$ e $[A,[A,\partial A]]\in\p$ per le \eqref{eq:symm}. Separando:
+\begin{equation}
+\boxed{\;d_\mu=\partial_\mu A-\tfrac16\big[A,[A,\partial_\mu A]\big]+\mathcal O(A^5),\qquad E_\mu=-\tfrac{i}{2}[A,\partial_\mu A]+\mathcal O(A^4).\;}
+\end{equation}
+Con $A=\pi\cdot X/f$ e $[X^A,X^B]=if^{ABI}T^I$:
+\begin{equation}
+d_\mu=\frac{\partial_\mu\pi^AX^A}{f}-\frac{1}{6f^3}[\pi\!\cdot\!X,[\pi\!\cdot\!X,\partial_\mu\pi\!\cdot\!X]]+\dots,\qquad
+E_\mu=\frac{1}{2f^2}f^{ABI}\pi^A\partial_\mu\pi^BT^I+\dots
+\label{eq:dE}
+\end{equation}
+
+\subsection{La Lagrangiana e il termine quartico, passo per passo}
+
+La Lagrangiana invariante con due derivate è $\mathcal L=f^2\Tr(d_\mu d^\mu)$. È invariante perché $d\to kdk^{-1}$. Sviluppiamo:
+\begin{align*}
+f^2\Tr(d^2)&=f^2\Tr(\partial A\,\partial A)-\frac{f^2}{3}\Tr\big(\partial A\,[A,[A,\partial A]]\big)+\mathcal O(A^6).
+\end{align*}
+\emph{Termine quadratico:} $f^2\cdot\frac{1}{f^2}\partial\pi^A\partial\pi^B\Tr(X^AX^B)=\frac12(\partial\pi^A)^2$. \checkmark
+
+\emph{Termine quartico.} Espandi il doppio commutatore: $[A,[A,\partial A]]=AA\partial A-2A\partial AA+\partial AAA$. Allora
+\begin{align*}
+\Tr(\partial A[A,[A,\partial A]])&=\Tr(\partial AAA\partial A)-2\Tr(\partial AA\partial AA)+\Tr(\partial A\partial AAA)\\
+&=2\Tr(A^2(\partial A)^2)-2\Tr(A\partial AA\partial A)\qquad\text{(ciclicità)}\\
+&=-\Tr\big([A,\partial A]^2\big),
+\end{align*}
+perché $\Tr([A,\partial A]^2)=\Tr(A\partial AA\partial A-A\partial A\partial AA-\partial AAA\partial A+\partial AA\partial AA)=2\Tr(A\partial AA\partial A)-2\Tr(A^2\partial A^2)$. Quindi il quartico è $+\frac{f^2}{3}\Tr([A,\partial A]^2)$. Ora $[A,\partial A]=\frac{i}{f^2}f^{ABI}\pi^A\partial\pi^BT^I$, dunque
+\[
+\Tr([A,\partial A]^2)=-\frac{1}{f^4}f^{ABI}f^{CDJ}\pi^A\partial\pi^B\pi^C\partial\pi^D\,\tfrac12\delta^{IJ}.
+\]
+\begin{equation}
+\boxed{\;\mathcal L_{\rm NL\Sigma M}=\tfrac12(\partial_\mu\pi^A)^2-\frac{1}{6f^2}f^{ABI}f^{CDI}\,\pi^A\partial_\mu\pi^B\,\pi^C\partial^\mu\pi^D+\mathcal O(\pi^6)\;}
+\label{eq:L4}
+\end{equation}
+\textbf{Controllo $SU(2)$:} $f^{abI}=\epsilon^{abI}$ e $\epsilon^{abI}\epsilon^{cdI}=\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc}$ danno
+\[
+\mathcal L_4=\frac{1}{6f^2}\big[(\pi\cdot\partial\pi)^2-\pi^2(\partial\pi)^2\big],
+\]
+il risultato standard per $U=\exp(i\vec\pi\cdot\vec\sigma/f)$ e $\frac{f^2}{4}\Tr\partial U\partial U^\dagger$. \checkmark
+
+\textbf{$\eta$ libero:} $f^{0BI}=0$ perché $X^0\propto\one$ commuta con tutto, quindi $\eta$ non compare nel quartico.
+
+\textbf{Parità intrinseca:} $\pi\to-\pi$ manda $A\to-A$, quindi $d\to-d$ ed $E\to E$. $\mathcal L=f^2\Tr d^2$ è pari: nessun vertice con un numero dispari di NGB a questo ordine. Il termine di Wess--Zumino--Witten (ordine $p^4$, con $\epsilon^{\mu\nu\rho\sigma}$) è l'unico che viola questa simmetria.
+
+%=====================================================================
+\section{Ampiezza $\pi\pi\to\pi\pi$ del NL$\Sigma$M}
+\label{sec:ampNL}
+%=====================================================================
+
+\subsection{Derivazione dal vertice di contatto}
+
+Sia $F^{ABCD}\equiv f^{ABI}f^{CDI}$. Proprietà: antisimmetrico in $(AB)$, antisimmetrico in $(CD)$, simmetrico sotto $(AB)\leftrightarrow(CD)$. Inoltre (identità di Bianchi, dalla Jacobi):
+\begin{equation}
+F^{abcd}+F^{acdb}+F^{adbc}=0.
+\label{eq:bianchi}
+\end{equation}
+\begin{pedante}
+Dimostrazione della \eqref{eq:bianchi}. La Jacobi dà $[[X^b,X^c],X^d]+[[X^c,X^d],X^b]+[[X^d,X^b],X^c]=0$. Prendi la traccia con $X^a$: $\Tr(X^a[[X^b,X^c],X^d])=if^{bcI}\Tr(X^a[T^I,X^d])$. Inoltre $\Tr(X^a[T^I,X^d])=\Tr([X^d,X^a]T^I)=\frac{i}{2}f^{daI}$. Quindi il primo termine è $-\frac12f^{bcI}f^{daI}=+\frac12f^{adI}f^{bcI}=\frac12F^{adbc}$ (perché $f^{daI}=-f^{adI}$). Gli altri due si ottengono permutando ciclicamente $(bcd)$ e danno $\frac12F^{abcd}$ e $\frac12F^{acdb}$. La somma nulla è la \eqref{eq:bianchi}.
+\end{pedante}
+
+Con tutti i momenti entranti ($p_i$, sapori $a_i$), il vertice di $\mathcal L_4=-\frac{1}{6f^2}F^{ABCD}\pi^A\partial\pi^B\pi^C\partial\pi^D$ è
+\[
+i\mathcal M=i\Big(-\frac{1}{6f^2}\Big)\sum_{\sigma\in S_4}F^{a_{\sigma1}a_{\sigma2}a_{\sigma3}a_{\sigma4}}(-ip_{\sigma2})\cdot(-ip_{\sigma4}),
+\]
+cioè $\mathcal M=\frac{1}{6f^2}\sum_\sigma F^{a_{\sigma1}a_{\sigma2}a_{\sigma3}a_{\sigma4}}\,p_{\sigma2}\!\cdot p_{\sigma4}$. Raggruppa le 24 permutazioni per partizione in coppie. Lo scambio delle due coppie dà un fattore 2. Per la partizione $\{12\}\{34\}$ i 4 ordinamenti interni danno, usando le antisimmetrie,
+\[
+F^{1234}\big(p_2\!\cdot p_4-p_1\!\cdot p_4-p_2\!\cdot p_3+p_1\!\cdot p_3\big)=F^{1234}(p_1-p_2)\cdot(p_3-p_4).
+\]
+Quindi
+\[
+\mathcal M=\frac{1}{3f^2}\Big[F^{abcd}(p_1-p_2)\!\cdot\!(p_3-p_4)+F^{acbd}(p_1-p_3)\!\cdot\!(p_2-p_4)+F^{adbc}(p_1-p_4)\!\cdot\!(p_2-p_3)\Big].
+\]
+Con la \eqref{eq:dots}: $(p_1-p_2)\cdot(p_3-p_4)=t-u$, $(p_1-p_3)\cdot(p_2-p_4)=s-u$, $(p_1-p_4)\cdot(p_2-p_3)=s-t$. Usa la Bianchi nella forma $F^{acbd}=F^{abcd}+F^{adbc}$:
+\[
+\mathcal M=\frac{1}{3f^2}\Big[F^{abcd}(t-u+s-u)+F^{adbc}(s-u+s-t)\Big]=\frac{1}{f^2}\big[s\,F^{adbc}-u\,F^{abcd}\big],
+\]
+avendo usato $s+t+u=0$. Riscritto (eliminando $s$):
+\begin{equation}
+\boxed{\;\mathcal A_{\rm NL\Sigma M}(\pi^a\pi^b\to\pi^c\pi^d)=-\frac{1}{f^2}\Big[t\,f^{adI}f^{bcI}+u\,f^{acI}f^{bdI}\Big]\;}
+\label{eq:ANL}
+\end{equation}
+\textbf{Controllo $SU(2)$} (Weinberg): $\mathcal A=\frac1{f^2}[s\delta^{ab}\delta^{cd}+t\delta^{ac}\delta^{bd}+u\delta^{ad}\delta^{bc}]$, cioè $A(s,t,u)=s/f^2$. \checkmark
+
+\begin{attenzione}
+La decomposizione ``$\bar A\,\delta\delta+\ldots+\bar B\epsilon^{abcd}$'' della v1 era sbagliata: $\epsilon^{abcd}$ non è un tensore invariante adatto in generale. La decomposizione corretta in strutture di sapore (tracce di quattro generatori) è in Chivukula--Dugan--Golden 1993 e Bijnens--Lu 2011. Nel paper non serve: basta la \eqref{eq:ANL}.
+\end{attenzione}
+
+\subsection{Perché la crescita è un problema: onde parziali}
+
+$a_\ell(s)=\frac{1}{32\pi}\int_{-1}^1d\cos\theta\,P_\ell(\cos\theta)\,\mathcal A(s,\theta)$ (con un fattore extra $1/\sqrt2$ per ogni coppia di particelle identiche). L'unitarietà elastica dà $|{\rm Re}\,a_\ell|\le\frac12$. Con $\mathcal A\sim s/f^2$ si ha $a_0\sim s/(16\pi f^2)$, e la condizione $|a_0|\le\frac12$ fallisce per $\sqrt s\gtrsim\sqrt{8\pi}\,f$. La stima di analisi dimensionale naive (loop $\sim s/(16\pi^2f^2)$) dà la scala di accoppiamento forte $\Lambda\sim4\pi f$. I due numeri differiscono per fattori $\mathcal O(1)$ legati ai canali di sapore.
+
+%=====================================================================
+\section{Geometria del coset}
+\label{sec:geom}
+%=====================================================================
+
+\subsection{Metrica e curvatura di uno spazio simmetrico}
+
+La Lagrangiana $\frac12g_{ab}(\pi)\partial\pi^a\partial\pi^b$ definisce una metrica sullo spazio dei campi. In coordinate normali all'origine, $g_{ab}=\delta_{ab}-\frac13R_{acbd}\pi^c\pi^d+\dots$. Confrontando con la \eqref{eq:L4} si legge la curvatura all'origine:
+\begin{equation}
+R_{abcd}\;\propto\;\frac{1}{f^2}f^{abI}f^{cdI}\qquad(\text{segno e fattore dipendono dalle convenzioni}).
+\end{equation}
+È la formula standard per gli spazi simmetrici: $R(X,Y)Z=-[[X,Y],Z]$ (Helgason). Nel seguito non serve la costante esatta: usiamo direttamente $F^{abcd}=f^{abI}f^{cdI}$ come ``tensore di curvatura'' in unità di $f^{-2}$, perché è lui che compare nell'ampiezza \eqref{eq:ANL}.
+
+\textbf{Curvatura sezionale} del piano generato da due vettori ortonormali $X^a,X^b$: $K_{ab}=F^{abab}=\sum_I(f^{abI})^2\ge0$ (nessuna somma su $a,b$). È nulla se e solo se $[X^a,X^b]=0$.
+
+\textbf{Curvatura costante} vuol dire $F^{abcd}=K(\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc})$ in una (e quindi in ogni) base ortonormale. Le sfere sono gli esempi tipici.
+
+\begin{fatto}
+Per $N=2$ i tre coset sono sfere: $SU(2)\times SU(2)/SU(2)\simeq S^3$, $SU(2)/SO(2)\simeq S^2$, $SU(4)/Sp(4)\simeq S^5$. Per $N\ge3$ \emph{non} hanno curvatura costante: il rango è $\ge2$, quindi esistono piani piatti ($K=0$), ma ci sono anche piani con $K>0$.
+\end{fatto}
+
+\subsection{Seconda forma fondamentale ed equazione di Gauss}
+
+Sia $M\subset\R^n$ una sottovarietà dello spazio euclideo piatto. In un punto, lo spazio tangente $T$ e lo spazio normale $N$ sono ortogonali. Sia $\{e_a\}$ una base del tangente e $\{n_r\}$ una base del normale. La \emph{seconda forma fondamentale} è la componente normale della derivata seconda dell'immersione: $K^r_{ab}=n_r\cdot\partial_a\partial_b\vec X$. L'\emph{equazione di Gauss} (spazio ambiente piatto) è
+\begin{equation}
+R_{abcd}=\sum_r\big(K^r_{ac}K^r_{bd}-K^r_{ad}K^r_{bc}\big).
+\end{equation}
+Esempio: la sfera di raggio $R$ in $\R^{n}$ ha una sola direzione normale, $K_{ab}=\delta_{ab}/R$, e quindi $R_{abcd}=\frac{1}{R^2}(\delta\delta-\delta\delta)$: curvatura costante $1/R^2$. \checkmark
+
+Nel paper la sottovarietà è l'orbita del vuoto $\G\cdot v\simeq\G/\Hg$ nello spazio dei campi lineari. La seconda forma fondamentale sono gli accoppiamenti cubici $g^r_{ab}$ dei modi radiali. L'equazione di Gauss è la condizione di cancellazione della crescita: la ricaviamo \emph{direttamente} dalle ampiezze nella Sez.~\ref{sec:linear}, senza bisogno di geometria differenziale.
+
+%=====================================================================
+\section{Completamento lineare generico ed equazione di Gauss dalle ampiezze}
+\label{sec:linear}
+%=====================================================================
+
+\subsection{Coordinate polari per un modello lineare qualsiasi}
+
+Prendi campi reali $\phi\in\R^{d}$ in una rappresentazione ortogonale di $\G$ (generatori reali antisimmetrici $t_\alpha$), con $\mathcal L=\frac12(\partial\phi)^2-V(\phi)$ e un vuoto $v$ con stabilizzatore $\Hg$. Scrivi
+\[
+\phi=U(\pi)\,(v+\rho),\qquad U(\pi)=\exp(\pi^at_a/f),\qquad \rho\perp\mathrm{span}\{t_av\}.
+\]
+I vettori $t_av$ sono le direzioni di Goldstone (tangenti all'orbita). $\rho$ vive nel complemento ortogonale (le direzioni radiali, o normali). Normalizziamo $(t_av)\cdot(t_bv)=f^2\delta_{ab}$, così che i $\pi^a$ siano canonici.
+
+Calcolo: $\partial\phi=U[(U^{-1}\partial U)(v+\rho)+\partial\rho]$ e $U^{-1}\partial U=\frac{\partial\pi^a}{f}t_a+\mathcal O(\pi\partial\pi)$. Quindi
+\[
+\tfrac12(\partial\phi)^2=\tfrac12\Big|\frac{\partial\pi^a}{f}t_a(v+\rho)+\partial\rho+\dots\Big|^2 .
+\]
+\begin{itemize}
+\item Il termine $\frac{1}{2f^2}\partial\pi^a\partial\pi^b(t_av)\cdot(t_bv)=\frac12(\partial\pi)^2$ è il termine cinetico.
+\item Il termine misto $\partial\rho\cdot t_av\,\partial\pi^a/f$ è nullo, perché $\rho\perp t_av$.
+\item Il termine lineare in $\rho$ e quadratico in $\partial\pi$ è $\frac{1}{f^2}\partial\pi^a\partial\pi^b\,(t_av)\cdot(t_b\rho)$. Usando l'antisimmetria $t^T=-t$: $(t_av)\cdot(t_b\rho)=-\rho\cdot t_bt_av$. Simmetrizzando in $ab$:
+\begin{equation}
+\mathcal L\supset\frac1f\,g^r_{ab}\,\rho^r\partial\pi^a\partial\pi^b,\qquad g^r_{ab}=-\frac{1}{2f}\,n_r\cdot\{t_a,t_b\}v .
+\label{eq:gr}
+\end{equation}
+\end{itemize}
+Questa è (a meno di normalizzazione) la seconda forma fondamentale dell'orbita. Il segno è irrilevante: compare solo $g\,g$.
+
+\subsection{Le ampiezze in coordinate cartesiane sono limitate}
+
+In coordinate $\phi$ la teoria ha solo interazioni senza derivate: cubiche $\kappa\phi^3$ e quartiche $\lambda\phi^4$. Un'ampiezza $2\to2$ ad albero è la somma di un contatto (costante $\lambda$) e di scambi $\kappa^2/(s-m^2)$, $\kappa^2/(t-m^2)$, $\kappa^2/(u-m^2)$. Per $s\to\infty$ (angolo fisso) tende alla costante $-\lambda$.
+
+\textbf{Invarianza per ridefinizione dei campi.} Il passaggio $\phi\mapsto(\pi,\rho)$ è una ridefinizione locale dei campi, invertibile vicino al vuoto, con $\pi^a=\frac1f(t_av)\cdot(\phi-v)+\mathcal O((\phi-v)^2)$. Per il teorema di equivalenza dell'$S$-matrix (gli elementi on-shell non cambiano se il nuovo campo ha sovrapposizione non nulla con lo stato di singola particella, condizione LSZ), le ampiezze on-shell calcolate in coordinate polari sono le \emph{stesse}. Dunque anche in coordinate polari $\mathcal A(\pi\pi\to\pi\pi)$ deve essere limitata.
+\begin{pedante}
+Off-shell, invece, i diagrammi singoli cambiano: in coordinate polari ogni diagramma cresce come $s$, e solo la somma è limitata. Per questo la cancellazione è una vera condizione sui parametri.
+\end{pedante}
+
+\subsection{L'ampiezza in coordinate polari}
+
+Contributi:
+\begin{itemize}
+\item contatto del NL$\Sigma$M, \eqref{eq:ANL};
+\item scambio di $\rho^r$ nei canali $s,t,u$.
+\end{itemize}
+\textbf{Vertice $\pi^a(p_1)\pi^b(p_2)\rho^r$} da $\frac1fg^r_{ab}\rho\partial\pi^a\partial\pi^b$: ci sono 2 modi di attaccare $\pi^a,\pi^b$ ($g$ è simmetrico) e $\partial\to-ip$. Quindi
+\[
+V=i\frac1f\,2g^r_{ab}(-ip_1)\cdot(-ip_2)=-\frac{2i}{f}g^r_{ab}\,p_1\!\cdot p_2=-\frac{i}{f}g^r_{ab}\,s .
+\]
+\textbf{Scambio nel canale $s$:} $i\mathcal M=V_{ab}\frac{i}{s-m_r^2}V_{cd}=(-i)^2\frac{s^2}{f^2}g_{ab}g_{cd}\frac{i}{s-m^2}$, quindi $\mathcal M=-\frac{1}{f^2}g^r_{ab}g^r_{cd}\frac{s^2}{s-m_r^2}$. Negli altri canali si sostituisce $s\to t$ ($a$ con $c$) e $s\to u$ ($a$ con $d$):
+\begin{equation}
+\mathcal A_\rho=-\frac{1}{f^2}\sum_r\Big[g^r_{ab}g^r_{cd}\frac{s^2}{s-m_r^2}+g^r_{ac}g^r_{bd}\frac{t^2}{t-m_r^2}+g^r_{ad}g^r_{bc}\frac{u^2}{u-m_r^2}\Big].
+\end{equation}
+Per $|s|,|t|,|u|\gg m^2$: $\frac{s^2}{s-m^2}=s+m^2+\frac{m^4}{s-m^2}$. Definisci $G^{ab,cd}=\sum_rg^r_{ab}g^r_{cd}$. La parte che cresce è
+\[
+\mathcal A^{(E^2)}=\frac1{f^2}\big[sF^{adbc}-uF^{abcd}\big]-\frac1{f^2}\big[sG^{ab,cd}+tG^{ac,bd}+uG^{ad,bc}\big].
+\]
+\subsection{Imporre la cancellazione}
+Sostituisci $s=-t-u$ e richiedi che i coefficienti di $t$ e di $u$ (indipendenti) si annullino:
+\begin{align*}
+[t]:&\quad -F^{adbc}+G^{ab,cd}-G^{ac,bd}=0,\\
+[u]:&\quad -F^{adbc}-F^{abcd}+G^{ab,cd}-G^{ad,bc}=0 .
+\end{align*}
+Sottraendo la prima dalla seconda: $F^{abcd}=G^{ac,bd}-G^{ad,bc}$. La prima è la stessa equazione con gli indici rinominati $(b,c,d)\to(d,b,c)$. Quindi c'è \emph{una sola} condizione:
+\begin{equation}
+\boxed{\;f^{abI}f^{cdI}=\sum_r\big(g^r_{ac}g^r_{bd}-g^r_{ad}g^r_{bc}\big)\qquad\text{(equazione di Gauss)}\;}
+\label{eq:gauss}
+\end{equation}
+È necessaria e sufficiente per la cancellazione dei termini $\mathcal O(E^2)$ in $\pi\pi\to\pi\pi$, per qualunque completamento lineare. Non è un teorema di esistenza: una soluzione di \eqref{eq:gauss} non garantisce che esista una rappresentazione con quel vuoto e quel potenziale.
+
+\subsection{Due conseguenze immediate}
+
+\begin{lem}[Schur per forme simmetriche invarianti]
+Sia $R$ una rappresentazione reale ortogonale irriducibile di $\Hg$. Ogni forma bilineare simmetrica $\Hg$-invariante su $R$ è proporzionale a $\delta_{ab}$.
+\end{lem}
+\begin{proof}
+Una forma invariante è $B(x,y)=x^TMy$ con $M$ che commuta con il gruppo. Per Schur reale, il commutante è $\R$, $\C$ o $\HH$ (rappresentazione di tipo reale, complesso o quaternionico). Nei casi $\C$ e $\HH$ le unità immaginarie $J$ (con $J^2=-1$) sono ortogonali e quindi antisimmetriche. La parte simmetrica del commutante è perciò solo $\R\one$.
+\end{proof}
+Conseguenze:
+\begin{itemize}[nosep]
+\item un modo radiale singoletto ha $g^r_{ab}=g_r\delta_{ab}$;
+\item per un multipletto radiale non banale, la traccia $\delta_{ab}g^r_{ab}$ è un funzionale lineare invariante su un'irrep non banale, quindi è nulla.
+\end{itemize}
+
+\begin{prop}[il singoletto è necessario]
+\label{prop:singlet}
+Se i NGB $\pi^a$ formano un'irrep di $\Hg$ di dimensione $D$, allora ogni completamento contiene modi radiali singoletti, con
+\begin{equation}
+\sum_{\rm singoletti}g_r^2\;\ge\;\bar K\equiv\frac{f^{abI}f^{abI}}{D(D-1)} .
+\end{equation}
+\end{prop}
+\begin{proof}
+Contrai la \eqref{eq:gauss} con $\delta_{ac}\delta_{bd}$. A sinistra c'è $f^{abI}f^{abI}>0$ (somma dei quadrati: è positivo perché almeno un commutatore è non nullo). A destra c'è $\sum_r[(\Tr g^r)^2-\Tr(g^rg^r)]$. Scrivi $g^r=\frac{\Tr g^r}{D}\one+\hat g^r$ con $\Tr\hat g^r=0$. Allora $\Tr(g^rg^r)=\frac{(\Tr g^r)^2}{D}+\Tr\hat g^{r2}$, e la destra diventa $\sum_r\big[(\Tr g^r)^2\frac{D-1}{D}-\Tr\hat g^{r2}\big]$. Solo i singoletti hanno $\Tr g^r=Dg_r\ne0$ (lemma). Quindi
+\[
+D(D-1)\sum_{\rm sing}g_r^2=f^{abI}f^{abI}+\sum_r\Tr\hat g^{r2}\ge f^{abI}f^{abI}.\qedhere
+\]
+\end{proof}
+$\bar K$ è la curvatura sezionale media. Per i tre coset vale $N/(N^2-2)$, $N/(N^2+N-4)$, $N/(2N^2-N-2)$. Curiosità: $\bar K=N/(N^2-2)$ è esattamente il $\tilde C$ della v1. L'ansatz isotropo rimpiazzava la curvatura con la sua media, che è esatta solo per le sfere.
+
+\begin{prop}[bastano i singoletti $\iff$ curvatura costante]
+\label{prop:sphere}
+Solo singoletti accoppiati a $\pi\pi$ $\iff$ $F^{abcd}\propto\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc}$. Per i tre coset questo accade solo per $N=2$.
+\end{prop}
+\begin{proof}
+($\Rightarrow$) Con $g^r=g_r\delta$ la destra di \eqref{eq:gauss} è $(\sum g_r^2)(\delta\delta-\delta\delta)$. ($\Leftarrow$) Il modello vettoriale $O(D+1)$ realizza la sfera (localmente). Per $N\ge3$ prendi due generatori ortonormali commutanti $X^a,X^b$ (Sez.~\ref{sec:symm}): $F^{abab}=0$. Prendi poi due generatori ortonormali non commutanti $X^{c},X^{e}$: $F^{cece}>0$. Con curvatura costante $K$ si avrebbe $F^{abab}=K=F^{cece}$, contraddizione. La proprietà di curvatura costante non dipende dalla base, perché $\delta\delta-\delta\delta$ è $O(D)$-invariante.
+\end{proof}
+
+%=====================================================================
+\section{Algebre di Jordan: la struttura comune dei tre coset}
+\label{sec:jordan}
+%=====================================================================
+
+\begin{defi}
+Un'algebra di Jordan (reale) è uno spazio vettoriale con un prodotto commutativo $x\circ y$ che soddisfa $(x\circ y)\circ(x\circ x)=x\circ(y\circ(x\circ x))$. L'esempio tipico sono le matrici Hermitiane con $x\circ y=\frac12\{x,y\}$.
+\end{defi}
+
+\textbf{Affermazione chiave.} Nei tre casi $\p\oplus\R\one$ è chiuso sotto anticommutatore:
+\begin{equation}
+\{X^A,X^B\}=d^{ABC}X^C,\qquad d^{ABC}=2\Tr(\{X^A,X^B\}X^C),\qquad A,B,C=0,\dots,D .
+\label{eq:jordan}
+\end{equation}
+\begin{proof}[Dimostrazione caso per caso]
+\begin{itemize}
+\item \textbf{Chirale:} $\p\oplus\R\one$ sono \emph{tutte} le Hermitiane $N\times N$. L'anticommutatore di due Hermitiane è Hermitiano. \checkmark
+\item \textbf{$SO$:} $\p\oplus\R\one$ sono le reali simmetriche. $\{X,Y\}$ è reale e $\{X,Y\}^T=Y^TX^T+X^TY^T=\{X,Y\}$. \checkmark
+\item \textbf{$Sp$:} $\p\oplus\R\one=\{X=X^\dagger:\ X^T\Omega=\Omega X\}$ (l'identità soddisfa la condizione). Allora $(XY)^T\Omega=Y^TX^T\Omega=Y^T\Omega X=\Omega YX$, e quindi $\{X,Y\}^T\Omega=\Omega\{Y,X\}=\Omega\{X,Y\}$. \checkmark\qedhere
+\end{itemize}
+\end{proof}
+Queste sono le algebre $J_N(\C)$, $J_N(\R)$, $J_N(\HH)$ delle matrici $N\times N$ Hermitiane su complessi, reali e quaternioni. Per il caso $Sp$, le matrici $2N\times2N$ con $X^T\Omega=\Omega X$ sono la rappresentazione complessa $2\times2$ dei quaternioni: un quaternione $a+bj$ corrisponde a $\begin{pmatrix}a&b\\-\bar b&\bar a\end{pmatrix}$.
+
+\textbf{Valori utili.}
+\begin{itemize}
+\item $d^{AB0}=2\Tr(\{X^A,X^B\}\one)/\sqrt{2n}=2\cdot\delta^{AB}/\sqrt{2n}=\sqrt{2/n}\,\delta^{AB}$, perché $\Tr\{X^A,X^B\}=\delta^{AB}$.
+\item $d^{aab}=2\Tr(\{X^a,X^a\}X^b)$ sommato su $a$: per la completezza $\sum_aX^aX^a\propto\one$ nello spazio di traccia nulla, quindi $\Tr(\one X^b)=0$ e $d^{aab}=0$.
+\item $d^{acd}d^{bcd}=C_d\delta^{ab}$ (per il lemma di Schur, è una forma simmetrica invariante), con
+\begin{equation}
+C_d=\frac{N^2-4}{N},\qquad\frac{(N+4)(N-2)}{2N},\qquad\frac{(N+1)(N-2)}{N}.
+\end{equation}
+\end{itemize}
+Come si ricava $C_d$ senza tabelle: contrai l'identità \eqref{eq:id2} (sotto) con $\delta_{ac}\delta_{bd}$, che dà $f^{abI}f^{abI}=\frac2nD(D-1)-DC_d$, e calcola $f^{abI}f^{abI}$ a parte. Nel caso chirale $f^{abI}f^{abI}=N\cdot D$ (Casimir dell'aggiunta), da cui $C_d=\frac2N(N^2-2)-N=\frac{N^2-4}{N}$. \checkmark
+
+\subsection{Il caso $N=2$: spin factor}
+
+Per $N=2$ ogni $X\in J_2(\mathbb K)$ a traccia nulla ha la forma $X=\begin{pmatrix}\alpha&z\\\bar z&-\alpha\end{pmatrix}$ con $\alpha\in\R$, $z\in\mathbb K$. Quindi $X^2=(\alpha^2+|z|^2)\one$. Polarizzando, $\{X^a,X^b\}\propto\delta^{ab}\one$, cioè
+\[
+\boxed{d^{abc}=0\quad(a,b,c\ge1)\quad\text{per }N=2.}
+\]
+È questa l'origine algebrica del fatto che a $N=2$ basta il singoletto (Sez.~\ref{sec:necessity}). Con $\dim_\R\mathbb K=1,2,4$ si ottengono le sfere $S^2,S^3,S^5$.
+
+%=====================================================================
+\section{Le rappresentazioni lineari standard}
+\label{sec:reps}
+%=====================================================================
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+coset & campo $\Hf$ & azione di $\G$ & vuoto & $D_\R$ \\
+\hline
+chirale & $\mathrm{Mat}(N,\C)$ & $e^{i\alpha}L\Hf R^\dagger$ & $\frac{f}{\sqrt2}\one$ & $2N^2$\\
+$SO$ & $\Hf=\Hf^T$ & $e^{i\alpha}V\Hf V^T$ & $\frac{f}{\sqrt2}\one$ & $N(N+1)$\\
+$Sp$ & $\Hf=-\Hf^T$ & $e^{i\alpha}V\Hf V^T$ & $\frac{f}{\sqrt2}\Omega$ & $2N(2N-1)$\\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Stabilizzatori} (verifica):
+\begin{itemize}[nosep]
+\item chirale: $L\one R^\dagger=\one\iff L=R$, quindi $SU(N)_V$;
+\item $SO$: $V\one V^T=\one\iff VV^T=\one$, cioè $V$ unitaria e ortogonale, quindi reale: $SO(N)$;
+\item $Sp$: $V\Omega V^T=\Omega$, che per $V$ unitaria equivale a $V^T\Omega V=\Omega$: $Sp(2N)$.
+\end{itemize}
+Il $U(1)$ è rotto in tutti i casi e dà $\eta$.
+
+\textbf{Conteggio.} $D_\R=(D+1)+(D+1)$: $D+1$ NGB ($\pi^a,\eta$) e $D+1$ modi radiali ($H^a,h$). Per esempio, nel caso chirale $2N^2=2\cdot N^2$.
+
+\textbf{Perché sono minimali (per $N\ge3$).} Le rappresentazioni sono complesse, quindi non si può imporre una condizione di realtà. Per $SU(N)\times SU(N)$ una $(R_1,R_2)$ contiene un singoletto di $SU(N)_V$ solo se $R_2\simeq\bar R_1$, e la più piccola è $(N,\bar N)$. Il $U(1)$ rende complessa anche la rappresentazione per $N=2$.
+
+%=====================================================================
+\section{Parametrizzazione polare e parità}
+\label{sec:polar}
+%=====================================================================
+
+\subsection{La decomposizione}
+
+\begin{itemize}
+\item \textbf{Decomposizione polare.} Ogni $M\in\mathrm{Mat}(n,\C)$ si scrive $M=U P$ con $U$ unitaria e $P=\sqrt{M^\dagger M}$ Hermitiana semidefinita positiva.
+\item \textbf{Takagi.} Ogni matrice complessa simmetrica si scrive $M=UDU^T$ con $U$ unitaria e $D$ diagonale non negativa. Per le antisimmetriche c'è la forma a blocchi analoga.
+\end{itemize}
+Vicino al vuoto parametrizziamo:
+\begin{equation}
+\sqrt2\,\Hf=u\Phi u\ \ (\text{chirale}),\qquad \sqrt2\,\Hf=u\Phi u^T\ \ (SO),\qquad\sqrt2\,\Hf=u\Phi\Omega u^T\ \ (Sp),
+\label{eq:polar}
+\end{equation}
+con $u=e^{i\pi^AX^A/f}$ e
+\begin{equation}
+\Phi=f\one+2\rho^AX^A=\Big(f+\sqrt{\tfrac2n}h\Big)\one+2H^aX^a,\qquad \rho^0\equiv h,\ \rho^a\equiv H^a .
+\label{eq:Phi}
+\end{equation}
+Verifiche:
+\begin{itemize}
+\item $SO$: le $X^A$ sono reali simmetriche, quindi $u^T=u$ e $u\Phi u$ è simmetrica. \checkmark
+\item $Sp$: $(u\Phi\Omega u^T)^T=u\Omega^T\Phi^Tu^T=-u\Omega\Phi^Tu^T$. Dalla $X^T\Omega=\Omega X$ segue $\Phi^T=\Omega\Phi\Omega^{-1}$, quindi $\Omega\Phi^T=\Omega^2\Phi\Omega^{-1}=-\Phi\Omega^{-1}=\Phi\Omega$. Dunque la trasposta è $-u\Phi\Omega u^T$: antisimmetrica. \checkmark
+\item Conteggio: $u$ contiene $D+1$ campi e $\Phi$ altri $D+1$. Totale $D_\R$. \checkmark
+\item Trasformazioni: con $gu=u'k$, $\Hf\to g\Hf g^T$ diventa $u'k\Phi k^T u'^T$ (caso $SO$), quindi $\Phi\to k\Phi k^T=k\Phi k^{-1}$ (per $k\in SO(N)$, $k^T=k^{-1}$). I modi radiali trasformano linearmente sotto il compensatore. Il caso $Sp$ è analogo, usando $k\Omega k^T=\Omega$.
+\end{itemize}
+
+\subsection{Parità intrinseca come simmetria del modello lineare}
+
+$\pi\to-\pi$ manda $u\to u^\dagger=u^{-1}$, con $\Phi$ fisso. Allora:
+\begin{itemize}
+\item \textbf{Chirale:} $u^\dagger\Phi u^\dagger=(u\Phi u)^\dagger$, quindi $\Hf\to\Hf^\dagger$.
+\item \textbf{$SO$:} $u^*=e^{-i\pi X/f}=u^\dagger$ ($X$ reali) e $\Phi^*=\Phi$, quindi $\Hf^*=u^*\Phi u^*=u^\dagger\Phi u^\dagger$, cioè $\Hf\to\Hf^*$.
+\item \textbf{$Sp$:} sia $w=u^\dagger$. Il trasformato è $w\Phi\Omega w^T$. Si ha $\Hf^*\propto w^T\Phi^*\Omega w$, con $w^T=\Omega w\Omega^{-1}$ e $\Phi^*=\Phi^T=\Omega\Phi\Omega^{-1}$. Quindi $\Hf^*\propto\Omega w\Phi w$, mentre il trasformato è $w\Phi w\Omega$ (stessi passaggi). Ne segue $\Hf\to\Omega^{-1}\Hf^*\Omega$: coniugazione complessa seguita dall'elemento $\Omega^{-1}\in Sp(2N)$.
+\end{itemize}
+Queste trasformazioni lasciano invarianti $\Tr\partial\Hf^\dagger\partial\Hf$, $\Tr(\Hf^\dagger\Hf)^k$ e $\det\Hf+\mathrm{h.c.}$ (o $\mathrm{Pf}\Hf+\mathrm{h.c.}$) con coefficiente reale. Quindi la parità è una simmetria del modello lineare, non accidentale del NL$\Sigma$M: è il punto 4 del referee~A. La v1 usava $\Hf=\Sigma\phi$, che nasconde la simmetria perché $\Sigma\phi\neq\phi\Sigma^\dagger$ in generale.
+
+%=====================================================================
+\section{La Lagrangiana in forma chiusa}
+\label{sec:master}
+%=====================================================================
+
+\begin{prop}
+Per i tre coset, con $\mathcal L=\frac12\Tr(\partial\Hf^\dagger\partial\Hf)-V$ e la \eqref{eq:polar},
+\begin{equation}
+\boxed{\;\mathcal L=\tfrac14\Tr\big[(\nabla_\mu\Phi)^2\big]+\tfrac14\Tr\big[\{d_\mu,\Phi\}^2\big]-V(\Phi),\qquad\nabla_\mu\Phi=\partial_\mu\Phi+i[E_\mu,\Phi].\;}
+\label{eq:master}
+\end{equation}
+\end{prop}
+\begin{proof}
+\textbf{Passo 1 (caso $Sp$, il più laborioso).} Calcola
+\[
+\sqrt2\,\partial\Hf=\partial u\,\Phi\Omega u^T+u\,\partial\Phi\,\Omega u^T+u\Phi\Omega\,\partial u^T .
+\]
+Moltiplica a sinistra per $u^{-1}$ e a destra per $(u^T)^{-1}$:
+\[
+Y\equiv\sqrt2\,u^{-1}\partial\Hf(u^T)^{-1}=(u^{-1}\partial u)\Phi\Omega+\partial\Phi\,\Omega+\Phi\Omega\,\partial u^T(u^T)^{-1}.
+\]
+Ora $\partial u^T(u^T)^{-1}=(u^{-1}\partial u)^T=i(d+E)^T$. Servono due regole:
+\begin{itemize}
+\item per $M\in\p$: $M^T=\Omega M\Omega^{-1}$, quindi $\Phi\Omega M^T=\Phi\Omega^2M\Omega^{-1}=-\Phi M\Omega^{-1}=\Phi M\Omega$;
+\item per $M\in\h$: $M^T=-\Omega M\Omega^{-1}$, quindi $\Phi\Omega M^T=-\Phi M\Omega$.
+\end{itemize}
+Dunque $\Phi\Omega\,i(d+E)^T=i(\Phi d-\Phi E)\Omega$ e
+\[
+Y=\big[i(d+E)\Phi+\partial\Phi+i\Phi d-i\Phi E\big]\Omega=\big[i\{d,\Phi\}+\nabla\Phi\big]\Omega\equiv K\Omega .
+\]
+\textbf{Passo 2.} $\partial\Hf=\frac{1}{\sqrt2}uYu^T$, quindi
+\[
+\Tr(\partial\Hf^\dagger\partial\Hf)=\tfrac12\Tr(\bar uY^\dagger u^\dagger uYu^T)=\tfrac12\Tr(Y^\dagger Y\,u^T\bar u)=\tfrac12\Tr(Y^\dagger Y),
+\]
+perché $u^T\bar u=(u^\dagger u)^T=\one$. Inoltre $\Tr(Y^\dagger Y)=\Tr(\Omega^\dagger K^\dagger K\Omega)=\Tr(K^\dagger K)$.
+
+\textbf{Passo 3.} $d$, $E$, $\Phi$ sono Hermitiani, quindi lo sono anche $\{d,\Phi\}$ e $\nabla\Phi$ (infatti $(i[E,\Phi])^\dagger=-i[\Phi,E]=i[E,\Phi]$). Allora $K^\dagger=-i\{d,\Phi\}+\nabla\Phi$ e
+\[
+\Tr K^\dagger K=\Tr\{d,\Phi\}^2+\Tr(\nabla\Phi)^2+i\,\Tr\big(\nabla\Phi\{d,\Phi\}-\{d,\Phi\}\nabla\Phi\big),
+\]
+e l'ultimo termine è zero per ciclicità. Moltiplicando per $\frac12\cdot\frac12$ si ottiene la \eqref{eq:master}.
+
+\textbf{Caso $SO$:} è lo stesso conto con $\Omega\to\one$. Per $M\in\p$ (reale simmetrica) $M^T=M$; per $M\in\h$ (immaginaria antisimmetrica Hermitiana) $M^T=-M$. Stesse regole.
+
+\textbf{Caso chirale:} $\sqrt2\,u^\dagger\partial\Hf u^\dagger=u^\dagger\partial u\,\Phi+\partial\Phi+\Phi\,\partial u\,u^\dagger$. Usa $u^\dagger\partial u=i(d+E)$ e $\partial u\,u^\dagger=-u\partial u^\dagger=-i(-d+E)=i(d-E)$. Si ottiene di nuovo $i\{d,\Phi\}+i[E,\Phi]+\partial\Phi$.
+
+\textbf{Potenziale:} $\Hf^\dagger\Hf=\frac12(u^T)^{-1}\cdots$ è coniugato unitario di $\frac12\Phi^2$ (caso $Sp$: $\frac12\bar u\Omega^\dagger\Phi^2\Omega u^T$), quindi $\Tr(\Hf^\dagger\Hf)^k=2^{-k}\Tr\Phi^{2k}$: i Goldstone non compaiono nel potenziale. \qedhere
+\end{proof}
+
+\begin{verifica}
+Lo script \texttt{verify.py}, punto (3), confronta la \eqref{eq:master} con $\frac12\Tr\partial\Hf^\dagger\partial\Hf$ calcolata numericamente su configurazioni casuali, per $N=2,3,4$ nei tre casi. Il residuo relativo è $\sim10^{-10}$, cioè l'errore delle derivate numeriche.
+\end{verifica}
+
+\subsection{Sviluppo e normalizzazioni}
+
+\textbf{Normalizzazione canonica.}
+\[
+\tfrac14\Tr(\partial\Phi)^2=\tfrac14\Big[\tfrac2n\,n\,(\partial h)^2+4\cdot\tfrac12(\partial H^a)^2\Big]=\tfrac12(\partial h)^2+\tfrac12(\partial H^a)^2,
+\]
+dove il termine misto è nullo perché $\Tr X^a=0$. Inoltre, per $\Phi=f\one$, $\frac14\Tr\{d,f\one\}^2=f^2\Tr d^2=\mathcal L_{\rm NL\Sigma M}$. \checkmark
+
+\textbf{Sviluppo di $\frac14\Tr\{d,\Phi\}^2$} con $\Phi=f+\hat\rho$, $\hat\rho=2\rho^CX^C$:
+\[
+\tfrac14\Tr\{d,\Phi\}^2=f^2\Tr d^2+2f\Tr(\hat\rho\,d^2)+\tfrac14\Tr\{d,\hat\rho\}^2 .
+\]
+\begin{itemize}
+\item \emph{Cubico:} $2f\cdot2\rho^C\frac{1}{f^2}\partial\pi^A\partial\pi^B\Tr(X^CX^AX^B)$. Simmetrizzando in $AB$: $\Tr(X^C\tfrac12\{X^A,X^B\})=\frac12d^{ABE}\Tr(X^CX^E)=\frac14d^{ABC}$. Quindi
+\begin{equation}
+\boxed{\mathcal L_3=\frac1f\,d^{ABC}\rho^C\,\partial\pi^A\!\cdot\partial\pi^B}
+\label{eq:L3}
+\end{equation}
+cioè $g^C_{AB}=d^{ABC}$: la seconda forma fondamentale è il prodotto di Jordan.
+\item \emph{Quartico $\rho\rho\pi\pi$:} $\{d,\hat\rho\}=\frac2f\partial\pi^A\rho^Cd^{ACE}X^E$, quindi $\frac14\Tr\{d,\hat\rho\}^2=\frac{1}{2f^2}d^{ACE}d^{BDE}\rho^C\rho^D\partial\pi^A\partial\pi^B$.
+\end{itemize}
+\textbf{Sviluppo di $\frac14\Tr(\nabla\Phi)^2$:} $i[E,\hat\rho]=i\frac{1}{2f^2}f^{ABI}\pi^A\partial\pi^B\,2\rho^C[T^I,X^C]$. Con $[T^I,X^C]=if^{ICD}X^D$ e $f^{ICD}=f^{CDI}$ (invarianza della traccia) si ottiene $-\frac1{f^2}f^{ABI}f^{CDI}\pi^A\partial\pi^B\rho^CX^D$. Il termine misto con $\partial\hat\rho$ dà
+\[
+-\frac{1}{2f^2}f^{ABI}f^{CEI}\,\pi^A\partial\pi^B\,\rho^C\partial\rho^E .
+\]
+In termini di $h$, $H$, $\eta$, usando $d^{AB0}=\sqrt{2/n}\,\delta^{AB}$:
+\begin{equation}
+\mathcal L_3=\frac1f\sqrt{\frac2n}\,h\big[(\partial\pi^a)^2+(\partial\eta)^2\big]+\frac1fd^{abc}H^c\partial\pi^a\!\cdot\partial\pi^b+\frac2f\sqrt{\frac2n}\,H^a\partial\pi^a\!\cdot\partial\eta .
+\end{equation}
+Il fattore 2 nell'ultimo termine viene da $(A,B)=(a,0)$ e $(0,a)$.
+
+\begin{verifica}
+\texttt{expansion\_check.py} verifica che la differenza tra la Lagrangiana esatta e lo sviluppo a quattro campi scali come $\epsilon^5$ (rapporti $\approx32$ dimezzando $\epsilon$).
+\end{verifica}
+
+\subsection{Potenziale, vuoto e masse}
+
+$V=-\frac{\mu^2}{2}\Tr\Hf^\dagger\Hf+\frac{\lambda_1}4[\Tr\Hf^\dagger\Hf]^2+\frac{\lambda_2}{4}\Tr(\Hf^\dagger\Hf)^2$. Con $\Tr(\Hf^\dagger\Hf)^k=2^{-k}\Tr\Phi^{2k}$:
+\[
+V=-\frac{\mu^2}{4}\Tr\Phi^2+\frac{\lambda_1}{16}(\Tr\Phi^2)^2+\frac{\lambda_2}{16}\Tr\Phi^4 .
+\]
+Poni $\Phi=f+\hat\rho$ e usa $\Tr\one=n$, $\Tr\hat\rho=\sqrt{2n}\,h$, $\Tr\hat\rho^2=2(h^2+H^aH^a)$:
+\begin{itemize}
+\item \emph{Termine lineare} (condizione di minimo): $\big[-\frac{\mu^2}{2}f+\frac{\lambda_1}{4}nf^3+\frac{\lambda_2}{4}f^3\big]\Tr\hat\rho=0$, quindi
+\[
+f^2=\frac{2\mu^2}{n\lambda_1+\lambda_2}.
+\]
+\item \emph{Termine quadratico:} usando $\Tr\Phi^2\supset\Tr\hat\rho^2+2f\Tr\hat\rho$ e $\Tr\Phi^4\supset6f^2\Tr\hat\rho^2$,
+\[
+V_2=\Tr\hat\rho^2\Big[-\frac{\mu^2}4+\frac{\lambda_1nf^2}{8}+\frac{3\lambda_2f^2}{8}\Big]+\frac{\lambda_1f^2}{4}(\Tr\hat\rho)^2=\frac{\lambda_2f^2}{4}\Tr\hat\rho^2+\frac{\lambda_1f^2}{4}(\Tr\hat\rho)^2 .
+\]
+Quindi $V_2=\frac12(n\lambda_1+\lambda_2)f^2h^2+\frac12\lambda_2f^2H^aH^a$, e
+\begin{equation}
+\boxed{m_h^2=(n\lambda_1+\lambda_2)f^2=2\mu^2,\qquad m_H^2=\lambda_2f^2.}
+\end{equation}
+\end{itemize}
+\textbf{Allineamento:} $\lambda_2>0$ garantisce che autovalori di $\Phi^2$ tutti uguali minimizzino $\Tr\Phi^4$ a $\Tr\Phi^2$ fisso (disuguaglianza di Cauchy--Schwarz), cioè che il vuoto sia $\propto\one$ (o $\propto\Omega$). Con $\lambda_2<0$ il vuoto preferisce autovalori diversi e rompe $\G$ in un altro sottogruppo.
+
+\textbf{Limite di $N$ grande} (nota sulla v1). A $\mu$, $\lambda_i$ fissi, $m_H\to0$ ma anche $f\to0$: in unità di $f$, $m_H/f=\sqrt{\lambda_2}$ è fisso. Lo scaling coerente è quello di 't Hooft, $\lambda_2=g_2/n$ e $\lambda_1=g_1/n^2$. Con questo scaling $f^2\propto n$ e le masse restano finite. Con $\lambda_1$ fisso l'unitarietà fallisce, perché l'autovalore di singoletto va come $\sim2n^2\lambda_1$ (Sez.~\ref{sec:unit}).
+
+%=====================================================================
+\section{L'identità di traccia e l'ampiezza esatta}
+\label{sec:amp}
+%=====================================================================
+
+\subsection{Il lemma centrale}
+
+\begin{lem}
+\label{lem:trace}
+Per i tre coset:
+\begin{equation}
+\boxed{\;f^{ABI}f^{CDI}=d^{ACE}d^{BDE}-d^{ADE}d^{BCE}\;}
+\label{eq:id}
+\end{equation}
+\end{lem}
+\begin{proof}
+\textbf{Passo 1: identità per matrici qualsiasi.} Per quattro matrici $a,b,c,d$, scrivi le tracce come parole cicliche, per esempio $(acbd)\equiv\Tr(acbd)$. Si ha
+\begin{align*}
+\Tr(\{a,c\}\{b,d\})&=(acbd)+(acdb)+(cabd)+(cadb)=(acbd)+(acdb)+(abdc)+(adbc),\\
+\Tr(\{a,d\}\{b,c\})&=(adbc)+(adcb)+(dabc)+(dacb)=(adbc)+(adcb)+(abcd)+(acbd).
+\end{align*}
+La differenza è $(acdb)+(abdc)-(adcb)-(abcd)$. D'altra parte
+\[
+\Tr([a,b][c,d])=(abcd)-(abdc)-(bacd)+(badc)=(abcd)-(abdc)-(acdb)+(adcb).
+\]
+Quindi
+\begin{equation}
+\Tr(\{a,c\}\{b,d\})-\Tr(\{a,d\}\{b,c\})=-\Tr([a,b][c,d]).
+\label{eq:traceid}
+\end{equation}
+\textbf{Passo 2: si usa la struttura.} Con $a,b,c,d=X^A,X^B,X^C,X^D$:
+\begin{itemize}
+\item destra: $[X^A,X^B]=if^{ABI}T^I$ (spazio simmetrico), quindi
+\[
+-\Tr([X^A,X^B][X^C,X^D])=-i^2f^{ABI}f^{CDJ}\tfrac12\delta^{IJ}=\tfrac12f^{ABI}f^{CDI};
+\]
+\item sinistra: $\{X^A,X^C\}=d^{ACE}X^E$ (Jordan), quindi $\Tr(\{X^A,X^C\}\{X^B,X^D\})=\frac12d^{ACE}d^{BDE}$, e analogamente per l'altro termine.
+\end{itemize}
+Moltiplicando per 2 si ottiene la \eqref{eq:id}.
+\end{proof}
+
+\textbf{Forma separata.} Isolando $E=0$ ($d^{AB0}=\sqrt{2/n}\,\delta^{AB}$) e restringendo a indici non abeliani:
+\begin{equation}
+f^{abI}f^{cdI}=\underbrace{\frac2n(\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc})}_{\text{scambio di }h}+\underbrace{d^{ace}d^{bde}-d^{ade}d^{bce}}_{\text{scambio di }H}.
+\label{eq:id2}
+\end{equation}
+Il lemma usa solo due proprietà: $[\p,\p]\subset\h$ e la chiusura di Jordan. Per questo vale per tutti e tre i coset insieme, ed è la risposta al punto 1 del referee~A.
+
+\subsection{L'ampiezza esatta ad albero}
+
+Con $g^E_{AB}=d^{ABE}$ (anche $\eta$ incluso, indici $A,\dots,D=0,\dots,D$) e $m_0=m_h$, $m_e=m_H$:
+\begin{align*}
+\mathcal A&=\mathcal A_{\rm NL\Sigma M}-\frac1{f^2}\sum_E\Big[d^{ABE}d^{CDE}\frac{s^2}{s-m_E^2}+(t)+(u)\Big],\qquad \frac{s^2}{s-m^2}=s+\frac{m^2s}{s-m^2}.
+\end{align*}
+La parte lineare in $s,t,u$ degli scambi è esattamente $-\mathcal A_{\rm NL\Sigma M}$: è la \eqref{eq:id} usata come nella derivazione della \eqref{eq:gauss}. Quindi
+\begin{equation}
+\boxed{\;\mathcal A=-\sum_E\frac{m_E^2}{f^2}\Big[d^{ABE}d^{CDE}\frac{s}{s-m_E^2}+d^{ACE}d^{BDE}\frac{t}{t-m_E^2}+d^{ADE}d^{BCE}\frac{u}{u-m_E^2}\Big].\;}
+\end{equation}
+\begin{itemize}
+\item \emph{Basse energie:} $\frac{s}{s-m^2}\to-\frac{s}{m^2}$, quindi $\mathcal A\to\frac1{f^2}[s\,dd+t\,dd+u\,dd]$, che è il NL$\Sigma$M scritto in forma di Jordan.
+\item \emph{Alte energie:} $\frac{s}{s-m^2}\to1$, quindi $\mathcal A\to-\frac{1}{f^2}\sum_Em_E^2(d^{ABE}d^{CDE}+d^{ACE}d^{BDE}+d^{ADE}d^{BCE})$: costante $\sim\lambda$.
+\end{itemize}
+
+%=====================================================================
+\section{Necessità dei modi radiali}
+\label{sec:necessity}
+%=====================================================================
+
+\textbf{$N=2$.} $d^{abc}=0$, quindi nella \eqref{eq:id2} sopravvive solo il pezzo di $h$, e $H^a$ si disaccoppia da $\pi\pi$. Si ritrovano i modelli $O(4)$, $O(3)$, $O(6)$. Con $\eta$ incluso, però:
+\begin{itemize}[nosep]
+\item il NL$\Sigma$M dà $\mathcal A(\pi^a\eta\to\pi^b\eta)=0$, perché $f^{a0I}=0$;
+\item lo scambio di $h$ nel canale $t$ cresce come $-\frac2n\,t\,\delta^{ab}/f^2$;
+\item lo cancella lo scambio di $H$ nei canali $s,u$, tramite $d^{a0e}d^{b0e}=\frac2n\delta^{ab}$. È la \eqref{eq:id} con $B=D=0$: $0=d^{ab0}d^{000}-d^{a0e}d^{0be}$ (verifica i valori!).
+\end{itemize}
+Una rappresentazione \emph{riducibile} più piccola, $(\mathbf2,\mathbf2)_\R\oplus\mathbf1_\C$ (6 campi invece di 8), evita $H$: $\eta$ diventa la fase di un singoletto complesso separato.
+
+\textbf{$N\ge3$.}
+\begin{itemize}
+\item Togliendo $H$ resta una crescita $\propto d^{ace}d^{bde}-d^{ade}d^{bce}$. Questa non può annullarsi, altrimenti $F\propto\delta\delta-\delta\delta$, contro la Prop.~\ref{prop:sphere}.
+\item Togliendo $h$ resta $\frac2n(\delta\delta-\delta\delta)$, impossibile per la Prop.~\ref{prop:singlet}.
+\item $h$ e $H$ sono irriducibili sotto $\Hg$, quindi non c'è un troncamento parziale invariante.
+\end{itemize}
+Quindi nel modello matriciale \emph{tutti} i modi radiali sono necessari (Prop.~3 del paper).
+
+\textbf{Altri canali (Tab.~II del paper).} Esempi da verificare a mano:
+\begin{itemize}
+\item $\pi\pi\to\eta\eta$: $h$ nel canale $s$ e $H$ nei canali $t,u$ danno $\frac2n(s+t+u)\delta^{ab}=0$.
+\item $\eta\eta\to\eta\eta$: solo $h$, e la crescita è $\propto s+t+u=0$.
+\end{itemize}
+
+%=====================================================================
+\section{Oltre il modello matriciale: rigidità a $N=3$}
+\label{sec:rigidity}
+%=====================================================================
+
+\subsection{Impostazione}
+
+Un multipletto radiale in un'irrep $R$ di $\Hg$ si accoppia a $\pi^a\pi^b$ solo se $R\subset\mathrm{Sym}^2(R_\pi)$, tramite i coefficienti di Clebsch--Gordan $C^{R\alpha}_{ab}$, normalizzati con $\sum_{ab}C^{R\alpha}_{ab}C^{S\beta}_{ab}=\delta_{RS}\delta_{\alpha\beta}$. Se la decomposizione è senza molteplicità, si definiscono il proiettore e il suo ``tensore di Gauss'':
+\[
+P_R^{ab,cd}=\sum_\alpha C^{R\alpha}_{ab}C^{R\alpha}_{cd},\qquad \mathcal T_R^{abcd}=P_R^{ac,bd}-P_R^{ad,bc}.
+\]
+Per la copia $j$ del multipletto, $g^{j\alpha}_{ab}=y_jC^{R\alpha}_{ab}$, e la \eqref{eq:gauss} diventa
+\begin{equation}
+F^{abcd}=\sum_Rc_R\,\mathcal T_R^{abcd},\qquad c_R=\sum_jy_j^2\ \ge0 .
+\end{equation}
+
+\subsection{Tre fatti}
+
+\textbf{(a) Relazione di completezza.} $\sum_RP_R=I_s$, con $I_s^{ab,cd}=\frac12(\delta^{ac}\delta^{bd}+\delta^{ad}\delta^{bc})$ (identità sui tensori simmetrici). Il suo tensore di Gauss è
+\[
+\mathcal T(I_s)^{abcd}=\tfrac12(\delta^{ab}\delta^{cd}+\delta^{ad}\delta^{cb})-\tfrac12(\delta^{ab}\delta^{dc}+\delta^{ac}\delta^{db})=-\tfrac12A^{abcd},\qquad A\equiv\delta^{ac}\delta^{bd}-\delta^{ad}\delta^{bc}.
+\]
+Inoltre $P_{\mathbf1}=\delta^{ab}\delta^{cd}/D$ dà $\mathcal T_{\mathbf1}=A/D$. Quindi
+\begin{equation}
+\sum_R\mathcal T_R=-\frac D2\mathcal T_{\mathbf 1}.
+\end{equation}
+\textbf{(b) Proiettore su $R_\pi$.} $P_\pi^{ab,cd}=d^{abe}d^{cde}/C_d$. È un proiettore perché $P_\pi^2=\frac{1}{C_d^2}d^{abe}(d^{cde}d^{cdf})d^{ghf}=P_\pi$, usando $d^{cde}d^{cdf}=C_d\delta^{ef}$. Ha rango $\Tr P_\pi=D$, ed è ortogonale a $P_{\mathbf1}$ perché $d^{aae}=0$. Dalla \eqref{eq:id2}:
+\[
+\mathcal T_\pi=\frac{1}{C_d}\big(d^{ace}d^{bde}-d^{ade}d^{bce}\big)=\frac{1}{C_d}\Big(F-\frac2nA\Big).
+\]
+\textbf{(c) A $N=3$} $\mathrm{Sym}^2(R_\pi)=\mathbf1\oplus R_\pi\oplus R_3$:
+\begin{itemize}[nosep]
+\item $SU(3)$: $\mathbf1\oplus\mathbf8\oplus\mathbf{27}$ (dimensioni $1+8+27=36=\frac{8\cdot9}2$);
+\item $SO(3)$ sulla $\mathbf5$ (spin 2): spin $0,2,4$, cioè $1+5+9=15$;
+\item $Sp(6)$ sulla $\mathbf{14}$: $1+14+90=105$.
+\end{itemize}
+I terzi addendi sono irriducibili: il ``quadrato'' del peso più alto ($(2,2)$, spin 4, $2\omega_2$). Allora $P_3=I_s-P_{\mathbf1}-P_\pi$.
+
+\subsection{Il teorema}
+
+Da (a), (b), (c): $\mathcal T_{\mathbf1}\propto A$, $\mathcal T_\pi\in\mathrm{span}(A,F)$, $\mathcal T_3=-(1+\frac D2)\mathcal T_{\mathbf1}-\mathcal T_\pi$. $A$ e $F$ sono indipendenti per $N\ge3$: su un piano commutante $F^{abab}=0$ mentre $A^{abab}=1$, e su un piano non commutante $F>0$. Quindi i tre $\mathcal T$ hanno rango esattamente 2, con l'unica relazione
+\[
+(1+\tfrac D2)\mathcal T_{\mathbf1}+\mathcal T_\pi+\mathcal T_3=0 .
+\]
+Il modello matriciale fornisce una soluzione: $c_{\mathbf1}=\frac{2D}{n}$, $c_\pi=C_d$, $c_3=0$ (confronta $\frac2nA=c_{\mathbf1}\frac AD$ e $dd-dd=C_d\mathcal T_\pi$). La soluzione generale è
+\[
+(c_{\mathbf1},c_\pi,c_3)=\Big(\frac{2D}n,\ C_d,\ 0\Big)+\kappa\Big(1+\frac D2,\ 1,\ 1\Big),
+\]
+e la positività di $c_3$ impone $\kappa\ge0$. Quindi $c_{\mathbf1}\ge2D/n$ e $c_\pi\ge C_d$, con l'uguaglianza se e solo se nessun modo in $R_3$ si accoppia.
+
+\textbf{In termini di accoppiamenti.} Singoletto: $C^{\mathbf1}=\delta/\sqrt D$, quindi $g=y/\sqrt D$ e $\sum g_j^2=c_{\mathbf1}/D\ge2/n$. Multipletto: $C^{\pi e}_{ab}=d^{abe}/\sqrt{C_d}$; se $g^{je}_{ab}=k_jd^{abe}$, allora $y_j=k_j\sqrt{C_d}$ e $\sum k_j^2\ge1$.
+
+\textbf{Per $N\ge4$:} $\mathrm{Sym}^2$ ha 4 componenti ($SU(4)$: $\mathbf1\oplus\mathbf{15}\oplus\mathbf{20}'\oplus\mathbf{84}$; $SO(4)$: $\mathbf1\oplus\mathbf9\oplus\mathbf5_L\oplus\mathbf5_R\oplus\mathbf{25}$, con rango 3 della mappa). Esiste un secondo irrep con componente positiva lungo $F$, quindi la sola equazione di Gauss ammette soluzioni senza $R_\pi$. Il teorema di rigidità vale solo a $N=3$.
+
+\begin{verifica}
+\texttt{rigidity.py}: per $N=3$ ritrova $(c_{\mathbf1},c_\pi)=(16/3,5/3)$, $(10/3,7/6)$, $(14/3,4/3)$ e la direzione nulla $(5,1,1)$, $(7/2,1,1)$, $(8,1,1)$. Sono esattamente $(2D/n,C_d)$ e $(1+D/2,1,1)$.
+\end{verifica}
+
+%=====================================================================
+\section{Unitarietà a onde parziali e bound sulle masse}
+\label{sec:unit}
+%=====================================================================
+
+\subsection{Normalizzazione}
+
+Per un'ampiezza costante (alte energie), $a_0=\frac{1}{32\pi}\int_{-1}^1d\cos\theta\,\mathcal A=\frac{\mathcal A}{16\pi}$. Per stati con particelle identiche si moltiplica per $1/\sqrt2$ per ogni coppia identica nello stato iniziale o finale. Unitarietà: $|{\rm Re}\,a_0|\le\frac12$.
+
+A $E\gg m$ tutte le ampiezze tra i $D_\R$ campi reali tendono al contatto, $\mathcal A_{ij\to kl}=-\lambda_{ijkl}$ con $\lambda_{ijkl}=\partial^4V$. Si costruisce la matrice $K_{(ij),(kl)}=\lambda_{ijkl}\,c_{ij}c_{kl}$ sugli stati $i\le j$, con $c_{ii}=1/\sqrt2$ e $c_{i\ne j}=1$. Allora $a_0=-e/(16\pi)$, con $e$ gli autovalori di $K$, e la condizione è $|e|\le8\pi$.
+
+\textbf{Esempio pedante: il modello $O(d)$.} Per $V=\frac\lambda4(\phi^2)^2$ si ha $\lambda_{ijkl}=2\lambda(\delta_{ij}\delta_{kl}+\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk})$. Lo stato di singoletto è $|S\rangle=\frac{1}{\sqrt d}\sum_i|ii\rangle_{\rm norm}$, con $K_{ii,jj}=\frac12\lambda_{iijj}=\lambda(1+2\delta_{ij})$. Quindi $e_S=\frac1d\sum_{ij}\lambda(1+2\delta_{ij})=(d+2)\lambda$. Per l'$O(4)$ del Modello Standard: $m_h^2=2\lambda v^2$ e $6\lambda\le8\pi$ danno $m_h^2\le\frac{8\pi}{3}v^2$, cioè $m_h\lesssim712$ GeV. \checkmark
+
+\subsection{Il modello matriciale}
+
+Il termine in $\lambda_1$ è un $O(D_\R)$, che contribuisce $(D_\R+2)\lambda_1$ al singoletto e $2\lambda_1$ altrove. Il termine in $\lambda_2$ va calcolato con le relazioni di completezza (App.~C del paper). Il risultato (Tab.~III) per il singoletto è
+\[
+e_S=(D_\R+2)\lambda_1+\frac{2D_\R}{n}\lambda_2 .
+\]
+Sostituendo $\lambda_1=(m_h^2-m_H^2)/(nf^2)$ e $\lambda_2=m_H^2/f^2$:
+\[
+e_S=\frac{(D_\R+2)m_h^2+(D_\R-2)m_H^2}{nf^2}\le8\pi .
+\]
+Per $m_h=m_H=m$ si ha $\lambda_1=0$ ed $e_S=\frac{2D_\R}{n}\frac{m^2}{f^2}$, quindi
+\[
+m\le\sqrt{\frac{2\pi}N}f,\qquad m\le\sqrt{\frac{4\pi}{N+1}}f,\qquad m\le\sqrt{\frac{4\pi}{2N-1}}f .
+\]
+\begin{verifica}
+\texttt{verify.py}, punto (6): gli autovalori numerici della matrice dei quartici coincidono con la Tab.~III per $N\le5$ (l'ho controllato anche a $N=5$ e per $SU(8)/Sp(8)$).
+\end{verifica}
+
+\subsection{Running (Sez.~X del paper)}
+
+Per il caso chirale le beta function a un loop, nella normalizzazione canonica, coincidono con Paterson e Pisarski--Wilczek:
+\[
+16\pi^2\beta_{\lambda_1}=4(N^2+4)\lambda_1^2+16N\lambda_1\lambda_2+12\lambda_2^2,\qquad16\pi^2\beta_{\lambda_2}=24\lambda_1\lambda_2+8N\lambda_2^2 .
+\]
+Controllo: a $\lambda_2=0$ si ritrova l'$O(d)$, $16\pi^2\beta=2(d+8)\lambda^2$, con $d=2N^2$. Il ``polo di Landau'' quantifica la ``trivialità'' citata dal referee~A.
+
+%=====================================================================
+\section{Fisica elettrodebole e regole di somma}
+\label{sec:ew}
+%=====================================================================
+
+\subsection{Teorema di equivalenza}
+
+Ad alte energie, l'ampiezza con bosoni vettori longitudinali coincide con quella dei Goldstone mangiati: $\mathcal A(W_LW_L\to\dots)\simeq\mathcal A(ww\to\dots)$. Quindi la proiezione dell'equazione di Gauss sulle direzioni mangiate controlla l'unitarizzazione di $W_LW_L$.
+
+\subsection{$\kappa_V$ per le immersioni allineate}
+
+Prendi $k$ blocchi attivi, con generatori mangiati normalizzati $X_w^i$ tali che $\{X^i_w,X^j_w\}=\frac{\delta^{ij}}{r}P_r$, dove $P_r$ è il proiettore sul sottospazio attivo di dimensione $r$. La massa del $W$ è $m_W^2=g^2v^2/4$ con $v^2=\frac r2f^2$.
+\begin{itemize}
+\item \emph{Accoppiamento a $h$:} $d^{ij0}=2\Tr(X^0\{X^i,X^j\})=\frac{2}{\sqrt{2n}}\frac{\delta^{ij}}{r}r=\sqrt{\frac2n}\delta^{ij}$. Nel Modello Standard l'accoppiamento è $\frac1v h(\partial w)^2$. Quindi
+\[
+\kappa_V(h)=\sqrt{\tfrac2n}\,\frac vf=\sqrt{\tfrac2n}\sqrt{\tfrac r2}=\sqrt{\tfrac rn}.
+\]
+\item \emph{Accoppiamento al singoletto custodiale del multipletto:} $X_H=\frac{P_r-\frac rn\one}{\sqrt{2r(1-r/n)}}$ (verifica che $\Tr X_H^2=\frac12$). Allora $d^{ijH}=\frac{2\delta^{ij}}{r}\Tr(X_HP_r)=\delta^{ij}\sqrt{\frac{2(1-r/n)}{r}}$, e quindi $\kappa_V(H)=\sqrt{1-r/n}$.
+\item \emph{Somma:} $\kappa_V(h)^2+\kappa_V(H)^2=1$. \checkmark È la regola di somma che segue da Gauss sul sottospazio mangiato.
+\end{itemize}
+Esempi: per un doppietto in $SU(3)\times SU(3)$, $r=2$, $n=3$, $\kappa_V^2(h)=2/3$. Se il doppietto agisce su tutti gli $n$ indici ($r=n$), $\kappa_V(h)=1$, come nel Modello Standard.
+
+\subsection{Quintetti carichi}
+
+Se compaiono stati di isospin custodiale 2 (quintetto, con $Q^{\pm\pm}$), la regola di somma diventa $\sum_sa_s^2-\frac56\sum_qb_q^2=1$ (Gunion--Haber--Wudka): i carichi contribuiscono con segno negativo. Per il modello disallineato $SU(5)/SO(5)$ del paper: $(1-\xi)+\frac83\xi-\frac56(2\xi)=1$. \checkmark
+
+%=====================================================================
+\section{Cosa il paper \emph{non} dimostra (per non farsi trovare impreparati)}
+%=====================================================================
+
+\begin{itemize}
+\item L'equazione di Gauss è una condizione \emph{necessaria}. Una sua soluzione non garantisce l'esistenza di una rappresentazione con quel vuoto e quel potenziale.
+\item Gli enunciati sono \emph{locali}: quozienti discreti e coperture globali non sono classificati.
+\item La rigidità vale solo a $N=3$. Per $N\ge4$ esistono soluzioni algebriche alternative di cui non si sa se siano realizzabili.
+\item Tutto è ad albero, nel limite senza gauge. I bound di unitarietà sono criteri di perturbatività alle soglie radiali, non teoremi di validità fino a energie arbitrarie.
+\item Le applicazioni elettrodeboli dipendono dall'immersione e dall'allineamento scelti.
+\end{itemize}
+
+%=====================================================================
+\section{Tabella riassuntiva delle verifiche}
+%=====================================================================
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+risultato & come verificarlo\\
+\hline
+Lagrangiana chiusa \eqref{eq:master} & \texttt{verify.py} (3); a mano Sez.~\ref{sec:master}\\
+sviluppo a 4 campi & \texttt{expansion\_check.py}\\
+Lemma \eqref{eq:id} & a mano (due righe); \texttt{verify.py} (2)\\
+cancellazione $E^2$ e troncamenti & \texttt{verify.py} (4)\\
+curvatura non costante per $N\ge3$ & \texttt{verify.py} (5); argomento del rango\\
+masse radiali & \texttt{verify.py} (6a); a mano Sez.~\ref{sec:master}\\
+autovalori di unitarietà & \texttt{verify.py} (6)\\
+rigidità $N=3$ & \texttt{rigidity.py}; a mano Sez.~\ref{sec:rigidity}\\
+falsità dell'ansatz della v1 & \texttt{verify.py} (0)\\
+\hline
+\end{tabular}
+\end{center}
+
+\section*{Bibliografia essenziale per studiare}
+\begin{itemize}[nosep]
+\item CCWZ: Coleman, Wess, Zumino; Callan et al., Phys.\ Rev.\ 177 (1969). Pedagogico: Panico--Wulzer, Lect.\ Notes Phys.\ 913, cap.~2; Contino, arXiv:1005.4269.
+\item Spazi simmetrici: Helgason, \emph{Differential Geometry, Lie Groups and Symmetric Spaces}, capp.~IV--V.
+\item Geometria degli EFT scalari: Alonso--Jenkins--Manohar, JHEP 08 (2016) 101; Cohen--Craig--Lu--Sutherland, JHEP 12 (2021) 003.
+\item Regole di somma: Gunion--Haber--Wudka, PRD 43 (1991) 904; Falkowski--Rychkov--Urbano, JHEP 04 (2012) 073.
+\item Identità per $SU(N)$: Haber, SciPost Phys.\ Lect.\ Notes 21 (2021).
+\item Algebre di Jordan: Faraut--Korányi, \emph{Analysis on Symmetric Cones}, cap.~I e V.
+\item Unitarietà: Lee--Quigg--Thacker, PRD 16 (1977) 1519.
+\item Pattern di rottura: Peskin, NPB 175 (1980) 197; Kogut et al., NPB 582 (2000) 477; Bijnens--Lu, JHEP 03 (2011) 028.
+\end{itemize}
+
+\end{document}
