@@ -714,5 +714,176 @@
     "gist": "Computes parton distribution-like quantities in the Schwinger model with matrix product states, a step toward quantum-simulation approaches to hadron structure.",
     "abstract": "Parton distribution functions (PDFs) and light-cone distribution amplitudes (LCDAs) encode the non-perturbative structure of hadrons in terms of their partonic constituents. They are defined through matrix elements containing parton operators that are connected by a Wilson line along a light-front direction, which makes them difficult to access in Euclidean lattice calculations. We demonstrate how parton functions can be directly obtained in Minkowski space using the Hamiltonian framework. We compute fermion and antifermion PDFs, LCDAs, and decay constants of the vector meson in the Schwinger model for several fermion masses. States in Hilbert space are efficiently represented by tensor netw",
     "interest": []
+  },
+  {
+    "id": "2611.34201",
+    "title": "Ratio of $\\bar{\\Lambda}$ to $K_\\rm{S}^0$ production cross-sections in $pp$ collisions at 13.6TeV",
+    "authors": "LHCb Collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "LHCb measures the prompt Λ̄/K⁰S production ratio in 13.6 TeV pp collisions with the upgraded detector. It agrees with earlier energies and can help tune event generators.",
+    "abstract": "The production cross-section ratio of promptly produced $\\bar{\\Lambda}$ and $K_\\rm{S}^0$ hadrons is measured in proton-proton collision data at a centre-of-mass energy of 13.6TeV recorded in 2024 with the upgraded LHCb detector and corresponding to an integrated luminosity of $64\\rm{pb}^{-1}$. The ratio is presented as a function of transverse momentum, $p_\\rm{T}$, and rapidity, $y$, in the ranges $0.15 < p_\\rm{T} < 2.5\\rm{GeV}/c$ and $2.0 < y < 4.5$. The results are in good agreement with previous measurements at different centre-of-mass energies. They are compared to predictions from currently available event generators and can be used as input in future event generator tunings.",
+    "interest": []
+  },
+  {
+    "id": "2611.34882",
+    "title": "Letter of Intent: AN Underground Belayed In-Shaft (ANUBIS) detector",
+    "authors": "ANUBIS Collaboration",
+    "area": "hep-ex",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Letter of intent for ANUBIS, resistive plate chambers on the ATLAS cavern ceiling and shafts that use the cavern air as decay volume, to search for long-lived particles with decay lengths of tens of metres.",
+    "abstract": "Long-lived particles (LLPs) arise naturally in many extensions of the Standard Model, notably in models with dark matter candidates or motivated by baryogenesis. LLPs produced at or above the electroweak scale with decay lengths of tens of metres escape the general-purpose LHC detectors and cannot be produced at sufficient rates in forward and beam-dump experiments. This Letter of Intent proposes the ANUBIS detector, which would instrument the ceiling of the ATLAS cavern and the bottom of its access shafts with about 1600~m$^2$ of resistive plate chambers in two tracking layers about 1~m apart, using the air-filled volume above the ATLAS detector as decay volume. The ANUBIS detector exploits",
+    "interest": [
+      "Barducci"
+    ]
+  },
+  {
+    "id": "2611.34808",
+    "title": "Probing Ultralight Dark Matter at the Electroweak Scale",
+    "authors": "M. Bauer, S. Chakraborti",
+    "area": "hep-ph",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Oscillating ultralight dark matter would modulate Z and Higgs widths and CP-odd dipoles. Collider measurements, especially Z→ττ dipoles, could beat atomic clocks and equivalence-principle tests.",
+    "abstract": "Ultralight dark matter provides an explanation for astrophysical evidence for dark matter at all scales. This non-thermal dark matter requires a misalignment mechanism to reproduce the observed matter energy density of the Universe and therefore induce oscillating, time-dependent signals. We determine the sensitivity of current and future collider measurements of the width of the Z and Higgs bosons, and show that CP odd observables such as dipole moments in $Z\\to \\tau^+\\tau^-$ decays provide a better sensitivity to ultralight dark matter than atomic clocks or equivalence principle tests.",
+    "interest": [
+      "Barducci",
+      "Buttazzo",
+      "Zantedeschi"
+    ]
+  },
+  {
+    "id": "2611.34856",
+    "title": "Probing the CKM Origin of CP Violation with Paramagnetic EDMs and Rare Kaon Decays",
+    "authors": "G. D'Ambrosio, L. Di Luzio",
+    "area": "hep-ph",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Long-distance two-photon effects do not hide the origin of paramagnetic EDMs in the Standard Model: they stay at the few-percent level, so these EDMs probe CKM CP violation in kaon physics.",
+    "abstract": "In the Standard Model, paramagnetic electric dipole moments (EDMs) are dominated by kaon exchange, which pairs the CP-violating short-distance transition $s\\to d\\,e^+e^-$ with a CP-conserving weak kaon-nucleon coupling. Long-distance two-photon exchange, which dominates $K_L\\to e^+e^-$, gives an electron vertex about thirty-five times larger than the short-distance one and could obscure this origin. We show that it does not: the two-photon vertex conserves CP and must be paired with the CP-violating penguin component of the nucleon coupling, whose relative size is $3\\times10^{-4}$, so that electromagnetic corrections stay at the few-percent level. Paramagnetic EDMs therefore measure $\\mathrm",
+    "interest": [
+      "Buttazzo"
+    ]
+  },
+  {
+    "id": "2611.34438",
+    "title": "Lighting up LZ with Loopy Transitions in a leptophilic Dark Sector",
+    "authors": "S. Biondini, C. Hofheinz, S. Melchin et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "A leptophilic two-component dark sector with keV-scale splittings and endothermic scattering is proposed to explain the high-energy nuclear-recoil event seen by LZ.",
+    "abstract": "We study the direct detection phenomenology and cosmology of a multicomponent dark sector with a leptophilic t-channel portal. The coupling to right-handed Standard Model leptons is mediated by a charged vector-like fermion, allowing both a scalar and a vector dark candidate to connect to the SM through the same mediator. Motivated by the high-energy nuclear-recoil event recently reported by the LUX-ZEPLIN (LZ) experiment, we consider a nearly degenerate dark sector with mass splittings of order a few hundred keV and investigate the resulting inelastic transitions. Concretely, we focus on endothermic scattering of the dark states, which can shift the recoil spectrum towards the high-energy r",
+    "interest": [
+      "Di Lecce",
+      "Panci"
+    ]
+  },
+  {
+    "id": "2611.34172",
+    "title": "Black hole accretion flows as dark matter bolometers",
+    "authors": "R. Ding, N. Song, C. Zhang",
+    "area": "hep-ph",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Sub-MeV dark matter can be colder than plasma electrons near M87*, cooling the accretion flow and changing its emission, so black hole accretion acts as a dark matter bolometer.",
+    "abstract": "Astrophysical systems provide powerful probes of dark matter interactions, complementing direct-detection searches. We propose using accretion flows of the supermassive black hole as a bolometer for light DM. The kinetic energy of sub-MeV dark matter in the black hole gravitational potential can remain below the thermal energy of the plasma electrons. The colder dark matter population can therefore absorb energy through elastic scattering, cooling the electrons and modifying their emission spectrum. We integrate dark matter cooling into the advection-dominated accretion flow around M87$^{*}$ and solve the full set of thermodynamic equations to obtain the resulting temperature profile and rad",
+    "interest": [
+      "Gaggero"
+    ]
+  },
+  {
+    "id": "2611.33279",
+    "title": "From nested soft-collinear subtraction to NNLO QCD predictions with large language models",
+    "authors": "F. Devoto, K. Melnikov, I. Novikov et al.",
+    "area": "hep-ph",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Tests whether large language models can write reliable NNLO QCD codes from the nested soft-collinear subtraction formula, benchmarked on weak-boson-fusion Higgs production against a human reference code.",
+    "abstract": "We investigate whether large language models can construct reliable and efficient codes for computing NNLO QCD corrections to collider processes, starting from the general formula derived within the nested soft-collinear subtraction scheme. We use Higgs production in weak-boson fusion with and without an additional jet to compare numerical implementations by large language models, subject to various degrees of supervision, against a human-written reference code.",
+    "interest": []
+  },
+  {
+    "id": "2611.33277",
+    "title": "Unitarization from Spin Geometry",
+    "authors": "F. Bertucci, J. Bonifacio, A. Schrader",
+    "area": "hep-th",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Dimensionally reducing 10D super Yang-Mills on a general spin 6-manifold and imposing perturbative unitarity yields sum rules linking Laplace and Dirac eigenvalues to Kaluza-Klein couplings.",
+    "abstract": "We derive the dimensional reduction of 10D super Yang-Mills theory on a general closed 6D spin manifold using spectral decompositions for the higher-dimensional gauge field and gaugino, keeping the infinite towers of Kaluza-Klein (KK) modes in the lower-dimensional theory. We then calculate tree-level $2 \\rightarrow 2$ scattering amplitudes with external massive spinors and vectors in this lower-dimensional theory. By studying the high-energy behavior of these amplitudes and imposing perturbative unitarity, we derive several sum rules that involve the eigenvalues of Laplace and Dirac operators on the internal 6-manifold, together with products of cubic coupling constants of the KK modes. The",
+    "interest": [
+      "Vichi"
+    ]
+  },
+  {
+    "id": "2611.33285",
+    "title": "Bounds on Love Numbers and Quasinormal Modes from the Surface Impedance",
+    "authors": "D. McLoughlin, M. P. Solon",
+    "area": "hep-th",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Surface impedance constraints from losslessness or passivity give exact bounds on Love numbers and quasinormal modes of stable bodies in general relativity, including compact stars.",
+    "abstract": "The surface impedance of a body is fixed by its interior alone and encodes its entire tidal response. We derive bounds on Love numbers and quasinormal modes from constraints on the impedance that follow from either of two properties of a stable body: it is lossless, meaning that it dissipates no energy, or it is passive, meaning that it never gives back more energy than it has received. For a lossless body, every dynamical Love number is bounded from above and below, exactly in general relativity, in any renormalization scheme and at any scale. Earlier bounds are exact for Newtonian stars but fail for compact stars, because they take the response to arbitrarily fast tides to be zero or non-n",
+    "interest": [
+      "Juliano",
+      "Trincherini"
+    ]
+  },
+  {
+    "id": "2611.34886",
+    "title": "Time-weighted energy correlators are infrared unsafe in gauge theories",
+    "authors": "S. Yu",
+    "area": "hep-th",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Correlators of time-weighted energy detectors in weakly coupled conformal gauge theories diverge at two loops, from soft parton pairs, so these observables are infrared unsafe.",
+    "abstract": "Energy correlators are infrared safe because each detector weights a parton by its energy, but a weight in the arrival time makes them infrared unsafe in gauge theories. For the state created by a scalar operator that makes two partons at lowest order in a weakly coupled conformal gauge theory, we show that the correlator of two time-weighted energy detectors (the light-ray operators $\\int\\!du\\,u\\,T_{uu}$) at separated directions diverges at two loops like the logarithm of the time window. The logarithm does not come from a single soft gluon, but from a soft parton pair with comparable energies, one parton in each detector; its coefficient is a closed-form function of the angle for any matte",
+    "interest": [
+      "Marino"
+    ]
+  },
+  {
+    "id": "2611.33295",
+    "title": "Quasinormal modes of black holes in astrophysical environments: Rainbow in the dark matter",
+    "authors": "K. Destounis, L. Pezzella",
+    "area": "gr-qc",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Computes axial and polar quasinormal modes of a black hole in a relativistic dark matter halo, showing most deviations from the vacuum ringdown come from the background horizon lapse factor.",
+    "abstract": "Matter around black holes affects the ringdown in two ways: through the background geometry and through the response of the matter itself. We compute axial and polar gravitational quasinormal modes of a black hole embedded in a relativistic Hernquist-type dark matter halo, following the fundamental mode and the first three overtones associated with the vacuum Schwarzschild spectrum. The polar sector couples metric and matter perturbations. At small halo compactness, both sectors follow the familiar gravitational redshift law. Most of the departure from the typical redshift at larger compactness is accounted for by the exact horizon lapse factor of the background. The remaining residual depar",
+    "interest": [
+      "Gaggero",
+      "Juliano",
+      "Trincherini"
+    ]
+  },
+  {
+    "id": "2611.34672",
+    "title": "Signals from the early Universe: primordial features from the full-shape analysis of BOSS galaxies and eBOSS quasars in combination with Planck",
+    "authors": "M. Ballardini, N. Barbieri, A. Raffaelli et al.",
+    "area": "astro-ph.CO",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Searches for primordial oscillatory features by combining Planck PR4 with a full-shape analysis of BOSS and eBOSS clustering, testing several oscillation templates.",
+    "abstract": "We search for primordial oscillatory features using cosmic microwave background (CMB) and large-scale structure (LSS) data, combining \\textit{Planck} Public Release 4 (PR4) with galaxy clustering from the Baryon Oscillation Spectroscopic Survey (BOSS) and quasars from the extended Baryon Oscillation Spectroscopic Survey (eBOSS). For the LSS data we perform a full-shape analysis of the power spectrum multipoles with the one-loop effective field theory of large-scale structure, applying infrared resummation separately to each oscillatory component. We consider four templates: linearly and logarithmically oscillating features in Fourier space, with constant, localised, or power-law-decaying amp",
+    "interest": [
+      "Strumia"
+    ]
+  },
+  {
+    "id": "2611.34543",
+    "title": "An X-ray binary origin for the LHAASO peanut",
+    "authors": "L. Olivera-Nieto, J. van den Eijnden, R. Ruppert et al.",
+    "area": "astro-ph.HE",
+    "announced": "2026-11-26",
+    "digest": "2026-11-26",
+    "gist": "Proposes that the extended ultra-high-energy LHAASO peanut source comes from past activity of a now quiescent X-ray binary at 1-2 kpc, easing the extreme transport parameters needed for a pulsar origin.",
+    "abstract": "The LHAASO \"peanut\" source is a remarkably extended ($\\gtrsim$4$^\\circ$) ultra-high-energy gamma-ray emitter detected by the LHAASO observatory. While its angular extent and high-energy spectrum require a Galactic origin, its location at a Galactic latitude of $\\approx$-17$^\\circ$ limits the possible known counterparts to a nearby millisecond pulsar. However, models accounting for the emission solely with this pulsar require the transport properties to operate near extreme parameter limits. We propose an alternative explanation where the peanut source is produced through the past activity of a now quiescent X-ray binary located at a distance of 1-2 kpc. We draw an analogy with known X-ray bi",
+    "interest": [
+      "Gaggero"
+    ]
   }
 ]
